@@ -1,0 +1,32 @@
+package it.polimi.db2.questionnaire.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+public class Product {
+	@Id
+	@GeneratedValue(strategy=IDENTITY)
+	private Long id;
+	
+	@Column(nullable=false)
+	private String name;
+	
+	 @Lob		//lazy by default
+	 @Column(name = "photo", columnDefinition="BLOB", nullable=false)
+	 private byte[] photo;
+}
