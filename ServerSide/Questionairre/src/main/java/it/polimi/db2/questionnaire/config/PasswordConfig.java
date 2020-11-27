@@ -12,5 +12,5 @@ public class PasswordConfig{
 	public PasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder(10);		//most common password encoder
 	}
-	
+
 }

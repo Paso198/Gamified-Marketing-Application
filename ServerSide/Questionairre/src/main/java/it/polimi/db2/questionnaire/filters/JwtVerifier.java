@@ -35,9 +35,12 @@ public class JwtVerifier extends OncePerRequestFilter {
 
 		} catch (InvalidHeaderException e) {
 			filterChain.doFilter(request, response);
+			return;
+			
 
 		} catch (JwtException e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			return;
 		}
 
 		filterChain.doFilter(request, response);
