@@ -1,6 +1,7 @@
 package it.polimi.db2.questionnaire.controllers;
 
 
+
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,5 @@ public class UserController {
 		
 	}
 	
-
 
 }

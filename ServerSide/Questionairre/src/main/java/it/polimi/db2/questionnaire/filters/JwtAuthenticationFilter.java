@@ -22,8 +22,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	JwtUtils jwtUtils;
-	AuthenticationManager authenticationManager;
+	private final JwtUtils jwtUtils;
+	private final AuthenticationManager authenticationManager;
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
