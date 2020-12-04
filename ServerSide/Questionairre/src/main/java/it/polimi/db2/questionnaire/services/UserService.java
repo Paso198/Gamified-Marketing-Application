@@ -1,6 +1,5 @@
 package it.polimi.db2.questionnaire.services;
 
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -18,10 +17,7 @@ public class UserService {
 	private final UserMapper userMapper;
 
 	@Transactional
-	public void signup(UserRequest userRequest) {
-		try{		
+	public void signup(UserRequest userRequest) {	
 			userRepository.save(userMapper.mapToUser(userRequest, Role.USER, Boolean.FALSE, 0));
-		}catch(PersistenceException e) {
-			System.out.println(e.getMessage());
-		}
-}}
+	}
+}

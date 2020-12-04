@@ -35,7 +35,7 @@ public class Questionnaire implements Serializable{
 	@GeneratedValue(strategy=IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(unique=true, nullable = false)
 	private LocalDate date;
 	
 	@Column(nullable = false)
@@ -50,4 +50,8 @@ public class Questionnaire implements Serializable{
 	
 	@OneToMany(mappedBy="questionnaire",fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Response> responses;
+	
+	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
+	@JoinColumn(name = "creator", referencedColumnName = "id")
+	private User user;
 }

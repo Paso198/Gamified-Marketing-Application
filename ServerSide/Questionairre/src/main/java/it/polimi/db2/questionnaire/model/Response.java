@@ -39,5 +39,10 @@ public class Response implements Serializable{
     @JoinColumn(name = "questionnaireId", referencedColumnName = "id")
 	private Questionnaire questionnaire;
 	
+	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
+	@JoinColumn(name = "submitter", referencedColumnName = "id")
+	private User user;
+	
 
+	
 }

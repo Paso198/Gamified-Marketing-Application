@@ -2,6 +2,7 @@ package it.polimi.db2.questionnaire.controllers;
 
 
 
+
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class UserController {
 	private final UserService userService;
 	
 	@PostMapping("/public/user/signup")
-	public void signup(@Valid @RequestBody UserRequest userRequest) {
+	public void signup(@Valid @RequestBody UserRequest userRequest){
 		
 		 userService.signup(userRequest);
 		
@@ -26,3 +27,4 @@ public class UserController {
 	
 
 }
+//SQLIntegrityConstraintViolationException
