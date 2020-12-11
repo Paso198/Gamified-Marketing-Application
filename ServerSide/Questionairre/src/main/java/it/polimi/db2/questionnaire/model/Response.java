@@ -3,6 +3,7 @@ package it.polimi.db2.questionnaire.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +45,7 @@ public class Response implements Serializable{
 	@JoinColumn(name = "submitter", referencedColumnName = "id")
 	private User user;
 	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="response")
+	private List <Answer> answers;
 
-	
 }

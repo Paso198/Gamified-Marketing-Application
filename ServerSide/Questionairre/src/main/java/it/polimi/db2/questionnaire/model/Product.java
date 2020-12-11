@@ -32,6 +32,6 @@ public class Product implements Serializable{
 	private String name;
 	
 	 @Lob		//lazy by default
-	 @Column(name = "photo", columnDefinition="BLOB", nullable=false)
+	 @Column(name = "photo", columnDefinition="MEDIUMBLOB", nullable=false)
 	 private byte[] photo;
 }

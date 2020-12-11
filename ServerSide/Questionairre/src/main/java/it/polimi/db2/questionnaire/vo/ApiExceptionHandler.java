@@ -3,8 +3,6 @@ package it.polimi.db2.questionnaire.vo;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.PersistenceException;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import io.jsonwebtoken.lang.Strings;
+import it.polimi.db2.questionnaire.exceptions.BadImageException;
+import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -34,11 +33,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(errors, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(PersistenceException.class)
+	@ExceptionHandler(DuplicateUniqueValueException.class)
+	@ResponseStatus(code = HttpStatus.OK)
+	@ResponseBody
+	public Map<String, String> handleDuplicateError(DuplicateUniqueValueException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put(ex.getField(), ex.getMessage());
+		return errors;
+	}
+
+	@ExceptionHandler(BadImageException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public String handleValidationError(PersistenceException ex) {
-		return Strings.split(ex.getCause().getLocalizedMessage(), "for key")[0];		
-		//TODO sistemare		
+	public Map<String, String> handleImageError(BadImageException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put(ex.getField(), ex.getMessage());
+		return errors;
 	}
 }

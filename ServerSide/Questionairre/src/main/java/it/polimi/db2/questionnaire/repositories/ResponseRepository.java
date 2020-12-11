@@ -3,9 +3,9 @@ package it.polimi.db2.questionnaire.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import it.polimi.db2.questionnaire.model.BadWord;
+import it.polimi.db2.questionnaire.model.Response;
 
 @Repository
-public interface BadWodInterface extends JpaRepository<BadWord, Long> {
+public interface ResponseRepository extends JpaRepository<Response, Long> {
 
 }
