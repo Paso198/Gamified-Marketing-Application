@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import it.polimi.db2.questionnaire.dto.UserRequest;
+import it.polimi.db2.questionnaire.dto.requests.UserRequest;
 import it.polimi.db2.questionnaire.enumerations.Role;
 import it.polimi.db2.questionnaire.model.User;
 

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import it.polimi.db2.questionnaire.exceptions.BadImageException;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
+import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -48,6 +49,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	public Map<String, String> handleImageError(BadImageException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		errors.put(ex.getField(), ex.getMessage());
+		return errors;
+	}
+	
+	@ExceptionHandler(ProductNotFoundException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public Map<String, String> handleProductNotFound(ProductNotFoundException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put(ex.getName(), ex.getMessage());
 		return errors;
 	}
 }

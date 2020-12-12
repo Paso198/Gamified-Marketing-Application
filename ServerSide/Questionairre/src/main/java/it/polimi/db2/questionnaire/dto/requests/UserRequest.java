@@ -1,4 +1,4 @@
-package it.polimi.db2.questionnaire.dto;
+package it.polimi.db2.questionnaire.dto.requests;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

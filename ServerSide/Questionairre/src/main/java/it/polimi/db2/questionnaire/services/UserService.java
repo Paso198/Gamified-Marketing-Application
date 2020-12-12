@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import it.polimi.db2.questionnaire.dto.UserRequest;
+import it.polimi.db2.questionnaire.dto.requests.UserRequest;
 import it.polimi.db2.questionnaire.enumerations.Role;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.mappers.UserMapper;

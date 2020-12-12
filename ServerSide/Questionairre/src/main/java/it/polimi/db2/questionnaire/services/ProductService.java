@@ -2,12 +2,15 @@ package it.polimi.db2.questionnaire.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 
-import it.polimi.db2.questionnaire.dto.AddProductRequest;
+import it.polimi.db2.questionnaire.dto.requests.AddProductRequest;
+import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
 import it.polimi.db2.questionnaire.exceptions.BadImageException;
+import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.mappers.ProductMapper;
 import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.repositories.ProductRepository;
@@ -41,7 +44,14 @@ public class ProductService {
 
 	}
 	
-	public List<ProductResponse> getAllProducts(){
+	/*public List<ProductResponse> getAllProducts(){
+		
+	}*/
+	
+	public ProductResponse getProduct(Long id) {
+		Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product "+id+" not found"));
+		System.out.println(product.getPhoto());
+		return productMapper.toProductResponse(product);
 		
 	}
 }

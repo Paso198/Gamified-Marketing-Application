@@ -5,7 +5,8 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import it.polimi.db2.questionnaire.dto.UserRequest;
+
+import it.polimi.db2.questionnaire.dto.requests.UserRequest;
 import it.polimi.db2.questionnaire.services.UserService;
 import lombok.AllArgsConstructor;
 
@@ -24,4 +25,3 @@ public class UserController {
 	
 
 }
-//SQLIntegrityConstraintViolationException
