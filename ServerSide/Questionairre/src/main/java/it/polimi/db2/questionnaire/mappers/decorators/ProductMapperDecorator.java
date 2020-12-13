@@ -3,8 +3,11 @@ package it.polimi.db2.questionnaire.mappers.decorators;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.hateoas.CollectionModel;
 
 import it.polimi.db2.questionnaire.controllers.ProductController;
 import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
@@ -20,18 +23,27 @@ public abstract class ProductMapperDecorator  implements ProductMapper {
 	@Override
 	public ProductResponse toProductResponse(Product product) {
 		ProductResponse response = delegate.toProductResponse(product);
-//		try {
-//			Link link= WebMvcLinkBuilder.linkTo((ProductController.class).getMethod("getProduct", Long.class)).withSelfRel();
-//			return response.add(link);
-//		} catch (NoSuchMethodException | SecurityException e) {
-//			throw new ProductNotFoundException("invalid product", "invalid "+product.getId()+" product");
-//		}
 		response.add(linkTo(methodOn(ProductController.class)
                 .getProduct(product.getId()))
                 .withSelfRel());
 		return response;
 		
 	}
+
+	@Override
+	public List<ProductResponse> toProductResponses(Stream<Product> products) {
+		List<ProductResponse> response = delegate.toProductResponses(products);
+		return (List<ProductResponse>) CollectionModel.of(response);
+		/*return CollectionModel.wrap(response).add(linkTo(methodOn(ProductController.class)
+				.getAllProducts())
+				.withSelfRel())
+				.getContent()
+				.stream()
+				.map(EntityModel::getContent)
+				.collect(Collectors.toList());*/
+	}
+	
+	
 	
 	
 

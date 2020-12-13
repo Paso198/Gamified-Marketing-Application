@@ -1,6 +1,8 @@
 package it.polimi.db2.questionnaire.mappers;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
@@ -22,4 +24,6 @@ public interface ProductMapper {
 	
 	@Mapping(target = "photo", expression="java(product.getPhoto())")
 	public ProductResponse toProductResponse(Product product);
+	
+	public List <ProductResponse> toProductResponses(Stream<Product> products);
 }

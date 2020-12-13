@@ -1,5 +1,7 @@
 package it.polimi.db2.questionnaire.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,5 +29,10 @@ public class ProductController {
 	@GetMapping("/admin/products/{id}")
 	public ProductResponse getProduct(@PathVariable Long id) {
 		return productService.getProduct(id);
+	}
+	
+	@GetMapping("/admin/products/")
+	public List <ProductResponse> getAllProducts() {
+		return productService.getAllProducts();
 	}
 }

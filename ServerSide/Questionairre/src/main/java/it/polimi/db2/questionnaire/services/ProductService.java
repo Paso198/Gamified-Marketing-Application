@@ -3,6 +3,7 @@ package it.polimi.db2.questionnaire.services;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
@@ -44,14 +45,21 @@ public class ProductService {
 
 	}
 	
-	/*public List<ProductResponse> getAllProducts(){
-		
-	}*/
 	
 	public ProductResponse getProduct(Long id) {
 		Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product "+id+" not found"));
-		System.out.println(product.getPhoto());
 		return productMapper.toProductResponse(product);
 		
+	}
+	
+	public List <ProductResponse> getAllProducts()
+	{
+		/*List <ProductResponse> response = productRepository.findAll()
+				.stream()
+				.map(productMapper::toProductResponse)
+				.collect(Collectors.toList());*/
+		
+		List <ProductResponse> response = productMapper.toProductResponses(productRepository.findAll().stream());
+		return response;
 	}
 }
