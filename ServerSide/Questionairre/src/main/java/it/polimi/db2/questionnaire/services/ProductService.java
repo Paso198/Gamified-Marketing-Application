@@ -1,11 +1,9 @@
 package it.polimi.db2.questionnaire.services;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
 import it.polimi.db2.questionnaire.dto.requests.AddProductRequest;
@@ -52,14 +50,14 @@ public class ProductService {
 		
 	}
 	
-	public List <ProductResponse> getAllProducts()
+	public CollectionModel <ProductResponse> getAllProducts()
 	{
 		/*List <ProductResponse> response = productRepository.findAll()
 				.stream()
 				.map(productMapper::toProductResponse)
 				.collect(Collectors.toList());*/
 		
-		List <ProductResponse> response = productMapper.toProductResponses(productRepository.findAll().stream());
+		CollectionModel <ProductResponse> response = productMapper.toProductResponsesCollectionModel(productRepository.findAll().stream());
 		return response;
 	}
 }

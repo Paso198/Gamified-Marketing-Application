@@ -1,9 +1,8 @@
 package it.polimi.db2.questionnaire.controllers;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/admin/products/")
-	public List <ProductResponse> getAllProducts() {
+	public CollectionModel <ProductResponse> getAllProducts() {
 		return productService.getAllProducts();
 	}
 }

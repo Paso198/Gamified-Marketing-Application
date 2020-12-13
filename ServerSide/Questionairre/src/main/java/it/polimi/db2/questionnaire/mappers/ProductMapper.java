@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.hateoas.CollectionModel;
 
 import it.polimi.db2.questionnaire.dto.requests.AddProductRequest;
 import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
@@ -25,5 +26,9 @@ public interface ProductMapper {
 	@Mapping(target = "photo", expression="java(product.getPhoto())")
 	public ProductResponse toProductResponse(Product product);
 	
-	public List <ProductResponse> toProductResponses(Stream<Product> products);
+	public List <ProductResponse> toProductResponsesList(Stream<Product> products);
+	
+	default CollectionModel <ProductResponse> toProductResponsesCollectionModel(Stream<Product> products){
+		return CollectionModel.of(toProductResponsesList(products));
+	}
 }

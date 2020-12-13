@@ -31,16 +31,11 @@ public abstract class ProductMapperDecorator  implements ProductMapper {
 	}
 
 	@Override
-	public List<ProductResponse> toProductResponses(Stream<Product> products) {
-		List<ProductResponse> response = delegate.toProductResponses(products);
-		return (List<ProductResponse>) CollectionModel.of(response);
-		/*return CollectionModel.wrap(response).add(linkTo(methodOn(ProductController.class)
+	public CollectionModel<ProductResponse> toProductResponsesCollectionModel(Stream<Product> products) {
+		CollectionModel<ProductResponse> response = CollectionModel.of(this.toProductResponsesList(products));
+		return response.add(linkTo(methodOn(ProductController.class)
 				.getAllProducts())
-				.withSelfRel())
-				.getContent()
-				.stream()
-				.map(EntityModel::getContent)
-				.collect(Collectors.toList());*/
+				.withSelfRel());
 	}
 	
 	
