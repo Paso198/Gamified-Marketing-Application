@@ -2,18 +2,19 @@ package it.polimi.db2.questionnaire.services;
 
 import java.io.IOException;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
-import it.polimi.db2.questionnaire.dto.requests.AddProductRequest;
+import it.polimi.db2.questionnaire.dto.requests.ProductRequest;
 import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
 import it.polimi.db2.questionnaire.exceptions.BadImageException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.mappers.ProductMapper;
 import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.repositories.ProductRepository;
-import it.polimi.db2.questionnaire.repositories.QuestionnaireRepository;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -21,10 +22,11 @@ import lombok.AllArgsConstructor;
 public class ProductService {
 
 	private final ProductRepository productRepository;
-	private final QuestionnaireRepository questionnaireRepository;
 	private final ProductMapper productMapper;
 
-	public void addProduct(AddProductRequest addProductRequest) {
+	
+	@Transactional
+	public void addProduct(ProductRequest addProductRequest) {
 		try {
 			String extension = FilenameUtils.getExtension(addProductRequest.getImage().getOriginalFilename());
 			if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg")) {			//TODO: can we do better
@@ -43,21 +45,27 @@ public class ProductService {
 
 	}
 	
-	
+	@Transactional
 	public ProductResponse getProduct(Long id) {
 		Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product "+id+" not found"));
 		return productMapper.toProductResponse(product);
 		
 	}
 	
-	public CollectionModel <ProductResponse> getAllProducts()
-	{
-		/*List <ProductResponse> response = productRepository.findAll()
-				.stream()
-				.map(productMapper::toProductResponse)
-				.collect(Collectors.toList());*/
-		
+	@Transactional
+	public CollectionModel <ProductResponse> getAllProducts(){
 		CollectionModel <ProductResponse> response = productMapper.toProductResponsesCollectionModel(productRepository.findAll().stream());
 		return response;
+	}
+	
+	@Transactional
+	public void deleteProduct(Long id) {
+		productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product "+id+" not found"));
+		productRepository.deleteById(id);
+	}
+	
+	@Transactional
+	public void updateProduct(Long id, ProductRequest productRequest) {
+		
 	}
 }

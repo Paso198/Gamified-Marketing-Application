@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddProductRequest {
+public class ProductRequest {
 	
 	private final int MIN_NAME_LENGTH = 1;
 	private final int MAX_NAME_LENGTH = 30;
