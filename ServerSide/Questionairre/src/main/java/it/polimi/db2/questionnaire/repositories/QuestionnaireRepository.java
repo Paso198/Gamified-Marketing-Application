@@ -10,7 +10,5 @@ import it.polimi.db2.questionnaire.model.Questionnaire;
 
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
-
-	Optional <Questionnaire> findByDate(LocalDate date); //TODO Query?
-
+	Optional <Questionnaire> findByDate(LocalDate date);
 }
