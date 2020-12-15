@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import it.polimi.db2.questionnaire.dto.requests.AddQuestionnaireRequest;
-import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
+import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.repositories.QuestionnaireRepository;
@@ -23,9 +23,9 @@ public class QuestionnaireService {
 		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(addQuestionnaireRequest));
 	}
 	
-	public QuestionnaireResponse getQuestionnaireOfTheDay() { //.now() not tested
+	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() { //.now() not tested
 		Questionnaire questionnaire = questionnaireRepository.findByDate(LocalDate.now()).orElseThrow(/*TODO exception*/);
-		return questionnaireMapper.toQuestionnaireResponse(questionnaire);
+		return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
 	}
 	
 	public Optional<Questionnaire> getQuestionnaire(Long id) {
