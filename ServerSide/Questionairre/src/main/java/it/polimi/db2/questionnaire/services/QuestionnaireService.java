@@ -20,7 +20,7 @@ public class QuestionnaireService {
 	private final QuestionnaireMapper questionnaireMapper;
 	
 	public void addQuestionnaire(AddQuestionnaireRequest addQuestionnaireRequest) {
-		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(addQuestionnaireRequest));
+		//questionnaireRepository.save(questionnaireMapper.toQuestionnaire(addQuestionnaireRequest));
 	}
 	
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() { //.now() not tested
