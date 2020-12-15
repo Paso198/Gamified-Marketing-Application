@@ -25,6 +25,7 @@ public class AddQuestionnaireRequest {
 	@NotBlank
 	private LocalDate date;;
 	
+	@NotBlank
 	private Long productId;
 	
 	

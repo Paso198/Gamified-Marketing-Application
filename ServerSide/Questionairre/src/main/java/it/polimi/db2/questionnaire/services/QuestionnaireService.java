@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 public class QuestionnaireService {
 	
 	private final QuestionnaireRepository questionnaireRepository;
-	private final QuestionnaireMapper questionnaireMapper;
+	//private final QuestionnaireMapper questionnaireMapper;
 	
 	public void addQuestionnaire(AddQuestionnaireRequest addQuestionnaireRequest) {
 		//questionnaireRepository.save(questionnaireMapper.toQuestionnaire(addQuestionnaireRequest));
@@ -25,7 +25,8 @@ public class QuestionnaireService {
 	
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() { //.now() not tested
 		Questionnaire questionnaire = questionnaireRepository.findByDate(LocalDate.now()).orElseThrow(/*TODO exception*/);
-		return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
+		//return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
+		return null;
 	}
 	
 	public Optional<Questionnaire> getQuestionnaire(Long id) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polimi.db2.questionnaire.dto.requests.ProductRequest;
@@ -47,7 +48,7 @@ public class ProductController {
 	}
 	
 	@PutMapping("/admin/products/{id}")
-	public ResponseEntity<Void> updateProduct(@PathVariable Long id, ProductRequest product) {
+	public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody ProductRequest product) {
 		productService.deleteProduct(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

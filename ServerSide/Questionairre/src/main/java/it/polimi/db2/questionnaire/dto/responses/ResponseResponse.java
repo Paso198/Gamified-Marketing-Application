@@ -15,9 +15,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionnaireOfTheDayResponse{
+public class ResponseResponse extends RepresentationModel <ResponseResponse>{
 	private Long id;
-	private String title;
-	private ProductResponse product;
-	private List<QuestionResponse> questions;
+	private UserResponse submitter;
+	private List<AnswerResponse> answers;
+	private Integer age;
+	private String gender;
+	private String expertiseLevel;
 }

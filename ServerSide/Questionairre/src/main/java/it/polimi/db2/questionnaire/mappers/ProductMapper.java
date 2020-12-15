@@ -31,4 +31,7 @@ public interface ProductMapper {
 	default CollectionModel <ProductResponse> toProductResponsesCollectionModel(Stream<Product> products){
 		return CollectionModel.of(toProductResponsesList(products));
 	}
+	
+	@Mapping(target = "photo", expression="java(product.getPhoto())")
+	public ProductResponse toProductInQuestionnaireResponse(Product product);
 }
