@@ -45,13 +45,16 @@ public class Questionnaire implements Serializable{
 	@JoinColumn(name = "productId", referencedColumnName = "id")
 	private Product product;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany
 	private List<Question> questions;
 	
-	@OneToMany(mappedBy="questionnaire",fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
 	private List<Response> responses;
 	
 	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
 	@JoinColumn(name = "creator", referencedColumnName = "id")
 	private User user;
+	
+	@OneToMany(mappedBy="questionnaire")
+	private List<Log> logs;
 }

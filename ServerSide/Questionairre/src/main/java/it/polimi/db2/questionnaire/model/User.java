@@ -2,10 +2,13 @@ package it.polimi.db2.questionnaire.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,4 +43,13 @@ public class User {
 	
 	@Column(nullable=false)
 	private String roles;
+	
+	@OneToMany(mappedBy="user")
+	private List<Questionnaire> questionnaires;
+	
+	@OneToMany(mappedBy="user")
+	private List<Response> responses;
+	
+	@OneToMany(mappedBy="user")
+	private List<Log> logs;
 }

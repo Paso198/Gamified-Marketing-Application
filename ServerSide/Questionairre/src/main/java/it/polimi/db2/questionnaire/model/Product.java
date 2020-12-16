@@ -3,6 +3,7 @@ package it.polimi.db2.questionnaire.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,4 +39,7 @@ public class Product implements Serializable{
 	 @Lob		//lazy by default
 	 @Column(name = "photo", columnDefinition="MEDIUMBLOB", nullable=false)
 	 private byte[] photo;
+	 
+	 @OneToMany(mappedBy="product")
+	 private List<Questionnaire> questionnaires;
 }

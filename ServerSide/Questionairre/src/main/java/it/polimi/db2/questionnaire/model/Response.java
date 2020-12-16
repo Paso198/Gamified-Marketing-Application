@@ -45,7 +45,7 @@ public class Response implements Serializable{
 	@JoinColumn(name = "submitter", referencedColumnName = "id")
 	private User user;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="response")
+	@OneToMany(mappedBy="response")
 	private List <Answer> answers;
 
 }
