@@ -31,7 +31,6 @@ public class ProductService {
 			String extension = FilenameUtils.getExtension(addProductRequest.getImage().getOriginalFilename());
 			if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg")) {			//TODO: can we do better
 				Product product = productMapper.toProduct(addProductRequest);
-
 				productRepository.save(product);
 			}
 			else {
