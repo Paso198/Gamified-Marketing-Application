@@ -14,11 +14,13 @@ import lombok.AllArgsConstructor;
 public class ResponseService {
 	private final ResponseRepository responseRepository;
 	private final BadWordService badWordService;
+	private final UserService userService;
 
 	public void addReponse(Response response) { // TODO: DTO
 		if (!badWordService
 				.containtsBadWord(response.getAnswers().stream().map(Answer::getText).collect(Collectors.toList())))
 				responseRepository.save(response);
-
+		else
+			userService.block(response.getUser().getId());
 	}
 }

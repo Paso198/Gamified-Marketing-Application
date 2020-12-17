@@ -22,6 +22,14 @@ import lombok.AllArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
+	
+	public void block(Long userId) {
+		Optional<User> userToBlock = userRepository.findById(userId);
+		userToBlock.ifPresent((User user) -> {
+			user.setBlocked(true);
+			userRepository.save(user);
+		});
+	}
 
 	@Transactional
 	public void signup(UserRequest userRequest) {	
