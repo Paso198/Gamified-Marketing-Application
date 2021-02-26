@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,9 @@ public class Response implements Serializable{
 	
 	private String expertiseLevel;
 	
-	@ManyToOne(optional=false, fetch=FetchType.LAZY) 	
+	private Integer points;
+	
+	@ManyToOne(optional=false, fetch=FetchType.EAGER) 	
     @JoinColumn(name = "questionnaireId", referencedColumnName = "id")
 	private Questionnaire questionnaire;
 	
@@ -45,7 +48,7 @@ public class Response implements Serializable{
 	@JoinColumn(name = "submitter", referencedColumnName = "id")
 	private User user;
 	
-	@OneToMany(mappedBy="response")
+	@OneToMany(mappedBy="response", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List <Answer> answers;
 
 }

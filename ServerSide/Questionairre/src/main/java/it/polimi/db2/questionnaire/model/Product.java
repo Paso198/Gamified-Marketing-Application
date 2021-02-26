@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,10 +37,10 @@ public class Product implements Serializable{
 	private String name;
 	
 	 @Basic(fetch=FetchType.EAGER)
-	 @Lob		//lazy by default
+	 @Lob		
 	 @Column(name = "photo", columnDefinition="MEDIUMBLOB", nullable=false)
 	 private byte[] photo;
 	 
-	 @OneToMany(mappedBy="product")
+	 @OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	 private List<Questionnaire> questionnaires;
 }

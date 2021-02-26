@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -41,14 +42,18 @@ public class Questionnaire implements Serializable{
 	@Column(nullable = false)
 	private String title;
 	
-	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
+	@ManyToOne(optional=false) 
 	@JoinColumn(name = "productId", referencedColumnName = "id")
 	private Product product;
 	
 	@ManyToMany
+	@JoinTable(
+			name="contains",
+			joinColumns = @JoinColumn(name = "questionnaireId"),
+			inverseJoinColumns = @JoinColumn(name = "questionId"))
 	private List<Question> questions;
 	
-	@OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Response> responses;
 	
 	@ManyToOne(optional=false, fetch=FetchType.LAZY) 

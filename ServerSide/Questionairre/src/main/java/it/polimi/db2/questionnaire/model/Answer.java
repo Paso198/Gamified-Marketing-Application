@@ -35,11 +35,11 @@ public class Answer implements Serializable{
 	@Column(nullable = false)
 	private String text;
 
-	@ManyToOne(optional=false, fetch=FetchType.LAZY) 			//default cascade RESTRICT on foreign key is perfect: cannot eliminate questions with some answers done
+	@ManyToOne(optional=false, fetch=FetchType.EAGER) 			
     @JoinColumn(name = "questionId", referencedColumnName = "id")
 	private Question question;
 	
-	@ManyToOne(optional=false, fetch=FetchType.LAZY) 			
+	@ManyToOne(optional=false) 			
     @JoinColumn(name = "responseId", referencedColumnName = "id")
 	private Response response;
 }

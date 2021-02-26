@@ -33,11 +33,11 @@ public class Log implements Serializable{
 	@Column(nullable=false)
 	private String action;
 	
-	@ManyToOne(optional=true, fetch=FetchType.LAZY) 
+	@ManyToOne(optional=true, fetch=FetchType.EAGER) 
 	@JoinColumn(name = "questionnaireId", referencedColumnName = "id")
 	private Questionnaire questionnaire;
 	
-	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
+	@ManyToOne(optional=false, fetch=FetchType.EAGER) 
 	@JoinColumn(name = "userId", referencedColumnName = "id")
 	private User user;
 

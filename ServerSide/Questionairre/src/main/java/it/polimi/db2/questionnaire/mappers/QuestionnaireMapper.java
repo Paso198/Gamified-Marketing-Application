@@ -20,18 +20,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Mapper(componentModel = "spring", uses = {QuestionMapper.class, ProductMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class QuestionnaireMapper {
 
-	protected QuestionMapper questionMapper;
-	protected ProductMapper productMapper;
 	
 	@Mapping(target="product", expression="java(productMapper.toProductInQuestionnaireResponse(questionnaire.getProduct()))")
 	@Mapping(target="questions", expression="java(questionMapper.toQuestionResponsesList(questionnaire.getQuestions().stream()))")
 	public abstract QuestionnaireOfTheDayResponse toQuestionnaireOfTheDayResponse(Questionnaire questionnaire);
 	
+	@Mapping(target = "title", ignore = true)
+	@Mapping(target = "user", source="user")
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="date", expression="java(questionnaireRequest.getDate())")
 	@Mapping(target="questions", ignore=true)
@@ -47,8 +45,5 @@ public abstract class QuestionnaireMapper {
 	@Mapping(target="responses", ignore=true/*TODO:fix*/)
 	public abstract QuestionnaireResponse toQuestionnaireResponse(Questionnaire questionnaire, List<User> cancelled);
 
-	@Autowired
-	public void setQuestionMapper(QuestionMapper questionMapper) {
-		this.questionMapper = questionMapper;
-	};
+
 }

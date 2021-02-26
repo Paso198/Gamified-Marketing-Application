@@ -2,8 +2,6 @@ package it.polimi.db2.questionnaire.dto.responses;
 
 import java.util.List;
 
-import org.springframework.hateoas.RepresentationModel;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

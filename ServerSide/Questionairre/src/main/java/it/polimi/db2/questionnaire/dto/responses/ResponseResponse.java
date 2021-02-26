@@ -2,8 +2,6 @@ package it.polimi.db2.questionnaire.dto.responses;
 
 import java.util.List;
 
-import org.springframework.hateoas.RepresentationModel;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseResponse extends RepresentationModel <ResponseResponse>{
+public class ResponseResponse {
 	private Long id;
 	private UserResponse submitter;
 	private List<AnswerResponse> answers;

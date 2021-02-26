@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,17 +36,14 @@ public class User {
 	@Column(unique=true, nullable=false)
 	private String email;
 	
-	@Column(nullable=true)
-	private Integer points;
-	
 	@Column(nullable=false)
 	private Boolean blocked;
 	
 	@Column(nullable=false)
 	private String roles;
 	
-	@OneToMany(mappedBy="user")
-	private List<Questionnaire> questionnaires;
+	@OneToMany(mappedBy="creator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Questionnaire> questionnairesCreated;
 	
 	@OneToMany(mappedBy="user")
 	private List<Response> responses;
