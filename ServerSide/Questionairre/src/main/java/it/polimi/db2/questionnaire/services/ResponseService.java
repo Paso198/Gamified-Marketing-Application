@@ -17,10 +17,10 @@ public class ResponseService {
 	private final UserService userService;
 
 	public void addReponse(Response response) { // TODO: DTO
-		if (!badWordService
+		if (!badWordService //TODO split answers in list of words
 				.containtsBadWord(response.getAnswers().stream().map(Answer::getText).collect(Collectors.toList())))
 				responseRepository.save(response);
 		else
-			userService.block(response.getUser().getId());
+			userService.blockLogged();
 	}
 }

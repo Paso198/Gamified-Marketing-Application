@@ -3,11 +3,11 @@ package it.polimi.db2.questionnaire.services;
 import java.util.Optional;
 
 import javax.persistence.PersistenceException;
-import javax.transaction.Transactional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.UserRequest;
 import it.polimi.db2.questionnaire.enumerations.Role;
@@ -23,11 +23,12 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 	
-	public void block(Long userId) {
-		Optional<User> userToBlock = userRepository.findById(userId);
+	@Transactional
+	public void blockLogged() {
+		Optional<User> userToBlock = getLoggedUser();
 		userToBlock.ifPresent((User user) -> {
 			user.setBlocked(true);
-			userRepository.save(user);
+			//userRepository.save(user);
 		});
 	}
 
@@ -42,7 +43,7 @@ public class UserService {
 			}
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	private void verifyDuplicate(User user) {
 		userRepository.findByEmail(user.getEmail()).ifPresent(u->{throw new DuplicateUniqueValueException("Email", "It already exists an user with email "+user.getEmail());});
 		userRepository.findByUsername(user.getUsername()).ifPresent(u->{throw new DuplicateUniqueValueException("Username", "It already exists an user with username "+user.getUsername());});

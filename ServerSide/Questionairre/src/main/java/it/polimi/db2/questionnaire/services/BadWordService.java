@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.mappers.BadWordMapper;
 import it.polimi.db2.questionnaire.model.BadWord;
@@ -18,6 +19,7 @@ public class BadWordService {
 	private final BadWordRepository badWordRepository;
 	private final BadWordMapper badWordMapper;
 	
+	@Transactional
 	public void addBadWord(String badWord) {
 		badWordRepository.save(badWordMapper.mapToBadWord(badWord));
 	}
@@ -26,6 +28,7 @@ public class BadWordService {
 		List<BadWord> badWords = badWordRepository.findAll();
 		return  badWords.stream()
 				.map(BadWord::getWord)
+				.map(String::toLowerCase)
 				.collect(Collectors.toSet())
 				::contains;
 	}
