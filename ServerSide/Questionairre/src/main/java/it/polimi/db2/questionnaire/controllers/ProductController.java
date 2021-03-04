@@ -1,8 +1,9 @@
 package it.polimi.db2.questionnaire.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +38,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/admin/products/")
-	public CollectionModel <ProductResponse> getAllProducts() {
+	public List <ProductResponse> getAllProducts() {
 		return productService.getAllProducts();
 	}
 	

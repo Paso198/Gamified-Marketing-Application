@@ -10,7 +10,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-import org.springframework.hateoas.CollectionModel;
 
 import it.polimi.db2.questionnaire.dto.requests.ProductRequest;
 import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
@@ -19,6 +18,7 @@ import it.polimi.db2.questionnaire.model.Product;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ProductMapper {
 	
+	@Mapping(target = "reviews", ignore = true)
 	@Mapping(target = "questionnaires", ignore = true)
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="name", expression="java(productRequest.getName())" )
@@ -32,9 +32,6 @@ public interface ProductMapper {
 	@IterableMapping(qualifiedByName= "decorated")
 	public List <ProductResponse> toProductResponsesList(Stream<Product> products);
 	
-	default CollectionModel <ProductResponse> toProductResponsesCollectionModel(Stream<Product> products){
-		return CollectionModel.of(toProductResponsesList(products));
-	}
 	
 	@Mapping(target = "photo", expression="java(product.getPhoto())")
 	public ProductResponse toProductInQuestionnaireResponse(Product product);

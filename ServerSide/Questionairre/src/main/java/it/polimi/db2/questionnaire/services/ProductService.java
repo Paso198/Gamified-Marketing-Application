@@ -1,11 +1,11 @@
 package it.polimi.db2.questionnaire.services;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 
 import it.polimi.db2.questionnaire.dto.requests.ProductRequest;
@@ -52,11 +52,10 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public CollectionModel <ProductResponse> getAllProducts(){
-		CollectionModel <ProductResponse> response = productMapper.toProductResponsesCollectionModel(productRepository.findAll().stream());
+	public List <ProductResponse> getAllProducts(){
+		List <ProductResponse> response = productMapper.toProductResponsesList(productRepository.findAll().stream());
 		return response;
 	}
-	
 	@Transactional
 	public void deleteProduct(Long id) {
 		productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product "+id+" not found"));

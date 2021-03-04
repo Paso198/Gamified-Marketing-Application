@@ -44,6 +44,6 @@ public class Product implements Serializable{
 	 @OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	 private List<Questionnaire> questionnaires;
 	 
-	 @OneToMany(mappedBy="product", fetch = FetchType.EAGER)
+	 @OneToMany(mappedBy="product", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	 private List<Review> reviews;
 }

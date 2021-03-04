@@ -1,4 +1,4 @@
-package it.polimi.questionnaire;
+package it.polimi.db2.questionnaire;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
