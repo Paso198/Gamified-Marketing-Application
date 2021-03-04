@@ -17,12 +17,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductRequest {
 	
-	private final int MIN_NAME_LENGTH = 1;
+	private final int MIN_NAME_LENGTH = 2;
 	private final int MAX_NAME_LENGTH = 30;
 	
 	@NotBlank(message = "Name can't be blank")
-	@Size(min=MIN_NAME_LENGTH, max= MAX_NAME_LENGTH, message="Name lenght must be between "+MIN_NAME_LENGTH+" and "+MAX_NAME_LENGTH+" characters")
-	@Pattern(regexp="([\\w\\d](\\s)?)*[\\w\\d]", message="Name must contain only letters and numbers")
+	@Size(min=MIN_NAME_LENGTH, max= MAX_NAME_LENGTH, message="Name length must be between "+MIN_NAME_LENGTH+" and "+MAX_NAME_LENGTH+" characters")
+	@Pattern(regexp="[a-zA-Z0-9]*", message="Name must contain only letters and numbers")
 	private String name;
 	
 	private MultipartFile image;

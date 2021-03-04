@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewRequest {
+	
 	@NotBlank
 	private Long productId;
 	
-	@NotBlank
+	@NotBlank //TODO add regex and size contraints
 	private String review;
 }

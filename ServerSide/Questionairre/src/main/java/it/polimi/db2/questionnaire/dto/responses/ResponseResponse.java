@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseResponse {
 	private Long id;
-	private UserResponse submitter;
 	private List<AnswerResponse> answers;
 	private Integer age;
 	private String gender;

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.ReviewRequest;
+import it.polimi.db2.questionnaire.dto.responses.ReviewResponse;
+import it.polimi.db2.questionnaire.mappers.ReviewMapper;
 import it.polimi.db2.questionnaire.repositories.ReviewRepository;
 import lombok.AllArgsConstructor;
 
@@ -13,8 +15,10 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ReviewService {
 	private final BadWordService badWordService;
+	private final ProductService productService;
 	private final UserService userService;
 	private final ReviewRepository reviewRepository;
+	private final ReviewMapper reviewMapper;
 	
 	@Transactional
 	public void addReview(ReviewRequest reviewRequest) {
@@ -24,5 +28,10 @@ public class ReviewService {
 		else {
 			userService.blockLogged();
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public List<ReviewResponse> getProductReviews(Long id) {
+		return reviewMapper.toReviewsResponse(productService.findProduct(id).getReviews());
 	}
 }

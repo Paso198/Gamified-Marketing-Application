@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewResponse {
-	private UserResponse user;
+	private String username;
 	private String review;
 }
