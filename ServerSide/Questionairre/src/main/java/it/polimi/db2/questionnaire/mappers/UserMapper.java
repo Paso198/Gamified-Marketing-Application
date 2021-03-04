@@ -31,7 +31,6 @@ public abstract class UserMapper {
 	@Mapping(target="username", expression="java(userRequest.getUsername())")
 	@Mapping(target="email", expression="java(userRequest.getEmail())")
 	@Mapping(target="password", expression="java(passwordEncoder.encode(userRequest.getPassword()))")
-	@Mapping(target="points", source="points")
 	@Mapping(target="blocked", source="blocked")
 	@Mapping(target="roles", expression="java(getRole(role))")
 	public abstract User mapToUser(UserRequest userRequest, Role role, Boolean blocked, Integer points);

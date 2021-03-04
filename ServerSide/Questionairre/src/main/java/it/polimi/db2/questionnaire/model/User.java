@@ -50,4 +50,7 @@ public class User {
 	
 	@OneToMany(mappedBy="user")
 	private List<Log> logs;
+	
+	@OneToMany(mappedBy="user")
+	private List<Review> reviews;
 }

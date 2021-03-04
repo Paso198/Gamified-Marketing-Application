@@ -3,6 +3,7 @@ package it.polimi.db2.questionnaire.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +12,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import it.polimi.db2.questionnaire.enumerations.Action;
 import lombok.AllArgsConstructor;
@@ -38,11 +40,13 @@ public class Log implements Serializable{
 	private Action action;
 	
 	@ManyToOne(optional=true, fetch=FetchType.EAGER) 
-	@JoinColumn(name = "questionnaireId", referencedColumnName = "id")
 	private Questionnaire questionnaire;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER) 
-	@JoinColumn(name = "userId", referencedColumnName = "id")
 	private User user;
+	
+	@CreationTimestamp
+	@Column(name="timestamp", nullable = false, updatable = false, insertable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime timestamp;
 
 }

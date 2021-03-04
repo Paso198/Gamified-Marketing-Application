@@ -3,17 +3,13 @@ package it.polimi.db2.questionnaire.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +21,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Product implements Serializable{
-
+public class Review implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -34,16 +30,11 @@ public class Product implements Serializable{
 	private Long id;
 	
 	@Column(nullable=false)
-	private String name;
+	private String review;
 	
-	 @Basic(fetch=FetchType.EAGER)
-	 @Lob		
-	 @Column(name = "photo", columnDefinition="MEDIUMBLOB", nullable=false)
-	 private byte[] photo;
-	 
-	 @OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	 private List<Questionnaire> questionnaires;
-	 
-	 @OneToMany(mappedBy="product", fetch = FetchType.EAGER)
-	 private List<Review> reviews;
+	@ManyToOne(optional=false, fetch = FetchType.EAGER)
+	private Product product;
+	
+	@ManyToOne(optional=false, fetch = FetchType.EAGER)
+	private User user;
 }

@@ -12,9 +12,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import it.polimi.db2.questionnaire.enumerations.ExpertiseLevel;
 import it.polimi.db2.questionnaire.enumerations.Gender;
@@ -28,6 +29,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(
+	    uniqueConstraints=
+	        @UniqueConstraint(columnNames={"questionnaire_id", "user_id"})
+	)
 public class Response implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -47,14 +52,11 @@ public class Response implements Serializable{
 	private Integer points;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER) 	
-    @JoinColumn(name = "questionnaireId", referencedColumnName = "id")
 	private Questionnaire questionnaire;
 	
 	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
-	@JoinColumn(name = "submitter", referencedColumnName = "id")
 	private User user;
 	
 	@OneToMany(mappedBy="response", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List <Answer> answers;
-
 }

@@ -57,8 +57,7 @@ public class Questionnaire implements Serializable{
 	private List<Response> responses;
 	
 	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
-	@JoinColumn(name = "creator", referencedColumnName = "id")
-	private User user;
+	private User creator;
 	
 	@OneToMany(mappedBy="questionnaire")
 	private List<Log> logs;

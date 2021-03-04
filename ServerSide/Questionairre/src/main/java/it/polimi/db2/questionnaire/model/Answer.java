@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
@@ -36,10 +35,8 @@ public class Answer implements Serializable{
 	private String text;
 
 	@ManyToOne(optional=false, fetch=FetchType.EAGER) 			
-    @JoinColumn(name = "questionId", referencedColumnName = "id")
 	private Question question;
 	
 	@ManyToOne(optional=false) 			
-    @JoinColumn(name = "responseId", referencedColumnName = "id")
 	private Response response;
 }
