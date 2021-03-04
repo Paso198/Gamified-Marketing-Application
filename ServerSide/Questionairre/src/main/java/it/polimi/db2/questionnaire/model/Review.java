@@ -29,6 +29,7 @@ public class Review implements Serializable{
 	@GeneratedValue(strategy=IDENTITY)
 	private Long id;
 	
+	@Lob //it could be heavy!
 	@Column(nullable=false)
 	private String review;
 	
