@@ -50,11 +50,10 @@ public class UserService {
 	}
 	
 	@Transactional
-	private Optional<User> getLoggedUser() {
+	public Optional<User> getLoggedUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if(principal instanceof UserDetails) {
-			String username = ((UserDetails) principal).getUsername();
-			Optional<User> user = userRepository.findByUsername(username);
+		if(principal != null) {
+			Optional<User> user = userRepository.findByUsername((String)principal);
 			return user;
 		}
 		return Optional.empty();
