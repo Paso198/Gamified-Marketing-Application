@@ -2,19 +2,18 @@ package it.polimi.db2.questionnaire.specifications;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import it.polimi.db2.questionnaire.model.Log;
+import it.polimi.db2.questionnaire.enumerations.Action;
 import it.polimi.db2.questionnaire.model.User;
 
 public class UserSpecs {
 	
-	//@Query("SELECT u FROM User u WHERE u.id IN (SELECT l.user FROM Log l WHERE l.questionnaire = ?1 AND l.action = 'SEND_QUESTIONNAIRE')" )
+	//"SELECT u FROM User u WHERE u IN (SELECT l.user FROM Log l WHERE l.questionnaire.id = ?1 AND l.action = 'SEND_QUESTIONNAIRE'"
 	public static Specification<User> usersSentQuestionaire(Long questionnaireId){
 		return new Specification<User>() {
 
@@ -22,12 +21,13 @@ public class UserSpecs {
 
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				
-		
-				/*Subquery<Log> sub = query.subquery(Log.class);
-				Expression<Log> exp = sub.from(Log.class);
-				sub.select(sub.from(Log.class).get("user")).where(criteriaBuilder.equal(exp.get, questionnaireId));*/
-				return null;
+				Subquery<User> sub = query.subquery(User.class);
+				Root<User> log = sub.from(User.class);
+				sub.select(log.<User>get("user"))
+				.where(criteriaBuilder.and(
+						criteriaBuilder.equal(log.get("questionnaire").<Long>get("id"), questionnaireId),
+						(criteriaBuilder.equal(log.<Action>get("action"),Action.SEND_QUESTIONNAIRE))));
+				return criteriaBuilder.in(sub).value(root);
 			}
 		};
 	}
