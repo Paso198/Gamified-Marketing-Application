@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polimi.db2.questionnaire.dto.requests.ResponseRequest;
+import it.polimi.db2.questionnaire.services.ResponseService;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
 public class ResponseController {
 	
-	@PostMapping("user/responses/submit")
+	private final ResponseService responseService;
+	
+	@PostMapping("user/responses")
 	public ResponseEntity<Void> submitResponse(@RequestBody @Valid ResponseRequest request){
-		//TODO: service call
+		responseService.addReponse(request);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

@@ -17,14 +17,16 @@ public class ReviewService {
 	private final BadWordService badWordService;
 	private final ProductService productService;
 	private final UserService userService;
-	private final ReviewRepository reviewRepository;
 	private final ReviewMapper reviewMapper;
+	private final ReviewRepository reviewRepository;
 	
 	@Transactional
 	public void addReview(ReviewRequest reviewRequest) {
 		if (!badWordService
 				.containtsBadWord(List.of(reviewRequest.getReview().split(" "))))
-				reviewRepository.save(null); //TODO map to model
+				reviewRepository.save(reviewMapper.toReview(reviewRequest, 
+						productService.findProduct(reviewRequest.getProductId()), 
+						userService.getLoggedUser().orElseThrow(/*TODO unlogged exception*/)));
 		else {
 			userService.blockLogged();
 		}

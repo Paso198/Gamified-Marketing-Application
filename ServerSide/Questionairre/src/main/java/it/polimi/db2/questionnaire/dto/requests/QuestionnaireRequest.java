@@ -20,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AddQuestionnaireRequest {
+public class QuestionnaireRequest {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotBlank

@@ -6,10 +6,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import it.polimi.db2.questionnaire.dto.requests.AddQuestionnaireRequest;
+import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.enumerations.Action;
+import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
+import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
 import it.polimi.db2.questionnaire.model.Log;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.User;
@@ -20,33 +23,39 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class QuestionnaireService {
 	
+	private final UserService userService;
+	private final ProductService productService;
 	private final QuestionnaireRepository questionnaireRepository;
-	//private final QuestionnaireMapper questionnaireMapper;
+	private final QuestionnaireMapper questionnaireMapper;
 	
-	public void addQuestionnaire(AddQuestionnaireRequest addQuestionnaireRequest) {
-		//questionnaireRepository.save(questionnaireMapper.toQuestionnaire(addQuestionnaireRequest));
+	@Transactional
+	public void addQuestionnaire(QuestionnaireRequest questionnaireRequest) {
+		verifyDuplicate(questionnaireRequest.getDate());
+		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(questionnaireRequest,
+				productService.findProduct(questionnaireRequest.getProductId()), 
+				userService.getLoggedUser().orElseThrow(/*TODO unlogged exception*/)));
 	}
 	
-	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() { //.now() not tested
+	@Transactional(readOnly = true)
+	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() {
 		Questionnaire questionnaire = questionnaireRepository.findByDate(LocalDate.now()).orElseThrow(/*TODO exception*/);
-		//return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
-		return null;
+		return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
 	}
 	
-	public Optional<Questionnaire> getQuestionnaire(Long id) {
-		return questionnaireRepository.findById(id);
-	}
+	/*@Transactional(readOnly = true)
+	public List<Questionnaire> getPastQuestionnaires() {
+		return questionnaireRepository.;
+	}*/
 	
+	/*@Transactional(readOnly = true)
+	public List<Questionnaire> getFutureQuestionnaires() {
+		return questionnaireRepository.;
+	}*/
+	
+	@Transactional
 	public void deleteQuestionnaire(Long id) {
 		verifyOld(id);
 		questionnaireRepository.deleteById(id);
-	}
-	
-	public void verifyOld(Long id) {
-		Questionnaire questionnaire = getQuestionnaire(id).orElseThrow(/*TODO exception*/);
-		if(questionnaire.getDate().isBefore(LocalDate.now())) {
-			//TODO exception
-		}
 	}
 	
 	//TODO: change with DTO
@@ -58,7 +67,22 @@ public class QuestionnaireService {
 				.filter((l)->l.getAction().equals(Action.CANCEL_QUESTIONNAIRE))
 				.map(Log::getUser)
 				.collect(Collectors.toList());
-				
-				
+						
+	}
+	
+	private void verifyDuplicate(LocalDate date) {
+		questionnaireRepository.findByDate(date).ifPresent(u->{throw new DuplicateUniqueValueException("Date", "It already exists a questionnaire with date "+date.toString());});
+	}
+	
+	private void verifyOld(Long id) {
+		Questionnaire questionnaire = getQuestionnaire(id).orElseThrow(/*TODO exception*/);
+		if(questionnaire.getDate().isBefore(LocalDate.now())) {
+			//TODO exception
+		}
+	}
+	
+	@Transactional(readOnly = true)
+	private Optional<Questionnaire> getQuestionnaire(Long id) {
+		return questionnaireRepository.findById(id);
 	}
 }

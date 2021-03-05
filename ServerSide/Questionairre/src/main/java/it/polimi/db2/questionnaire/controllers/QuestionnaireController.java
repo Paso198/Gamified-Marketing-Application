@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.polimi.db2.questionnaire.dto.requests.AddQuestionnaireRequest;
+import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.services.QuestionnaireService;
@@ -26,32 +26,31 @@ public class QuestionnaireController {
 	private final QuestionnaireService questionnaireService;
 
 	@PostMapping("/admin/questionnaires")
-	public ResponseEntity<Void> addQuestionnaire(@RequestBody @Valid AddQuestionnaireRequest request) {
-		//TODO: service call
+	public ResponseEntity<Void> addQuestionnaire(@RequestBody @Valid QuestionnaireRequest request) {
+		questionnaireService.addQuestionnaire(request);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/admin/questionnaires")
-	public List<QuestionnaireResponse> getAllQuestionnaires(){
+	@GetMapping("/admin/questionnaires/past")
+	public List<QuestionnaireResponse> getPastQuestionnaires(){
 		return null;
 		//TODO: service call
 	}
 	
-	@GetMapping("/admin/questionnaires/{id}")
-	public QuestionnaireResponse getQuestionnaire(@PathVariable Long id) {
-		//TODO: service call
+	@GetMapping("/admin/questionnaires/future")
+	public List<QuestionnaireResponse> getFutureQuestionnaires(){
 		return null;
-		
+		//TODO: service call
 	}
 	
-	@GetMapping("/user/questionnaires/questionnaire_of_the_day")
+	@GetMapping("/user/questionnaires")
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() {
-		//TODO: service call
-				return null;
+		return questionnaireService.getQuestionnaireOfTheDay();
 	}
 	
 	@DeleteMapping("/admin/questionnaires/{id}")
 	public  ResponseEntity<Void> deleteQuestionnaire(@PathVariable Long id) {
+		//TODO service call
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
