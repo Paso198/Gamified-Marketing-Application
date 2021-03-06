@@ -2,12 +2,13 @@ package it.polimi.db2.questionnaire.services;
 
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.AnswerRequest;
 import it.polimi.db2.questionnaire.dto.requests.ResponseRequest;
+import it.polimi.db2.questionnaire.dto.responses.ResponseResponse;
+import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.ResponseMapper;
 import it.polimi.db2.questionnaire.repositories.ResponseRepository;
 import lombok.AllArgsConstructor;
@@ -17,14 +18,24 @@ import lombok.AllArgsConstructor;
 public class ResponseService {
 	private final ResponseRepository responseRepository;
 	private final BadWordService badWordService;
+	private final QuestionnaireService questionnaireService;
 	private final UserService userService;
 	private final ResponseMapper responseMapper;
 
-	public void addReponse(@Valid ResponseRequest request) {
+	@Transactional
+	public void addReponse(ResponseRequest request) {
 		if (!badWordService //TODO split answers in list of words
 				.containtsBadWord(request.getAnswers().stream().map(AnswerRequest::getText).collect(Collectors.toList())))
-				responseRepository.save(responseMapper.toResponse(request));
+				responseRepository.save(responseMapper.toResponse(request, 
+						questionnaireService.getQuestionnaire(request.getQuestionnaireId()).orElseThrow(/*TODO notfoundquest exception*/), 
+						userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
 		else
 			userService.blockLogged();
+	}
+	
+	@Transactional(readOnly = true)
+	public ResponseResponse getUserResponse(Long userId, Long questionnaireId) {
+		return responseMapper.toResponseResponse(responseRepository.findByQuestionnaire_IdAndUser_Id(questionnaireId, userId)
+				.orElseThrow(/*TODO*/));
 	}
 }

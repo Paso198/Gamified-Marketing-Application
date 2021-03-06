@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.persistence.PersistenceException;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +27,6 @@ public class UserService {
 		Optional<User> userToBlock = getLoggedUser();
 		userToBlock.ifPresent((User user) -> {
 			user.setBlocked(true);
-			//userRepository.save(user);
 		});
 	}
 
@@ -49,7 +47,7 @@ public class UserService {
 		userRepository.findByUsername(user.getUsername()).ifPresent(u->{throw new DuplicateUniqueValueException("Username", "It already exists an user with username "+user.getUsername());});
 	}
 	
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<User> getLoggedUser() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if(principal != null) {

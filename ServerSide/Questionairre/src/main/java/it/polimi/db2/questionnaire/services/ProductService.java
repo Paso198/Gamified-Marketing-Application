@@ -2,6 +2,7 @@ package it.polimi.db2.questionnaire.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import it.polimi.db2.questionnaire.dto.requests.ProductRequest;
 import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
 import it.polimi.db2.questionnaire.exceptions.BadImageException;
-import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.mappers.ProductMapper;
 import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.repositories.ProductRepository;
@@ -43,9 +43,8 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Product findProduct(Long id) {
-		Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product "+id+" not found"));
-		return product;
+	public Optional<Product> getProduct(Long id) {
+		return productRepository.findById(id);
 		
 	}
 	

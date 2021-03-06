@@ -12,6 +12,8 @@ import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.enumerations.Action;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
+import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
 import it.polimi.db2.questionnaire.model.Log;
 import it.polimi.db2.questionnaire.model.Questionnaire;
@@ -32,8 +34,8 @@ public class QuestionnaireService {
 	public void addQuestionnaire(QuestionnaireRequest questionnaireRequest) {
 		verifyDuplicate(questionnaireRequest.getDate());
 		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(questionnaireRequest,
-				productService.findProduct(questionnaireRequest.getProductId()), 
-				userService.getLoggedUser().orElseThrow(/*TODO unlogged exception*/)));
+				productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")), 
+				userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
 	}
 	
 	@Transactional(readOnly = true)
@@ -59,6 +61,7 @@ public class QuestionnaireService {
 	}
 	
 	//TODO: change with DTO
+	@Transactional(readOnly = true)
 	public List<User> getUsersCancelled(Long questionnaireId){
 		return questionnaireRepository.findById(questionnaireId)
 				.get()	//TODO orElseThrow
@@ -70,6 +73,11 @@ public class QuestionnaireService {
 						
 	}
 	
+	@Transactional(readOnly = true)
+	public Optional<Questionnaire> getQuestionnaire(Long id) {
+		return questionnaireRepository.findById(id);
+	}
+	
 	private void verifyDuplicate(LocalDate date) {
 		questionnaireRepository.findByDate(date).ifPresent(u->{throw new DuplicateUniqueValueException("Date", "It already exists a questionnaire with date "+date.toString());});
 	}
@@ -79,10 +87,5 @@ public class QuestionnaireService {
 		if(questionnaire.getDate().isBefore(LocalDate.now())) {
 			//TODO exception
 		}
-	}
-	
-	@Transactional(readOnly = true)
-	private Optional<Questionnaire> getQuestionnaire(Long id) {
-		return questionnaireRepository.findById(id);
 	}
 }

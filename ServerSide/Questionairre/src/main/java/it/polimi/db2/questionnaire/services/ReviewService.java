@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.ReviewRequest;
 import it.polimi.db2.questionnaire.dto.responses.ReviewResponse;
+import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.ReviewMapper;
 import it.polimi.db2.questionnaire.repositories.ReviewRepository;
 import lombok.AllArgsConstructor;
@@ -25,8 +27,8 @@ public class ReviewService {
 		if (!badWordService
 				.containtsBadWord(List.of(reviewRequest.getReview().split(" "))))
 				reviewRepository.save(reviewMapper.toReview(reviewRequest, 
-						productService.findProduct(reviewRequest.getProductId()), 
-						userService.getLoggedUser().orElseThrow(/*TODO unlogged exception*/)));
+						productService.getProduct(reviewRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")), 
+						userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
 		else {
 			userService.blockLogged();
 		}
@@ -34,6 +36,6 @@ public class ReviewService {
 
 	@Transactional(readOnly = true)
 	public List<ReviewResponse> getProductReviews(Long id) {
-		return reviewMapper.toReviewsResponse(productService.findProduct(id).getReviews());
+		return reviewMapper.toReviewsResponse(productService.getProduct(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")).getReviews());
 	}
 }
