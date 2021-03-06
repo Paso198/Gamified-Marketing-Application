@@ -19,6 +19,7 @@ import it.polimi.db2.questionnaire.exceptions.BadImageException;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 
 @RestControllerAdvice
@@ -75,7 +76,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(UnloggedUserException.class)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	@ResponseBody
-	public Map<String, String> handleTUnloggedUserException(UnloggedUserException ex) {
+	public Map<String, String> handleUnloggedUserException(UnloggedUserException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put("user", ex.getMessage());
+		return errors;
+	}
+	
+	@ExceptionHandler(UnauthorizedDeletionException.class)
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+	@ResponseBody
+	public Map<String, String> handleUnauthorizedDeletionException(UnauthorizedDeletionException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		errors.put("user", ex.getMessage());
 		return errors;
