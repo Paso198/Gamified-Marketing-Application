@@ -27,26 +27,10 @@ public class ProductController {
 		productService.addProduct(productRequest);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
-	/*@GetMapping("/admin/products/{id}")
-	public ProductResponse getProduct(@PathVariable Long id) {
-		return productService.getProduct(id);
-	} */
 	
 	@GetMapping("/admin/products/")
 	public List <ProductResponse> getAllProducts() {
 		return productService.getAllProducts();
 	}
 	
-	/*@DeleteMapping("/admin/products/{id}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-		productService.deleteProduct(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
-	} */
-	
-	/*@PutMapping("/admin/products/{id}")
-	public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody ProductRequest product) {
-		productService.deleteProduct(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
-	} */
 }

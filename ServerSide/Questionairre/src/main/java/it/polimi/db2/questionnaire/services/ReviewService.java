@@ -27,7 +27,7 @@ public class ReviewService {
 		if (!badWordService
 				.containtsBadWord(List.of(reviewRequest.getReview().split(" "))))
 				reviewRepository.save(reviewMapper.toReview(reviewRequest, 
-						productService.getProduct(reviewRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")), 
+						productService.getProduct(reviewRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("Invalid id", "Product not found")), 
 						userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
 		else {
 			userService.blockLogged();
@@ -36,6 +36,6 @@ public class ReviewService {
 
 	@Transactional(readOnly = true)
 	public List<ReviewResponse> getProductReviews(Long id) {
-		return reviewMapper.toReviewsResponse(productService.getProduct(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")).getReviews());
+		return reviewMapper.toReviewsResponse(productService.getProduct(id).orElseThrow(()->new ProductNotFoundException("Invalid id", "Product not found")).getReviews());
 	}
 }

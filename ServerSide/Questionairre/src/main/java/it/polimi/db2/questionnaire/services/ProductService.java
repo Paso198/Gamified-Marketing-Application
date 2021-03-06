@@ -24,40 +24,31 @@ public class ProductService {
 	private final ProductMapper productMapper;
 	
 	@Transactional
-	public void addProduct(ProductRequest ProductRequest) {
+	public void addProduct(ProductRequest productRequest) {
 		try {
-			String extension = FilenameUtils.getExtension(ProductRequest.getImage().getOriginalFilename());
+			String extension = FilenameUtils.getExtension(productRequest.getImage().getOriginalFilename());
 			if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg")) {
-				Product product = productMapper.toProduct(ProductRequest);
+				Product product = productMapper.toProduct(productRequest);
 				productRepository.save(product);
 			}
 			else {
-				throw new BadImageException("image", "bad image format");
+				throw new BadImageException("Image", "Bad image format");
 			}
 
 		} catch (IOException e) {
-			throw new BadImageException("image", "bad image content");
+			throw new BadImageException("Image", "Bad image content");
 		}
-		
-
 	}
 	
 	@Transactional(readOnly = true)
 	public Optional<Product> getProduct(Long id) {
-		return productRepository.findById(id);
-		
+		return productRepository.findById(id);	
 	}
 	
 	@Transactional(readOnly = true)
-	public List <ProductResponse> getAllProducts(){
-		List <ProductResponse> productsResponse = productMapper.toProductResponsesList(productRepository.findAll().stream());
+	public List<ProductResponse> getAllProducts(){
+		List<ProductResponse> productsResponse = productMapper.toProductResponsesList(productRepository.findAll().stream());
 		return productsResponse;
 	}
-	
-	/*@Transactional
-	public void deleteProduct(Long id) {
-		productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("invalid id", "product "+id+" not found"));
-		productRepository.deleteById(id);
-	}*/
 	
 }

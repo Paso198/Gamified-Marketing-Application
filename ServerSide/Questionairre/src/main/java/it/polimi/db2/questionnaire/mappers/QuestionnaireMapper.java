@@ -1,11 +1,14 @@
 package it.polimi.db2.questionnaire.mappers;
 
+import java.util.List;
+
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
+import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.User;
@@ -31,5 +34,13 @@ public abstract class QuestionnaireMapper {
 	@Mapping(target="product", expression="java(productMapper.toProductResponse(questionnaire.getProduct()))")
 	@Mapping(target="questions", source="questions")
 	public abstract QuestionnaireOfTheDayResponse toQuestionnaireOfTheDayResponse(Questionnaire questionnaire);
+	
+	@Mapping(target="id", source="id")
+	@Mapping(target="title", source="title")
+	@Mapping(target="date", source="date")
+	@Mapping(target="product", expression="java(productMapper.toProductResponse(questionnaire.getProduct()))")
+	public abstract QuestionnaireResponse toQuestionnaireResponse(Questionnaire questionnaire);
+
+	public abstract List<QuestionnaireResponse> toQuestionnairesResponse(List<Questionnaire> questionnaires);
 
 }

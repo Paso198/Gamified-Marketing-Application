@@ -33,14 +33,12 @@ public class QuestionnaireController {
 	
 	@GetMapping("/admin/questionnaires/past")
 	public List<QuestionnaireResponse> getPastQuestionnaires(){
-		return null;
-		//TODO: service call
+		return questionnaireService.getPastQuestionnaires();
 	}
 	
 	@GetMapping("/admin/questionnaires/future")
 	public List<QuestionnaireResponse> getFutureQuestionnaires(){
-		return null;
-		//TODO: service call
+		return questionnaireService.getFutureQuestionnaires();
 	}
 	
 	@GetMapping("/user/questionnaires")
@@ -50,7 +48,7 @@ public class QuestionnaireController {
 	
 	@DeleteMapping("/admin/questionnaires/{id}")
 	public  ResponseEntity<Void> deleteQuestionnaire(@PathVariable Long id) {
-		//TODO service call
+		questionnaireService.deleteQuestionnaire(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	

@@ -10,9 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
+import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.enumerations.Action;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
 import it.polimi.db2.questionnaire.model.Log;
@@ -40,19 +43,20 @@ public class QuestionnaireService {
 	
 	@Transactional(readOnly = true)
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() {
-		Questionnaire questionnaire = questionnaireRepository.findByDate(LocalDate.now()).orElseThrow(/*TODO exception*/);
+		Questionnaire questionnaire = questionnaireRepository.findByDate(LocalDate.now()).orElseThrow(
+				()->new QuestionnaireNotFoundException("No Questionnaire Today", "Questionnaire not found for current date"));
 		return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
 	}
 	
-	/*@Transactional(readOnly = true)
-	public List<Questionnaire> getPastQuestionnaires() {
-		return questionnaireRepository.;
-	}*/
+	@Transactional(readOnly = true)
+	public List<QuestionnaireResponse> getPastQuestionnaires() {
+		return questionnaireMapper.toQuestionnairesResponse(questionnaireRepository.findPastQuestionnaires());
+	}
 	
-	/*@Transactional(readOnly = true)
-	public List<Questionnaire> getFutureQuestionnaires() {
-		return questionnaireRepository.;
-	}*/
+	@Transactional(readOnly = true)
+	public List<QuestionnaireResponse> getFutureQuestionnaires() {
+		return questionnaireMapper.toQuestionnairesResponse(questionnaireRepository.findFutureQuestionnaires());
+	}
 	
 	@Transactional
 	public void deleteQuestionnaire(Long id) {
@@ -64,10 +68,23 @@ public class QuestionnaireService {
 	@Transactional(readOnly = true)
 	public List<User> getUsersCancelled(Long questionnaireId){
 		return questionnaireRepository.findById(questionnaireId)
-				.get()	//TODO orElseThrow
+				.orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"))
 				.getLogs()
 				.stream()
 				.filter((l)->l.getAction().equals(Action.CANCEL_QUESTIONNAIRE))
+				.map(Log::getUser)
+				.collect(Collectors.toList());
+						
+	}
+	
+	//TODO: change with DTO
+	@Transactional(readOnly = true)
+	public List<User> getUsersSubmitted(Long questionnaireId){
+		return questionnaireRepository.findById(questionnaireId)
+				.orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"))
+				.getLogs()
+				.stream()
+				.filter((l)->l.getAction().equals(Action.SEND_QUESTIONNAIRE))
 				.map(Log::getUser)
 				.collect(Collectors.toList());
 						
@@ -83,9 +100,9 @@ public class QuestionnaireService {
 	}
 	
 	private void verifyOld(Long id) {
-		Questionnaire questionnaire = getQuestionnaire(id).orElseThrow(/*TODO exception*/);
-		if(questionnaire.getDate().isBefore(LocalDate.now())) {
-			//TODO exception
+		Questionnaire questionnaire = getQuestionnaire(id).orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"));
+		if(!questionnaire.getDate().isBefore(LocalDate.now())) {
+			throw new UnauthorizedDeletionException("Only past questionnaires can be deleted");
 		}
 	}
 }

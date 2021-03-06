@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import it.polimi.db2.questionnaire.exceptions.BadImageException;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 
 @RestControllerAdvice
@@ -54,9 +55,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(ProductNotFoundException.class)
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	@ResponseBody
 	public Map<String, String> handleProductNotFound(ProductNotFoundException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put(ex.getName(), ex.getMessage());
+		return errors;
+	}
+	
+	@ExceptionHandler(QuestionnaireNotFoundException.class)
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	@ResponseBody
+	public Map<String, String> handleQuestionnaireNotFound(QuestionnaireNotFoundException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		errors.put(ex.getName(), ex.getMessage());
 		return errors;
