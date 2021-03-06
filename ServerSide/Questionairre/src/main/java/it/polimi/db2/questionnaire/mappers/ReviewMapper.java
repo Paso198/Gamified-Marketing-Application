@@ -21,7 +21,7 @@ public interface ReviewMapper {
 	
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="user", source="user")
-	@Mapping(target="review", source="rewiewRequest.review")
+	@Mapping(target="review", source="reviewRequest.review")
 	@Mapping(target="product", source="product")
 	public Review toReview(ReviewRequest reviewRequest, Product product, User user);
 
