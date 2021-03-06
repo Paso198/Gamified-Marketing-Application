@@ -3,6 +3,7 @@ package it.polimi.db2.questionnaire.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -18,13 +19,17 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode(exclude= {"questionnaires","reviews"})
+@ToString(exclude= {"questionnaires","reviews"})
 public class Product implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -42,8 +47,10 @@ public class Product implements Serializable{
 	 private byte[] photo;
 	 
 	 @OneToMany(mappedBy="product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	 private List<Questionnaire> questionnaires;
+	 @Builder.Default
+	 private List<Questionnaire> questionnaires= new ArrayList<Questionnaire>();
 	 
 	 @OneToMany(mappedBy="product", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	 private List<Review> reviews;
+	 @Builder.Default
+	 private List<Review> reviews= new ArrayList<Review>();
 }

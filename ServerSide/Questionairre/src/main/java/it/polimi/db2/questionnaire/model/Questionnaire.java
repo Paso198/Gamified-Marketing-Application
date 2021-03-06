@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,13 +22,17 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode(exclude= {"questions","responses", "logs"})
+@ToString(exclude= {"questions","responses", "logs"})
 public class Questionnaire implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -51,14 +56,22 @@ public class Questionnaire implements Serializable{
 			name="contains",
 			joinColumns = @JoinColumn(name = "questionnaireId"),
 			inverseJoinColumns = @JoinColumn(name = "questionId"))
-	private List<Question> questions;
+	@Builder.Default
+	private List<Question> questions=new ArrayList<Question>();
 	
 	@OneToMany(mappedBy="questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Response> responses;
+	@Builder.Default
+	private List<Response> responses=new ArrayList<Response>();
 	
 	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
 	private User creator;
 	
 	@OneToMany(mappedBy="questionnaire")
-	private List<Log> logs;
+	@Builder.Default
+	private List<Log> logs=new ArrayList<Log>();
+	
+	public void addQuestion(Question question) {
+		this.questions.add(question);
+		question.getQuestionnaires().add(this);
+	}
 }

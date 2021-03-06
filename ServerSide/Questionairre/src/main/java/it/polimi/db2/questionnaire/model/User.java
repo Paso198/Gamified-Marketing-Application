@@ -2,6 +2,7 @@ package it.polimi.db2.questionnaire.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,12 +15,16 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude= {"questionnairesCreated","responses", "logs", "reviews"})
+@ToString(exclude= {"questionnairesCreated","responses", "logs", "reviews"})
 @Entity
 public class User {
 	
@@ -43,14 +48,24 @@ public class User {
 	private String roles;
 	
 	@OneToMany(mappedBy="creator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private List<Questionnaire> questionnairesCreated;
+	@Builder.Default
+	private List<Questionnaire> questionnairesCreated = new ArrayList<Questionnaire>();
 	
 	@OneToMany(mappedBy="user")
-	private List<Response> responses;
+	@Builder.Default
+	private List<Response> responses = new ArrayList<Response>();
 	
 	@OneToMany(mappedBy="user")
-	private List<Log> logs;
+	@Builder.Default
+	private List<Log> logs = new ArrayList<Log>();
 	
 	@OneToMany(mappedBy="user")
-	private List<Review> reviews;
+	@Builder.Default
+	private List<Review> reviews = new ArrayList<Review>();
+	
+	public Integer getPoints() {
+		return responses.stream()
+				.map(Response::getPoints)
+				.reduce(0, Integer::sum);
+	}
 }
