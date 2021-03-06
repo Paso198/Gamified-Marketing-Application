@@ -9,6 +9,7 @@ import javax.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 import it.polimi.db2.questionnaire.enumerations.Action;
+import it.polimi.db2.questionnaire.model.Log;
 import it.polimi.db2.questionnaire.model.User;
 
 public class UserSpecs {
@@ -22,13 +23,31 @@ public class UserSpecs {
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 				Subquery<User> sub = query.subquery(User.class);
-				Root<User> log = sub.from(User.class);
+				Root<Log> log = sub.from(Log.class);
 				sub.select(log.<User>get("user"))
 				.where(criteriaBuilder.and(
 						criteriaBuilder.equal(log.get("questionnaire").<Long>get("id"), questionnaireId),
 						(criteriaBuilder.equal(log.<Action>get("action"),Action.SEND_QUESTIONNAIRE))));
-				return criteriaBuilder.in(sub).value(root);
+				return criteriaBuilder.in(root).value(sub);
 			}
 		};
 	}
+	//"SELECT u FROM User u WHERE u IN (SELECT l.user FROM Log l WHERE l.questionnaire.id = ?1 AND l.action = 'CANCEL_QUESTIONNAIRE'"
+		public static Specification<User> usersCancelledQuestionaire(Long questionnaireId){
+			return new Specification<User>() {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+					Subquery<User> sub = query.subquery(User.class);
+					Root<Log> log = sub.from(Log.class);
+					sub.select(log.<User>get("user"))
+					.where(criteriaBuilder.and(
+							criteriaBuilder.equal(log.get("questionnaire").<Long>get("id"), questionnaireId),
+							(criteriaBuilder.equal(log.<Action>get("action"),Action.CANCEL_QUESTIONNAIRE))));
+					return criteriaBuilder.in(root).value(sub);
+				}
+			};
+		}
 }
