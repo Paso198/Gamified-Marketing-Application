@@ -24,8 +24,8 @@ public abstract class AnswerMapper {
 	
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="text", source="answerRequest.text")
-	//@Mapping(target="question", source="question")
-	//@Mapping(target="response", source="")
+	@Mapping(target="question", ignore=true)
+	@Mapping(target="response", ignore=true)
 	public abstract Answer toAnswer(AnswerRequest answerRequest);
 	
 	public abstract List<AnswerResponse> toAnswersResponse(List<Answer> answers);

@@ -32,7 +32,8 @@ public abstract class QuestionnaireMapper {
 	@Mapping(target="id", source="id")
 	@Mapping(target="title", source="title")
 	@Mapping(target="product", expression="java(productMapper.toProductResponse(questionnaire.getProduct()))")
-	@Mapping(target="questions", source="questions")
+	//@Mapping(target="questions", expression="java(...)") TODO
+	@Mapping(target="questions", ignore=true)
 	public abstract QuestionnaireOfTheDayResponse toQuestionnaireOfTheDayResponse(Questionnaire questionnaire);
 	
 	@Mapping(target="id", source="id")
