@@ -10,9 +10,15 @@ import it.polimi.db2.questionnaire.dto.requests.AnswerRequest;
 import it.polimi.db2.questionnaire.dto.responses.AnswerResponse;
 import it.polimi.db2.questionnaire.model.Answer;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @AllArgsConstructor
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@NoArgsConstructor
+@Mapper(componentModel = "spring", uses = QuestionMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class AnswerMapper {
 
 	protected QuestionMapper questionMapper;

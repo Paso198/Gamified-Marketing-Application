@@ -13,15 +13,22 @@ import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.User;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @AllArgsConstructor
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@NoArgsConstructor
+@Mapper(componentModel = "spring", uses = ProductMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class QuestionnaireMapper {
 
 	protected ProductMapper productMapper;
 	
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="date", source="questionnaireRequest.date")
+	@Mapping(target="title", source="questionnaireRequest.title")
 	@Mapping(target="product", source="product")
 	@Mapping(target="questions", ignore=true)
 	@Mapping(target="responses", ignore=true)

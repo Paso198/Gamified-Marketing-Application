@@ -30,5 +30,8 @@ public class QuestionnaireRequest {
 	@NotBlank
 	private Long productId;
 	
+	@NotBlank
+	private String title;
+	
 	
 }
