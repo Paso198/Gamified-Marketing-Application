@@ -21,7 +21,7 @@ public abstract class ResponseMapper {
 	@Mapping(target="age", source="responseRequest.age")
 	@Mapping(target="gender", source="responseRequest.gender")
 	@Mapping(target="expertiseLevel", source="responseRequest.expertiseLevel")
-	@Mapping(target="answers", expression="java(answerMapper.toAnswers(responseRequest.answers))")
+	@Mapping(target="answers", expression="java(answerMapper.toAnswers(responseRequest.getAnswers()))")
 	@Mapping(target="points", ignore=true)
 	@Mapping(target="user", source="user")
 	@Mapping(target="questionnaire", source="questionnaire")
