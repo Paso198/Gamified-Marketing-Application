@@ -10,11 +10,12 @@ import org.springframework.data.jpa.domain.Specification;
 
 import it.polimi.db2.questionnaire.enumerations.Action;
 import it.polimi.db2.questionnaire.model.Log;
+import it.polimi.db2.questionnaire.model.Response;
 import it.polimi.db2.questionnaire.model.User;
 
 public class UserSpecs {
 	
-	//"SELECT u FROM User u WHERE u IN (SELECT l.user FROM Log l WHERE l.questionnaire.id = ?1 AND l.action = 'SEND_QUESTIONNAIRE'"
+	//"SELECT r.user FROM Response r WHERE r.questionnaire.id = ?1 ORDER BY r.points DESC"
 	public static Specification<User> usersSentQuestionaire(Long questionnaireId){
 		return new Specification<User>() {
 
@@ -22,13 +23,10 @@ public class UserSpecs {
 
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				Subquery<User> sub = query.subquery(User.class);
-				Root<Log> log = sub.from(Log.class);
-				sub.select(log.<User>get("user"))
-				.where(criteriaBuilder.and(
-						criteriaBuilder.equal(log.get("questionnaire").<Long>get("id"), questionnaireId),
-						(criteriaBuilder.equal(log.<Action>get("action"),Action.SEND_QUESTIONNAIRE))));
-				return criteriaBuilder.in(root).value(sub);
+				Root<Response> subroot = query.from(Response.class);
+				query.subquery(User.class).select(subroot.<User>get("user"));
+				query.orderBy(criteriaBuilder.desc(subroot.get("points")));
+				return criteriaBuilder.equal(subroot.get("questionnaire").<Long>get("id"), questionnaireId);
 			}
 		};
 	}

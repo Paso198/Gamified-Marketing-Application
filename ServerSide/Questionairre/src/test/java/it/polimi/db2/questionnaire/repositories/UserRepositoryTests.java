@@ -20,6 +20,7 @@ import it.polimi.db2.questionnaire.enumerations.Action;
 import it.polimi.db2.questionnaire.model.Log;
 import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.model.Questionnaire;
+import it.polimi.db2.questionnaire.model.Response;
 import it.polimi.db2.questionnaire.model.User;
 import it.polimi.db2.questionnaire.specifications.UserSpecs;
 @DataJpaTest
@@ -221,42 +222,30 @@ public class UserRepositoryTests extends BaseJPATest{
 				.build();
 		em.persist(q1);
 		em.persist(q2);
-				
-		Log l1 = Log.builder()
-				.action(Action.SEND_QUESTIONNAIRE)
-				.questionnaire(q1)
+		
+		Response r1 = Response.builder()
 				.user(u1)
-				.build();
-		Log l2 = Log.builder()
-				.action(Action.CANCEL_QUESTIONNAIRE)
 				.questionnaire(q1)
+				.points(8)
+				.build();
+		Response r2 = Response.builder()
 				.user(u2)
-				.build();
-		Log l3 = Log.builder()
-				.action(Action.SEND_QUESTIONNAIRE)
 				.questionnaire(q2)
-				.user(u3)
+				.points(8)
 				.build();
-		Log l4 = Log.builder()
-				.action(Action.SEND_QUESTIONNAIRE)
-				.questionnaire(q2)
+		Response r3 = Response.builder()
 				.user(u4)
-				.build();
-		Log l5 = Log.builder()
-				.action(Action.SEND_QUESTIONNAIRE)
 				.questionnaire(q1)
-				.user(u4)
+				.points(10)
 				.build();
-		em.persist(l1);
-		em.persist(l2);
-		em.persist(l3);
-		em.persist(l4);
-		em.persist(l5);
+		Response r4 = Response.builder()
+				.user(u3)
+				.questionnaire(q1)
+				.points(6)
+				.build();
 		
 		List<User> send = userRepository.findAll(UserSpecs.usersSentQuestionaire(q1.getId()));
-		List<User> send2 = userRepository.findAll(UserSpecs.usersSentQuestionaire(q2.getId()));
-		Assertions.assertThat(send).contains(u1,u4).doesNotContain(u2, u3);
-		Assertions.assertThat(send2).contains(u3,u4).doesNotContain(u2, u1);
+		Assertions.assertThat(send).containsSequence(u4, u1, u3).doesNotContain(u2);
 	}
 	
 	@Test
