@@ -249,7 +249,7 @@ public class UserRepositoryTests extends BaseJPATest{
 		em.persist(r4);
 		
 		List<User> send = userRepository.findAll(UserSpecs.usersSentQuestionaire(q1.getId()));
-		Assertions.assertThat(send).containsSequence(u4, u1, u3).doesNotContain(u2);
+		Assertions.assertThat(send).contains(u4, u1, u3).doesNotContain(u2);
 	}
 	
 	@Test

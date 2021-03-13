@@ -14,6 +14,9 @@ import it.polimi.db2.questionnaire.model.Questionnaire;
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
 	Optional <Questionnaire> findByDate(LocalDate date);
 	
+	@Query("SELECT q FROM Questionnaire q WHERE q.date = CURRENT_DATE")
+	Optional<Questionnaire> findQuestionnaireOfTheDay();
+	
 	@Query("SELECT q FROM Questionnaire q WHERE q.date > CURRENT_DATE")
 	List<Questionnaire> findFutureQuestionnaires();
 	

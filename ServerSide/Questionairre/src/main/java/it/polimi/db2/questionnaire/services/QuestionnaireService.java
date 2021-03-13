@@ -43,7 +43,7 @@ public class QuestionnaireService {
 	
 	@Transactional(readOnly = true)
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() {
-		Questionnaire questionnaire = questionnaireRepository.findByDate(LocalDate.now()).orElseThrow(
+		Questionnaire questionnaire = questionnaireRepository.findQuestionnaireOfTheDay().orElseThrow(
 				()->new QuestionnaireNotFoundException("No Questionnaire Today", "Questionnaire not found for current date"));
 		return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
 	}

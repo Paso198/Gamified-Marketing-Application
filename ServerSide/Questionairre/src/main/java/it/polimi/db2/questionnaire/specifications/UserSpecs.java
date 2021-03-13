@@ -16,7 +16,7 @@ import it.polimi.db2.questionnaire.model.User;
 
 public class UserSpecs {
 	
-	//"SELECT r.user FROM Response r WHERE r.questionnaire.id = ?1 ORDER BY r.points DESC"
+	//"SELECT r.user FROM Response r WHERE r.questionnaire.id = ?1"
 	public static Specification<User> usersSentQuestionaire(Long questionnaireId){
 		return new Specification<User>() {
 
@@ -24,11 +24,7 @@ public class UserSpecs {
 
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				/*Root<Response> subroot = query.from(Response.class);
-				query.subquery(User.class).select(subroot.<User>get("user"));
-				query.orderBy(criteriaBuilder.desc(subroot.get("points")));*/
 				Join<User,Response> responses= root.join("responses");
-				query.orderBy(criteriaBuilder.desc(responses.get("points")));
 				return criteriaBuilder.equal(responses.get("questionnaire").<Long>get("id"), questionnaireId);
 			}
 		};
