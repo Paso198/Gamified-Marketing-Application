@@ -243,6 +243,10 @@ public class UserRepositoryTests extends BaseJPATest{
 				.questionnaire(q1)
 				.points(6)
 				.build();
+		em.persist(r1);
+		em.persist(r2);
+		em.persist(r3);
+		em.persist(r4);
 		
 		List<User> send = userRepository.findAll(UserSpecs.usersSentQuestionaire(q1.getId()));
 		Assertions.assertThat(send).containsSequence(u4, u1, u3).doesNotContain(u2);

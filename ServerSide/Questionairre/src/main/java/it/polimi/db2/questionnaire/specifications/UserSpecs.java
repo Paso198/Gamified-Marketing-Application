@@ -2,6 +2,7 @@ package it.polimi.db2.questionnaire.specifications;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
@@ -23,10 +24,12 @@ public class UserSpecs {
 
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				Root<Response> subroot = query.from(Response.class);
+				/*Root<Response> subroot = query.from(Response.class);
 				query.subquery(User.class).select(subroot.<User>get("user"));
-				query.orderBy(criteriaBuilder.desc(subroot.get("points")));
-				return criteriaBuilder.equal(subroot.get("questionnaire").<Long>get("id"), questionnaireId);
+				query.orderBy(criteriaBuilder.desc(subroot.get("points")));*/
+				Join<User,Response> responses= root.join("responses");
+				query.orderBy(criteriaBuilder.desc(responses.get("points")));
+				return criteriaBuilder.equal(responses.get("questionnaire").<Long>get("id"), questionnaireId);
 			}
 		};
 	}
