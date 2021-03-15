@@ -13,6 +13,6 @@ export class AuthService {
   constructor(private http: HttpClient){}
 
   public addUser(user:SignupRequest):Observable<void>{
-    return this.http.post<void>(`${this.apiServerUrl}/public/user/signup`, user);
+    return this.http.post<void>(`${this.apiServerUrl}/public/signup`, user);
   }
 }
