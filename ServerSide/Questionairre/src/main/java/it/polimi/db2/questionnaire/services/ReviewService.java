@@ -25,7 +25,7 @@ public class ReviewService {
 	@Transactional
 	public void addReview(ReviewRequest reviewRequest) {
 		if (!badWordService
-				.containtsBadWord(List.of(reviewRequest.getReview().split(" "))))
+				.containtsBadWord(List.of(reviewRequest.getReview().split("\\W+"))))
 				reviewRepository.save(reviewMapper.toReview(reviewRequest, 
 						productService.getProduct(reviewRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("Invalid id", "Product not found")), 
 						userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));

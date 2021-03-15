@@ -1,6 +1,6 @@
 package it.polimi.db2.questionnaire.services;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,11 +25,16 @@ public class ResponseService {
 
 	@Transactional
 	public void addReponse(ResponseRequest request) {
-		if (!badWordService //TODO split answers in list of words
-				.containtsBadWord(request.getAnswers().stream().map(AnswerRequest::getText).collect(Collectors.toList())))
+		if (request.getAnswers().stream()
+				.map(AnswerRequest::getText)
+				.allMatch((s)->!badWordService
+						.containtsBadWord(List.of(s.split("\\W+")))))
+			
 				responseRepository.save(responseMapper.toResponse(request, 
-						questionnaireService.getQuestionnaire(request.getQuestionnaireId()).orElseThrow(()->new QuestionnaireNotFoundException("invalid id", "questionnaire not found")), 
-						userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
+						questionnaireService.getQuestionnaire(request.getQuestionnaireId())
+						.orElseThrow(()->new QuestionnaireNotFoundException("invalid id", "questionnaire not found")), 
+						userService.getLoggedUser()
+						.orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
 		else
 			userService.blockLogged();
 	}
