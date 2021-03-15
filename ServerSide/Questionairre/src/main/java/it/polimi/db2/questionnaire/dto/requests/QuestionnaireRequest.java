@@ -3,6 +3,7 @@ package it.polimi.db2.questionnaire.dto.requests;
 import java.time.LocalDate;
 
 import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,7 +25,7 @@ public class QuestionnaireRequest {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotBlank
-	@Future
+	@FutureOrPresent
 	private LocalDate date;;
 	
 	@NotBlank

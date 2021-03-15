@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.polimi.db2.questionnaire.dto.requests.AddQuestionRequest;
+import it.polimi.db2.questionnaire.dto.requests.QuestionRequest;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 public class QuestionController {
 	
 	@PostMapping("/admin/questions")
-	public ResponseEntity<Void> addQuestion(@RequestBody @Valid AddQuestionRequest request){
+	public ResponseEntity<Void> addQuestion(@RequestBody @Valid QuestionRequest request){
 		//TODO: service call
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
