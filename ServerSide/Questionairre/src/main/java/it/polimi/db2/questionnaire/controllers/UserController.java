@@ -16,7 +16,7 @@ public class UserController {
 
 	private final UserService userService;
 	
-	@PostMapping("/public/user/signup")
+	@PostMapping("/public/signup")
 	public void signup(@Valid @RequestBody UserRequest userRequest){
 		
 		 userService.signup(userRequest);

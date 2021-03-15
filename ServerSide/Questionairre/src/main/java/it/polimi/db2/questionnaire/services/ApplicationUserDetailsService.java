@@ -1,7 +1,5 @@
 package it.polimi.db2.questionnaire.services;
 
-import java.util.Optional;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +15,13 @@ import lombok.AllArgsConstructor;
 public class ApplicationUserDetailsService implements UserDetailsService {
 
 	private final UserRepository userRepository;
+	private final LogService logService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user = userRepository.findByUsername(username);
-		user.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-		return user.map(ApplicationUser::new).get();
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+		logService.logLogin(user);
+		return new ApplicationUser(user);
 	}
 }
