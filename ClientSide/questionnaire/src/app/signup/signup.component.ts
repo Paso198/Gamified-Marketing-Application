@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 import { SignupModel } from './signup-model';
 import { SignupRequest } from './signup-request';
@@ -16,7 +17,8 @@ export class SignupComponent implements OnInit {
   serverError:boolean;
   serverMessage:string;
 
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.serverSuccess=false;
@@ -28,17 +30,15 @@ export class SignupComponent implements OnInit {
   get diagnostic() { return JSON.stringify(this.model); }
 
   onSubmit():void{
-    console.log("submit");
     let request:SignupRequest= new SignupRequest(this.model.username, this.model.email, this.model.password);
     this.authService.addUser(request).subscribe(
       (response:void)=>{
-        console.log(response);
         this.serverError=false;
         this.serverSuccess=true;
         this.serverMessage="Signup was successful";
+        this.router.navigate(['/login']);
       },
       (error:HttpErrorResponse)=>{
-        console.log(error.message);
         this.serverSuccess=false;
         this.serverError=true;
         this.serverMessage=error.message;

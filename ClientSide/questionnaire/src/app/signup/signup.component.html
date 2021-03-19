@@ -71,13 +71,13 @@
                         [class.is-valid]="model.repeatPassword===model.password && repeatPassword.touched"
                         [class.is-invalid]="model.repeatPassword!==model.password && repeatPassword.touched"
                         >
-                        <small class ="text-danger" *ngIf="model.repeatPassword!==model.password && repeatPassword.touched">The two passwords must be the same</small>
-                      
+                        <small class ="text-danger" *ngIf="model.repeatPassword!==model.password && repeatPassword.touched">The two passwords must be the same</small>   
                         <small [class.text-danger]="serverError" [class.text-success]="serverSuccess"*ngIf="serverError==true||serverSuccess==true">{{serverMessage}}</small>
                     </div>
+                   
                     <button type = "submit" class="btn btn-primary float-right" [disabled]="signupForm.form.invalid || model.repeatPassword!==model.password">Submit</button>
                 </form>
-                <button type = "button" class="btn btn-secondary float-left">Login</button>
+                <a routerLink="/login"><button type = "button" class="btn btn-secondary float-left">Login</button></a>
             </div>
         </div>
     </div>
