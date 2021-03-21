@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polimi.db2.questionnaire.dto.requests.ProductRequest;
+import it.polimi.db2.questionnaire.dto.responses.ProductOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
 import it.polimi.db2.questionnaire.services.ProductService;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,11 @@ public class ProductController {
 	@GetMapping("/admin/products/")
 	public List <ProductResponse> getAllProducts() {
 		return productService.getAllProducts();
+	}
+	
+	@GetMapping("/user/products/")
+	public ProductOfTheDayResponse getProductOfTheDay() {
+		return productService.getProductOfTheDay();
 	}
 	
 }

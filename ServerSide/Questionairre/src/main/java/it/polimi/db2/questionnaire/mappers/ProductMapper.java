@@ -2,39 +2,38 @@ package it.polimi.db2.questionnaire.mappers;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.mapstruct.InjectionStrategy;
-import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 
 import it.polimi.db2.questionnaire.dto.requests.ProductRequest;
+import it.polimi.db2.questionnaire.dto.responses.ProductOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.ProductResponse;
 import it.polimi.db2.questionnaire.model.Product;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface ProductMapper {
+@Mapper(componentModel = "spring", uses = ReviewMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public abstract class ProductMapper {
+	
+	protected ReviewMapper reviewMapper;
 	
 	@Mapping(target = "reviews", ignore = true)
 	@Mapping(target = "questionnaires", ignore = true)
-	@Mapping(target="id", ignore=true)
-	@Mapping(target="name", expression="java(productRequest.getName())" )
-	@Mapping(target="photo", expression="java(productRequest.getImage().getBytes())" )
-	public Product toProduct(ProductRequest productRequest) throws IOException;
+	@Mapping(target = "id", ignore=true)
+	@Mapping(target = "name", expression="java(productRequest.getName())" )
+	@Mapping(target = "photo", expression="java(productRequest.getImage().getBytes())" )
+	public abstract Product toProduct(ProductRequest productRequest) throws IOException;
 	
-	@Named("decorated")
-	@Mapping(target = "photo", expression="java(product.getPhoto())")
-	public ProductResponse toProductResponse(Product product);
+	@Mapping(target = "photo", source="photo")
+	@Mapping(target = "id", source="id")
+	@Mapping(target = "name", source="name")
+	public abstract ProductResponse toProductResponse(Product product);
 	
-	@IterableMapping(qualifiedByName= "decorated")
-	public List <ProductResponse> toProductResponsesList(Stream<Product> products);
-	
-	
-	@Mapping(target = "photo", expression="java(product.getPhoto())")
-	public ProductResponse toProductInQuestionnaireResponse(Product product);
+	public abstract List<ProductResponse> toProductsResponse(List<Product> products);
 
-	 ProductMapper INSTANCE= Mappers.getMapper(ProductMapper.class);
+	@Mapping(target = "photo", source="photo")
+	@Mapping(target = "id", source="id")
+	@Mapping(target = "name", source="name")
+	@Mapping(target = "reviews", expression="java(reviewMapper.toReviewsResponse(product.getReviews()))")
+	public abstract ProductOfTheDayResponse toProductOfTheDayResponse(Product product);
 }
