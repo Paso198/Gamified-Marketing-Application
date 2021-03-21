@@ -10,6 +10,7 @@ import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.model.Product;
+import it.polimi.db2.questionnaire.model.Question;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.User;
 import lombok.AllArgsConstructor;
@@ -30,11 +31,11 @@ public abstract class QuestionnaireMapper {
 	@Mapping(target="date", source="questionnaireRequest.date")
 	@Mapping(target="title", source="questionnaireRequest.title")
 	@Mapping(target="product", source="product")
-	@Mapping(target="questions", ignore=true)
+	@Mapping(target="questions", source="questions")
 	@Mapping(target="responses", ignore=true)
 	@Mapping(target="logs", ignore=true)
 	@Mapping(target="creator", source="creator")
-	public abstract Questionnaire toQuestionnaire(QuestionnaireRequest questionnaireRequest, Product product, User creator);
+	public abstract Questionnaire toQuestionnaire(QuestionnaireRequest questionnaireRequest, Product product, User creator, List<Question> questions);
 
 	@Mapping(target="id", source="id")
 	@Mapping(target="title", source="title")

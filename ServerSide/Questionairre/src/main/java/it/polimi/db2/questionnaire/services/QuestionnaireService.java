@@ -30,6 +30,7 @@ public class QuestionnaireService {
 	
 	private final UserService userService;
 	private final ProductService productService;
+	private final QuestionService questionService;
 	private final QuestionnaireRepository questionnaireRepository;
 	private final QuestionnaireMapper questionnaireMapper;
 	
@@ -38,7 +39,8 @@ public class QuestionnaireService {
 		verifyDuplicate(questionnaireRequest.getDate());
 		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(questionnaireRequest,
 				productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")), 
-				userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
+				userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in")), 
+				questionnaireRequest.getQuestionsIds().stream().map((id) -> questionService.getQuestion(id).orElseThrow(/*TODO*/)).collect(Collectors.toList())));
 	}
 	
 	@Transactional(readOnly = true)

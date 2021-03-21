@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.ReviewRequest;
-import it.polimi.db2.questionnaire.dto.responses.ReviewResponse;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.ReviewMapper;
@@ -32,10 +31,5 @@ public class ReviewService {
 		else {
 			userService.blockLogged();
 		}
-	}
-
-	@Transactional(readOnly = true)
-	public List<ReviewResponse> getProductReviews(Long id) {
-		return reviewMapper.toReviewsResponse(productService.getProduct(id).orElseThrow(()->new ProductNotFoundException("Invalid id", "Product not found")).getReviews());
 	}
 }
