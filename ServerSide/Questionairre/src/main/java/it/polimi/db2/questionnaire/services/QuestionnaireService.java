@@ -9,18 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
+import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
-import it.polimi.db2.questionnaire.enumerations.Action;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
-import it.polimi.db2.questionnaire.model.Log;
+import it.polimi.db2.questionnaire.mappers.UserMapper;
 import it.polimi.db2.questionnaire.model.Questionnaire;
-import it.polimi.db2.questionnaire.model.User;
 import it.polimi.db2.questionnaire.repositories.QuestionnaireRepository;
 import lombok.AllArgsConstructor;
 
@@ -29,8 +28,10 @@ import lombok.AllArgsConstructor;
 public class QuestionnaireService {
 	
 	private final UserService userService;
+	private final UserMapper userMapper;
 	private final ProductService productService;
 	private final QuestionService questionService;
+	private final ResponseService responseService;
 	private final QuestionnaireRepository questionnaireRepository;
 	private final QuestionnaireMapper questionnaireMapper;
 	
@@ -66,32 +67,6 @@ public class QuestionnaireService {
 		questionnaireRepository.deleteById(id);
 	}
 	
-	//TODO: change with DTO
-	@Transactional(readOnly = true)
-	public List<User> getUsersCancelled(Long questionnaireId){
-		return questionnaireRepository.findById(questionnaireId)
-				.orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"))
-				.getLogs()
-				.stream()
-				.filter((l)->l.getAction().equals(Action.CANCEL_QUESTIONNAIRE))
-				.map(Log::getUser)
-				.collect(Collectors.toList());
-						
-	}
-	
-	//TODO: change with DTO
-	@Transactional(readOnly = true)
-	public List<User> getUsersSubmitted(Long questionnaireId){
-		return questionnaireRepository.findById(questionnaireId)
-				.orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"))
-				.getLogs()
-				.stream()
-				.filter((l)->l.getAction().equals(Action.SEND_QUESTIONNAIRE))
-				.map(Log::getUser)
-				.collect(Collectors.toList());
-						
-	}
-	
 	@Transactional(readOnly = true)
 	public Optional<Questionnaire> getQuestionnaire(Long id) {
 		return questionnaireRepository.findById(id);
@@ -106,5 +81,10 @@ public class QuestionnaireService {
 		if(!questionnaire.getDate().isBefore(LocalDate.now())) {
 			throw new UnauthorizedDeletionException("Only past questionnaires can be deleted");
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public List<LeaderboardUserResponse> getLeaderboard() {
+		return userMapper.toLeaderboardUsersResponse(responseService.getResponsesOfTheDay());
 	}
 }

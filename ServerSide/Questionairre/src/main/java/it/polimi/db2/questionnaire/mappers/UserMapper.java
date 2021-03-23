@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import it.polimi.db2.questionnaire.dto.requests.UserRequest;
+import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.UserResponse;
 import it.polimi.db2.questionnaire.enumerations.Role;
+import it.polimi.db2.questionnaire.model.Response;
 import it.polimi.db2.questionnaire.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +36,7 @@ public abstract class UserMapper {
 	@Mapping(target="blocked", source="blocked")
 	@Mapping(target="logs", ignore=true)
 	@Mapping(target="roles", expression="java(getRole(role))")
-	public abstract User mapToUser(UserRequest userRequest, Role role, Boolean blocked, Integer points);
+	public abstract User toUser(UserRequest userRequest, Role role, Boolean blocked, Integer points);
 	
 	String getRole(Role role) {
 		return "ROLE_"+role.name();
@@ -45,7 +47,16 @@ public abstract class UserMapper {
 		this.passwordEncoder=passwordEncoder;
 	}
 	
+	//TODO
 	public abstract UserResponse toUserResponse(User user);
 	
-	public abstract List<UserResponse> toUserResponse(Stream <User> user);
+	public abstract List<UserResponse> toUsersResponse(List<User> users);
+
+	@Mapping(target="id", source="user.id")
+	@Mapping(target="username", source="user.username")
+	@Mapping(target="dailyPoints", source="points")
+	@Mapping(target="totalPoints", expression="java(response.getUser().getPoints())")
+	public abstract LeaderboardUserResponse toLeaderboardUserResponse(Response response);
+	
+	public abstract List<LeaderboardUserResponse> toLeaderboardUsersResponse(List<Response> responses);
 }

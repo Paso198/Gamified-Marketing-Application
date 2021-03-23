@@ -32,7 +32,7 @@ public class UserService {
 
 	@Transactional
 	public void signup(UserRequest userRequest) {	
-			User user =userMapper.mapToUser(userRequest, Role.USER, Boolean.FALSE, 0);
+			User user =userMapper.toUser(userRequest, Role.USER, Boolean.FALSE, 0);
 			verifyDuplicate(user);
 			try{
 				userRepository.save(user);

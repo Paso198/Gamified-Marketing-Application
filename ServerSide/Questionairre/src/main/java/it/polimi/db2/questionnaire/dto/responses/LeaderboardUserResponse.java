@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
+public class LeaderboardUserResponse {
 	private Long id;
 	private String username;
-	private String email;	
+	private Integer dailyPoints;
+	private Integer totalPoints;
+	
 }
