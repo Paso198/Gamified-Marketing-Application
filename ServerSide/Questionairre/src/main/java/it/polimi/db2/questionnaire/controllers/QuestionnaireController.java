@@ -57,7 +57,5 @@ public class QuestionnaireController {
 		questionnaireService.deleteQuestionnaire(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
-	
 
 }

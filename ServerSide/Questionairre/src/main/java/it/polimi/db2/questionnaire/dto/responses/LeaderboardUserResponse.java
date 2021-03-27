@@ -16,6 +16,5 @@ public class LeaderboardUserResponse {
 	private Long id;
 	private String username;
 	private Integer dailyPoints;
-	private Integer totalPoints;
-	
+	private Integer totalPoints;	
 }
