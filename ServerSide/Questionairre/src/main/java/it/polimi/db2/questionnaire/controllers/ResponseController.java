@@ -1,5 +1,7 @@
 package it.polimi.db2.questionnaire.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polimi.db2.questionnaire.dto.requests.ResponseRequest;
+import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.ResponseResponse;
 import it.polimi.db2.questionnaire.services.ResponseService;
 import lombok.AllArgsConstructor;
@@ -30,5 +33,10 @@ public class ResponseController {
 	@GetMapping("/admin/questionnaires/{questId}/users/{userId}")
 	public ResponseResponse getUserResponse(@PathVariable Long userId, @PathVariable Long questId) {
 		return responseService.getUserResponse(userId, questId);
+	}
+	
+	@GetMapping("/admin/questionnaires/leaderboard")
+	public List<LeaderboardUserResponse> getLeaderboard(){
+		return responseService.getLeaderboard();
 	}
 }

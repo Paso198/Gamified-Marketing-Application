@@ -1,0 +1,11 @@
+<div class="row pt-5">
+    <div class="col-md-6 mx-auto">
+
+        <div *ngIf ="role=='ROLE_USER'">
+            <app-product-day></app-product-day>
+        </div>
+        <div *ngIf ="role=='ROLE_ADMIN'">
+            Admin Page
+        </div>
+    </div>
+ </div>

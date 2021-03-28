@@ -2,7 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
-import { LoginModel } from './login-model';
+import { JwtService } from '../../services/jwt.service';
+import { LoginModel } from '../models/login-model';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   serverMessage:string;
 
   constructor(private authService:AuthService,
-    private router: Router) { }
+    private router: Router,
+    private jwtService: JwtService) { }
 
   ngOnInit(): void {
     this.serverSuccess=false;
@@ -28,9 +30,10 @@ export class LoginComponent implements OnInit {
 
   onSubmit():void{
      this.authService.login(this.model).subscribe(
-       (response:void)=>{
+       res=>{
         this.serverError=false;
         this.serverSuccess=true;
+        this.jwtService.createSession(res.headers.get("Authorization"))
         this.serverMessage="Login was successful";
         this.router.navigate(['/home']);
        },

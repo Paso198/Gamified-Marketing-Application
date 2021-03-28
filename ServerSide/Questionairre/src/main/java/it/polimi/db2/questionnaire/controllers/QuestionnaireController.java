@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
-import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.services.QuestionnaireService;
@@ -40,11 +39,6 @@ public class QuestionnaireController {
 	@GetMapping("/admin/questionnaires/future")
 	public List<QuestionnaireResponse> getFutureQuestionnaires(){
 		return questionnaireService.getFutureQuestionnaires();
-	}
-	
-	@GetMapping("/admin/questionnaires/leaderboard")
-	public List<LeaderboardUserResponse> getLeaderboard(){
-		return questionnaireService.getLeaderboard();
 	}
 	
 	@GetMapping("/user/questionnaires")

@@ -7,10 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.AnswerRequest;
 import it.polimi.db2.questionnaire.dto.requests.ResponseRequest;
+import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.ResponseResponse;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.ResponseMapper;
+import it.polimi.db2.questionnaire.mappers.UserMapper;
 import it.polimi.db2.questionnaire.model.Response;
 import it.polimi.db2.questionnaire.repositories.ResponseRepository;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ public class ResponseService {
 	private final QuestionnaireService questionnaireService;
 	private final UserService userService;
 	private final ResponseMapper responseMapper;
+	private final UserMapper userMapper;
 
 	@Transactional //TODO check if response is already sent
 	public void addReponse(ResponseRequest request) {
@@ -47,8 +50,13 @@ public class ResponseService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Response> getResponsesOfTheDay() {
+	private List<Response> getResponsesOfTheDay() {
 		return responseRepository.findResponsesOfTheDay();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<LeaderboardUserResponse> getLeaderboard() {
+		return userMapper.toLeaderboardUsersResponse(getResponsesOfTheDay());
 	}
 	
 	

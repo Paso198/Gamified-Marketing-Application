@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
-import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
@@ -18,7 +17,6 @@ import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
-import it.polimi.db2.questionnaire.mappers.UserMapper;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.repositories.QuestionnaireRepository;
 import lombok.AllArgsConstructor;
@@ -28,10 +26,8 @@ import lombok.AllArgsConstructor;
 public class QuestionnaireService {
 	
 	private final UserService userService;
-	private final UserMapper userMapper;
 	private final ProductService productService;
 	private final QuestionService questionService;
-	private final ResponseService responseService;
 	private final QuestionnaireRepository questionnaireRepository;
 	private final QuestionnaireMapper questionnaireMapper;
 	
@@ -83,8 +79,5 @@ public class QuestionnaireService {
 		}
 	}
 
-	@Transactional(readOnly = true)
-	public List<LeaderboardUserResponse> getLeaderboard() {
-		return userMapper.toLeaderboardUsersResponse(responseService.getResponsesOfTheDay());
-	}
+
 }

@@ -2,8 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
-import { SignupModel } from './signup-model';
-import { SignupRequest } from './signup-request';
+import { SignupModel } from '../models/signup-model';
+import { SignupRequest } from '../models/signup-request';
 
 @Component({
   selector: 'app-signup',
