@@ -36,6 +36,7 @@ public class QuestionService {
 		return questionRepository.findById(id);	
 	}
 	
+	@Transactional(readOnly = true)
 	private void verifyDuplicate(String text) {
 		questionRepository.findByText(text).ifPresent(u->{throw new DuplicateUniqueValueException("Text", "It already exists a question with text "+text);});
 	}

@@ -9,6 +9,7 @@ import it.polimi.db2.questionnaire.dto.requests.AnswerRequest;
 import it.polimi.db2.questionnaire.dto.requests.ResponseRequest;
 import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.ResponseResponse;
+import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.ResponseMapper;
@@ -27,8 +28,9 @@ public class ResponseService {
 	private final ResponseMapper responseMapper;
 	private final UserMapper userMapper;
 
-	@Transactional //TODO check if response is already sent
+	@Transactional
 	public void addReponse(ResponseRequest request) {
+		verifyDuplicate(request.getQuestionnaireId());
 		if (request.getAnswers().stream()
 				.map(AnswerRequest::getText)
 				.allMatch((s)->!badWordService
@@ -57,6 +59,12 @@ public class ResponseService {
 	@Transactional(readOnly = true)
 	public List<LeaderboardUserResponse> getLeaderboard() {
 		return userMapper.toLeaderboardUsersResponse(getResponsesOfTheDay());
+	}
+	
+	@Transactional(readOnly = true)
+	private void verifyDuplicate(Long questionnaireId) {
+		responseRepository.findByQuestionnaire_IdAndUser_Id(questionnaireId, userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in")).getId())
+		.ifPresent(u->{throw new DuplicateUniqueValueException("Questionnaire", "You already submitted a response for this questionnaire");});
 	}
 	
 	

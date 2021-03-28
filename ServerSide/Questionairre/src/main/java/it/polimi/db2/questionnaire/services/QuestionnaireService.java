@@ -13,6 +13,7 @@ import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.QuestionNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
@@ -38,7 +39,9 @@ public class QuestionnaireService {
 		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(questionnaireRequest,
 				productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")), 
 				userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in")), 
-				questionnaireRequest.getQuestionsIds().stream().map((id) -> questionService.getQuestion(id).orElseThrow(/*TODO*/)).collect(Collectors.toList())));
+				questionnaireRequest.getQuestionsIds().stream().map((id) -> questionService.getQuestion(id).orElseThrow(
+						()->new QuestionNotFoundException("Invalid id", "Question not found")))
+				.collect(Collectors.toList())));
 	}
 	
 	@Transactional(readOnly = true)
@@ -69,10 +72,12 @@ public class QuestionnaireService {
 		return questionnaireRepository.findById(id);
 	}
 	
+	@Transactional(readOnly = true)
 	private void verifyDuplicate(LocalDate date) {
 		questionnaireRepository.findByDate(date).ifPresent(u->{throw new DuplicateUniqueValueException("Date", "It already exists a questionnaire with date "+date.toString());});
 	}
 	
+	@Transactional(readOnly = true)
 	private void verifyOld(Long id) {
 		Questionnaire questionnaire = getQuestionnaire(id).orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"));
 		if(!questionnaire.getDate().isBefore(LocalDate.now())) {
