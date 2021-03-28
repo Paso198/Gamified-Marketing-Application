@@ -18,7 +18,7 @@ public class ProductMapperTest {
 
 	@BeforeEach
 	public void setUp() {
-		productMapper = new ProductMapperImpl();
+		productMapper = new ProductMapperImpl(null);
 	}
 
 	@Test

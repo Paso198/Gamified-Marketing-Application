@@ -13,19 +13,9 @@ import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.model.Question;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Mapper(componentModel = "spring", uses = ProductMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public abstract class QuestionnaireMapper {
-
-	protected ProductMapper productMapper;
+public interface QuestionnaireMapper {
 	
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="date", source="questionnaireRequest.date")
@@ -35,20 +25,20 @@ public abstract class QuestionnaireMapper {
 	@Mapping(target="responses", ignore=true)
 	@Mapping(target="logs", ignore=true)
 	@Mapping(target="creator", source="creator")
-	public abstract Questionnaire toQuestionnaire(QuestionnaireRequest questionnaireRequest, Product product, User creator, List<Question> questions);
+	public Questionnaire toQuestionnaire(QuestionnaireRequest questionnaireRequest, Product product, User creator, List<Question> questions);
 
 	@Mapping(target="id", source="id")
 	@Mapping(target="title", source="title")
-	@Mapping(target="product", expression="java(productMapper.toProductResponse(questionnaire.getProduct()))")
+	@Mapping(target="product", source="product")
 	//@Mapping(target="questions", expression="java(...)") TODO
 	@Mapping(target="questions", ignore=true)
-	public abstract QuestionnaireOfTheDayResponse toQuestionnaireOfTheDayResponse(Questionnaire questionnaire);
+	public QuestionnaireOfTheDayResponse toQuestionnaireOfTheDayResponse(Questionnaire questionnaire);
 	
 	@Mapping(target="id", source="id")
 	@Mapping(target="title", source="title")
 	@Mapping(target="date", source="date")
-	@Mapping(target="product", expression="java(productMapper.toProductResponse(questionnaire.getProduct()))")
-	public abstract QuestionnaireResponse toQuestionnaireResponse(Questionnaire questionnaire);
+	@Mapping(target="product", source="product")
+	public QuestionnaireResponse toQuestionnaireResponse(Questionnaire questionnaire);
 
 	public abstract List<QuestionnaireResponse> toQuestionnairesResponse(List<Questionnaire> questionnaires);
 

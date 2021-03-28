@@ -5,7 +5,7 @@ import java.util.List;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import it.polimi.db2.questionnaire.dto.requests.UserRequest;
@@ -14,19 +14,9 @@ import it.polimi.db2.questionnaire.dto.responses.UserResponse;
 import it.polimi.db2.questionnaire.enumerations.Role;
 import it.polimi.db2.questionnaire.model.Response;
 import it.polimi.db2.questionnaire.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Mapper(componentModel = "spring", uses = PasswordEncoder.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class UserMapper {
-	
-	protected PasswordEncoder passwordEncoder;
 
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="username", expression="java(userRequest.getUsername())")
@@ -42,11 +32,6 @@ public abstract class UserMapper {
 	
 	String getRole(Role role) {
 		return "ROLE_"+role.name();
-	}
-	
-	@Autowired
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-		this.passwordEncoder=passwordEncoder;
 	}
 	
 	@Mapping(target="id", source="id")

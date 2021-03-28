@@ -2,7 +2,6 @@ package it.polimi.db2.questionnaire.mappers;
 
 import java.util.List;
 
-import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,7 +11,7 @@ import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.model.Review;
 import it.polimi.db2.questionnaire.model.User;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring")
 public interface ReviewMapper {
 	
 	@Mapping(target="username", source="user.username")

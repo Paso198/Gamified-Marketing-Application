@@ -9,30 +9,20 @@ import it.polimi.db2.questionnaire.dto.responses.ResponseResponse;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.Response;
 import it.polimi.db2.questionnaire.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Mapper(componentModel = "spring", uses = AnswerMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public abstract class ResponseMapper {
-
-	protected AnswerMapper answerMapper;
+public interface ResponseMapper {
 
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="age", source="responseRequest.age")
 	@Mapping(target="gender", source="responseRequest.gender")
 	@Mapping(target="expertiseLevel", source="responseRequest.expertiseLevel")
-	@Mapping(target="answers", expression="java(answerMapper.toAnswers(responseRequest.getAnswers()))")
+	@Mapping(target="answers", source="responseRequest.answers")
 	@Mapping(target="points", ignore=true)
 	@Mapping(target="user", source="user")
 	@Mapping(target="questionnaire", source="questionnaire")
-	public abstract Response toResponse(ResponseRequest responseRequest, Questionnaire questionnaire, User user);
+	public Response toResponse(ResponseRequest responseRequest, Questionnaire questionnaire, User user);
 
 	//TODO
-	public abstract ResponseResponse toResponseResponse(Response response);
+	public ResponseResponse toResponseResponse(Response response);
 }

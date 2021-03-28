@@ -2,7 +2,6 @@ package it.polimi.db2.questionnaire.mappers;
 
 import java.util.List;
 
-import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -10,7 +9,7 @@ import it.polimi.db2.questionnaire.dto.requests.QuestionRequest;
 import it.polimi.db2.questionnaire.dto.responses.QuestionResponse;
 import it.polimi.db2.questionnaire.model.Question;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring")
 public interface QuestionMapper {
 
 	@Mapping(target="id", source="id")

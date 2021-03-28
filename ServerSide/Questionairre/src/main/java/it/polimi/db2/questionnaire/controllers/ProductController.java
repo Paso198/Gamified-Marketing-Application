@@ -29,12 +29,12 @@ public class ProductController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/admin/products/")
+	@GetMapping("/admin/products")
 	public List <ProductResponse> getAllProducts() {
 		return productService.getAllProducts();
 	}
 	
-	@GetMapping("/user/products/")
+	@GetMapping("/user/products")
 	public ProductOfTheDayResponse getProductOfTheDay() {
 		return productService.getProductOfTheDay();
 	}
