@@ -13,6 +13,7 @@ import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
@@ -43,7 +44,7 @@ public class QuestionnaireService {
 	@Transactional(readOnly = true)
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() {
 		Questionnaire questionnaire = questionnaireRepository.findQuestionnaireOfTheDay().orElseThrow(
-				()->new QuestionnaireNotFoundException("Questionnaire not available yet", "No Questionnaire found for current date"));
+				()->new QuestionnaireNotAvailableException("Questionnaire not available yet", "No Questionnaire found for current date"));
 		return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
 	}
 	

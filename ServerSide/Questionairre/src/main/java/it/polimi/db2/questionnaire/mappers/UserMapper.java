@@ -1,7 +1,6 @@
 package it.polimi.db2.questionnaire.mappers;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -35,6 +34,9 @@ public abstract class UserMapper {
 	@Mapping(target="password", expression="java(passwordEncoder.encode(userRequest.getPassword()))")
 	@Mapping(target="blocked", source="blocked")
 	@Mapping(target="logs", ignore=true)
+	@Mapping(target="questionnairesCreated", ignore=true)
+	@Mapping(target="responses", ignore=true)
+	@Mapping(target="reviews", ignore=true)
 	@Mapping(target="roles", expression="java(getRole(role))")
 	public abstract User toUser(UserRequest userRequest, Role role, Boolean blocked, Integer points);
 	
@@ -47,7 +49,9 @@ public abstract class UserMapper {
 		this.passwordEncoder=passwordEncoder;
 	}
 	
-	//TODO
+	@Mapping(target="id", source="id")
+	@Mapping(target="username", source="username")
+	@Mapping(target="email", source="email")
 	public abstract UserResponse toUserResponse(User user);
 	
 	public abstract List<UserResponse> toUsersResponse(List<User> users);

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,12 +27,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/admin/questionnaires/{questionnaireId}/users/sent")
-	public List<UserResponse> getUsersSent(Long questionnaireId){	
+	public List<UserResponse> getUsersSent(@PathVariable Long questionnaireId){	
 		 return userService.getUsersSent(questionnaireId);	
 	}
 	
 	@GetMapping("/admin/questionnaires/{questionnaireId}/users/cancelled")
-	public List<UserResponse> getUsersCancelled(Long questionnaireId){	
+	public List<UserResponse> getUsersCancelled(@PathVariable Long questionnaireId){	
 		 return userService.getUsersCancelled(questionnaireId);	
 	}
 
