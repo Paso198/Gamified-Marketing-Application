@@ -1,5 +1,4 @@
 import { Product } from "./product";
-
 export class AdminQuestionnaire {
     constructor(
         public id:number,

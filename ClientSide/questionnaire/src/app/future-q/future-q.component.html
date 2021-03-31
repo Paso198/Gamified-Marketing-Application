@@ -1,21 +1,23 @@
-<table id="futures" mdbTable class="z-depth-1" scrollY="true" maxHeight="200">
-    <thead>
-        <th [mdbTableSort] = "questionnaires" sortBy="id">ID</th>
-        <th [mdbTableSort] = "questionnaires" sortBy="title">Title</th>
-        <th [mdbTableSort] = "questionnaires" sortBy="date">Date</th>
-        <th [mdbTableSort] = "questionnaires" sortBy="product.name">Product</th>
-        <th [mdbTableSort] = "questionnaires"></th>
-    </thead>
-    <tr *ngFor="let el of questionnaires; let i = index">
-        <th scope="row">{{el.id}}</th>
-        <td>{{el.id}}</td>
-        <td>{{el.title}}</td>
-        <td>{{el.date}}</td>
-        <td>{{el.product.name}}</td>
-        <td>
-            <button mat-icon-button color="primary">
-                <mat-icon>build</mat-icon>
-              </button>
-        </td>
-    </tr>
-</table>
+
+<div *ngIf ="questionnaires">
+    <table id="futures" mdbTable class="z-depth-1" scrollY="true" maxHeight="200">
+        <thead>
+            <th [mdbTableSort] = "questionnaires" sortBy="id">ID</th>
+            <th [mdbTableSort] = "questionnaires" sortBy="title">Title</th>
+            <th [mdbTableSort] = "questionnaires" sortBy="date">Date</th>
+            <th [mdbTableSort] = "questionnaires" sortBy="product.name">Product</th>
+            <th [mdbTableSort] = "questionnaires"></th>
+        </thead>
+        <tr *ngFor="let el of questionnaires">
+            <th scope="row">{{el.id}}</th>
+            <td>{{el?.title}}</td>
+            <td>{{el?.date}}</td>
+            <td>{{el?.product.name}}</td>
+            <td>
+                <button mat-icon-button color="primary">
+                    <mat-icon>build</mat-icon>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

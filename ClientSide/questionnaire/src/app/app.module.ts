@@ -14,6 +14,10 @@ import { ProductDayComponent } from './product-day/product-day.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { FutureQComponent } from './future-q/future-q.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdministrationComponent } from './administration/administration.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import {MatIconModule} from '@angular/material/icon'
+
 
 @NgModule({
   declarations: [
@@ -23,14 +27,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PageNotFoundComponent,
     HomeComponent,
     ProductDayComponent,
-    FutureQComponent
+    FutureQComponent,
+    AdministrationComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MDBBootstrapModule.forRoot(),
+    MatIconModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
