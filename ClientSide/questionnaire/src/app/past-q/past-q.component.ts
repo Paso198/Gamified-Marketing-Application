@@ -1,24 +1,21 @@
-import {Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdbTableDirective } from 'angular-bootstrap-md';
 import { JwtService } from 'src/services/jwt.service';
 import { QuestionnaireService } from 'src/services/questionnaire.service';
 import { AdminQuestionnaire } from '../models/admin-questionnaire';
 
-
 @Component({
-  selector: 'app-future-q',
-  templateUrl: './future-q.component.html',
-  styleUrls: ['./future-q.component.css']
+  selector: 'app-past-q',
+  templateUrl: './past-q.component.html',
+  styleUrls: ['./past-q.component.css']
 })
-export class FutureQComponent implements OnInit {
-
+export class PastQComponent implements OnInit {
   @ViewChild(MdbTableDirective, {static: false}) mdbTable:MdbTableDirective;
   questionnaires:AdminQuestionnaire[];
   searchText: string = '';
   previous: string;
   available:boolean;
-
 
   constructor(private questionnaireService:QuestionnaireService,
     private jwtService:JwtService,
@@ -29,17 +26,16 @@ export class FutureQComponent implements OnInit {
   ngOnInit(): void {
     this.questionnaires=[];
     this.available=false;
-    this.getFutureQuestionnaires();
+    this.getPastQuestionnaires();
   }
 
-  getFutureQuestionnaires():void {
-    this.questionnaireService.getFutureQuestionnaires().subscribe(
+  getPastQuestionnaires():void {
+    this.questionnaireService.getPastQuestionnaires().subscribe(
       res=>{this.questionnaires=res;
         if(this.questionnaires.length>0)
-           this.available=true;
+          this.available=true;
         this.mdbTable.setDataSource(this.questionnaires);
         this.previous = this.mdbTable.getDataSource();},
-
       error=>{
         if ([401, 403].indexOf(error.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
@@ -49,6 +45,7 @@ export class FutureQComponent implements OnInit {
       }
     )
   }
+
   @HostListener('input') oninput() {
     this.searchItems();
 }
@@ -64,7 +61,5 @@ export class FutureQComponent implements OnInit {
         this.mdbTable.setDataSource(prev);
     }
 }
-
-
 
 }

@@ -14,10 +14,10 @@
         </div>
     </div>
     <div [hidden]="questionnaires.length<=0">
-        <table id="futures"  mdbTable class="z-depth-1" hover="true" striped="true">
-            <thead class="secondary-color text-white">
-                <th [mdbTableSort] = "questionnaires" sortBy="id">ID <mdb-icon fas icon="sort"></mdb-icon>
-                    
+        <table id="past"  mdbTable class="z-depth-1" hover="true" striped="true">
+            <thead class="primary-color text-white"> 
+                <th [mdbTableSort] = "questionnaires" sortBy="id">ID
+                    <mdb-icon fas icon="sort"></mdb-icon>
                 </th>
                 <th [mdbTableSort] = "questionnaires" sortBy="title">Title
                     <mdb-icon fas icon="sort"></mdb-icon>
@@ -28,7 +28,8 @@
                 <th [mdbTableSort] = "questionnaires" sortBy="product.name">Product
                     <mdb-icon fas icon="sort"></mdb-icon>
                 </th>
-                <th>Modify</th>
+                <th>Inspect</th>
+                <th>Delete</th>
             </thead>
             <tbody>
             <tr *ngFor="let el of questionnaires">
@@ -37,12 +38,17 @@
                 <td>{{el?.date}}</td>
                 <td>{{el?.product.name}}</td>
                 <td>
-                    <button mdbBtn size="sm" mdbWavesEffect  mat-icon-button color="primary" >
-                        <mat-icon>build</mat-icon>
+                    <button mdbBtn size="sm" mdbWavesEffect  mat-icon-button color="primary">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </td>
+                <td>
+                    <button mdbBtn size="sm" mdbWavesEffect  mat-icon-button color="primary">
+                        <mat-icon>delete</mat-icon>
                     </button>
                 </td>
             </tr>
-            </tbody>
+        </tbody>
         </table>
     </div>
 </div>
@@ -50,7 +56,6 @@
     No questionnaire matched.
 </div>
 <div *ngIf="!available">
-    No future questionnaire available.
+    No past questionnaire available.
 </div>
-<button  mat-raised-button color="accent">New Questionnaire</button>
 

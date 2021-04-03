@@ -9,14 +9,15 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
-import { AuthGuard } from './guards/auth.guard';
 import { ProductDayComponent } from './product-day/product-day.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { FutureQComponent } from './future-q/future-q.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdministrationComponent } from './administration/administration.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import {MatIconModule} from '@angular/material/icon'
+import { PastQComponent } from './past-q/past-q.component'
+import { MaterialModule } from './material/material.module';
+import { ProductsComponent } from './products/products.component';
 
 
 @NgModule({
@@ -28,7 +29,9 @@ import {MatIconModule} from '@angular/material/icon'
     HomeComponent,
     ProductDayComponent,
     FutureQComponent,
-    AdministrationComponent
+    AdministrationComponent,
+    PastQComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,7 @@ import {MatIconModule} from '@angular/material/icon'
     FormsModule,
     BrowserAnimationsModule,
     MDBBootstrapModule.forRoot(),
-    MatIconModule
+    MaterialModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

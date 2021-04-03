@@ -16,4 +16,8 @@ export class QuestionnaireService {
   public getFutureQuestionnaires():Observable<AdminQuestionnaire[]>{
     return this.http.get<AdminQuestionnaire[]>(`${this.apiServerUrl}/admin/questionnaires/future`);
   }
+
+  public getPastQuestionnaires():Observable<AdminQuestionnaire[]>{
+    return this.http.get<AdminQuestionnaire[]>(`${this.apiServerUrl}/admin/questionnaires/past`);
+  }
 }

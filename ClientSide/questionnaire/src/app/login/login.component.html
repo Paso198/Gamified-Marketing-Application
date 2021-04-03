@@ -23,9 +23,9 @@
                         required>
                         <small [class.text-danger]="serverError" [class.text-success]="serverSuccess"*ngIf="serverError==true||serverSuccess==true">{{serverMessage}}</small>
                     </div>
-                    <button type = "submit" class="btn btn-primary float-right" [disabled]="loginForm.form.invalid">Submit</button>
+                    <button type = "submit" class="float-right"  mat-raised-button color ="primary" [disabled]="loginForm.form.invalid">Submit</button>
                 </form>
-                <a routerLink="/signup"> <button type = "button" class="btn btn-secondary float-left">Signup</button></a>
+                <a routerLink="/signup"> <button type = "button" class="float-left" mat-raised-button color ="accent">Signup</button></a>
             </div>
         </div>
     </div>
