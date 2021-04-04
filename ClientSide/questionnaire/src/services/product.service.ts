@@ -16,8 +16,8 @@ export class ProductService {
   public getProductOfTheDay():Observable<DayProduct>{
     return this.http.get<DayProduct>(`${this.apiServerUrl}/user/products`);
   }
-
-  public getProducts():Observable<Product>{
-    return this.http.get<Product>(`${this.apiServerUrl}/admin/products`);
+  
+  public getProducts():Observable<Product[]>{
+    return this.http.get<Product[]>(`${this.apiServerUrl}/admin/products`);
   }
 }
