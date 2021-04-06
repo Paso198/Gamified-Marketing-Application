@@ -16,7 +16,7 @@ import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
-import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
+import it.polimi.db2.questionnaire.exceptions.UnauthorizedOperationException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
 import it.polimi.db2.questionnaire.model.Questionnaire;
@@ -39,9 +39,22 @@ public class QuestionnaireService {
 		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(questionnaireRequest,
 				productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")), 
 				userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in")), 
-				questionnaireRequest.getQuestionsIds().stream().map((id) -> questionService.getQuestion(id).orElseThrow(
+				questionnaireRequest.getQuestionsIds().stream().map((questionId) -> questionService.getQuestion(questionId).orElseThrow(
 						()->new QuestionNotFoundException("Invalid id", "Question not found")))
 				.collect(Collectors.toList())));
+	}
+	
+	@Transactional
+	public void updateQuestionnaire(QuestionnaireRequest questionnaireRequest, Long id) {
+		Questionnaire toUpdate = questionnaireRepository.findById(id).orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"));
+		if(toUpdate.getDate().equals(LocalDate.now())) throw new UnauthorizedOperationException("Questionnaire of the day cannot be modified");
+		verifyDuplicate(questionnaireRequest.getDate());
+		toUpdate.setProduct(productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")));
+		toUpdate.setDate(questionnaireRequest.getDate());
+		toUpdate.setTitle(questionnaireRequest.getTitle());
+		toUpdate.setQuestions(questionnaireRequest.getQuestionsIds().stream().map((questionId) -> questionService.getQuestion(questionId).orElseThrow(
+						()->new QuestionNotFoundException("Invalid id", "Question not found")))
+				.collect(Collectors.toList()));
 	}
 	
 	@Transactional(readOnly = true)
@@ -81,7 +94,7 @@ public class QuestionnaireService {
 	private void verifyOld(Long id) {
 		Questionnaire questionnaire = getQuestionnaire(id).orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"));
 		if(!questionnaire.getDate().isBefore(LocalDate.now())) {
-			throw new UnauthorizedDeletionException("Only past questionnaires can be deleted");
+			throw new UnauthorizedOperationException("Only past questionnaires can be updated or deleted");
 		}
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,6 +45,12 @@ public class QuestionnaireController {
 	@GetMapping("/user/questionnaires")
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() {
 		return questionnaireService.getQuestionnaireOfTheDay();
+	}
+	
+	@PutMapping("/admin/questionnaires/{id}")
+	public ResponseEntity<Void> updateQuestionnaire(@RequestBody @Valid QuestionnaireRequest request, @PathVariable Long id) {
+		questionnaireService.updateQuestionnaire(request, id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/admin/questionnaires/{id}")

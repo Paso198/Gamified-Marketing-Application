@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UnauthorizedDeletionException extends RuntimeException {
+public class UnauthorizedOperationException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	private String message;

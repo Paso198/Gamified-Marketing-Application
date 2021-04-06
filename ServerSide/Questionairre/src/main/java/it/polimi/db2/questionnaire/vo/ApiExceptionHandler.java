@@ -21,7 +21,7 @@ import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
-import it.polimi.db2.questionnaire.exceptions.UnauthorizedDeletionException;
+import it.polimi.db2.questionnaire.exceptions.UnauthorizedOperationException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 
 @RestControllerAdvice
@@ -102,12 +102,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return errors;
 	}
 	
-	@ExceptionHandler(UnauthorizedDeletionException.class)
+	@ExceptionHandler(UnauthorizedOperationException.class)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	@ResponseBody
-	public Map<String, String> handleUnauthorizedDeletionException(UnauthorizedDeletionException ex) {
+	public Map<String, String> handleUnauthorizedOperationException(UnauthorizedOperationException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
-		errors.put("user", ex.getMessage());
+		errors.put("questionnaire", ex.getMessage());
 		return errors;
 	}
 }
