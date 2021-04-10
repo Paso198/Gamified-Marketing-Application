@@ -30,7 +30,6 @@ public class QuestionController {
 	
 	@GetMapping("/admin/questions")
 	public List<QuestionResponse> getAllQuestions(){
-		//TODO: service call
-		return null;
+		return questionService.getAllQuestions();
 	}
 }
