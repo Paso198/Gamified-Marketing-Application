@@ -23,6 +23,7 @@ import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedOperationException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
+import it.polimi.db2.questionnaire.exceptions.UserBlockedException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -97,6 +98,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	@ResponseBody
 	public Map<String, String> handleUnloggedUserException(UnloggedUserException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put("user", ex.getMessage());
+		return errors;
+	}
+	
+	@ExceptionHandler(UserBlockedException.class)
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+	@ResponseBody
+	public Map<String, String> UserBlockedException(UserBlockedException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		errors.put("user", ex.getMessage());
 		return errors;
