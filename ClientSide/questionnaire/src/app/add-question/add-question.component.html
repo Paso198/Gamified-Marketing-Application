@@ -1,0 +1,24 @@
+<div class="card rounded-0">
+    <div class="card-header">
+        <h3 class="mb-0">Add Question</h3>
+    </div>
+    <div class="card-body">
+        <form #addQuestionForm ="ngForm" class="form" (ngSubmit)="onSubmit()" > 
+            <div class="content-container">
+                <span class = "content-span full-width">
+                <div class="form-group">
+                    
+                  <textarea  [(ngModel)]="model.text"  
+                  class="form-control" 
+                    name="text"
+                    rows="4" required></textarea>
+                </div>
+                <small [class.text-danger]="serverError" [class.text-success]="serverSuccess"*ngIf="serverError==true||serverSuccess==true">{{serverMessage}}</small>
+
+                </span>
+            </div>
+            <button mat-flat-button id="no-button" color="warn"(click)="closeDialog()" >Close</button>
+            <button type = "submit" mat-flat-button id="yes-button" color="primary"  [disabled]="addQuestionForm.form.invalid">Add</button>
+        </form>
+    </div>
+</div>

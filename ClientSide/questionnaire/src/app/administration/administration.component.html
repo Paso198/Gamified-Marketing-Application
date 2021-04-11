@@ -1,25 +1,29 @@
-<!--<div class="row pt-5">
-    <div class="col-hd-8 mx-auto">
-        <mat-accordion>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                Future Questionnaires
-            </mat-expansion-panel-header>
-            <app-future-q></app-future-q>
-        </mat-expansion-panel>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                Past Questionnaires
-            </mat-expansion-panel-header>
-            <app-past-q></app-past-q>
-        </mat-expansion-panel>
-    </mat-accordion>       
-    </div>
-</div>-->
-
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        Products Administration
-    </mat-expansion-panel-header>
-    <app-products></app-products>
-</mat-expansion-panel>
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Products Administration
+        </mat-expansion-panel-header>
+        <app-products></app-products>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Questions Administration
+        </mat-expansion-panel-header>
+        <app-questions></app-questions>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Future Questionnaires Administration
+        </mat-expansion-panel-header>
+        <app-future-q></app-future-q>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Past Questionnaires Administration
+        </mat-expansion-panel-header>
+        <app-past-q></app-past-q>
+    </mat-expansion-panel>
+</mat-accordion>  
+<br>
+<br>
+<button  class="float-right"  mat-raised-button color ="primary" (click)="onLogout()">Logout</button>

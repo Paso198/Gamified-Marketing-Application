@@ -1,56 +1,55 @@
-<div [hidden]="!available">
-    <div class="row">
-        <div class="col-md-12 mx-auto">
-            <div class="md-form">
-            <input
-                type="text"
-                [(ngModel)]="searchText"
-                class="form-control"
-                id="search"
-                mdbInput
-            />
-            <label for="search">Search</label>
-            </div>
-        </div>
-    </div>
-    <div [hidden]="questionnaires.length<=0">
-        <table id="futures"  mdbTable class="z-depth-1" hover="true" striped="true">
-            <thead class="secondary-color text-white">
-                <th [mdbTableSort] = "questionnaires" sortBy="id">ID <mdb-icon fas icon="sort"></mdb-icon>
-                    
-                </th>
-                <th [mdbTableSort] = "questionnaires" sortBy="title">Title
-                    <mdb-icon fas icon="sort"></mdb-icon>
-                </th>
-                <th [mdbTableSort] = "questionnaires" sortBy="date">Date
-                    <mdb-icon fas icon="sort"></mdb-icon>
-                </th>
-                <th [mdbTableSort] = "questionnaires" sortBy="product.name">Product
-                    <mdb-icon fas icon="sort"></mdb-icon>
-                </th>
-                <th>Modify</th>
-            </thead>
-            <tbody>
-            <tr *ngFor="let el of questionnaires">
-                <th scope="row">{{el.id}}</th>
-                <td>{{el?.title}}</td>
-                <td>{{el?.date}}</td>
-                <td>{{el?.product.name}}</td>
-                <td>
-                    <button mdbBtn size="sm" mdbWavesEffect  mat-icon-button color="primary" >
+<mat-card>
+    <mat-card-title>
+        Future Questionnaires
+    </mat-card-title>
+    <mat-card-content> 
+        <div [hidden]="!available">
+        <mat-form-field>
+            <input (keyup)= "applyFilter($event.target.value)" matInput placeholder="Filter"/>
+        </mat-form-field>
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef> Product </th>
+                <td mat-cell *matCellDef="let element"> {{element.product.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modify">
+                <th mat-header-cell *matHeaderCellDef> Modify </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button  size="sm"  mat-icon-button color="primary" (click)=onModify(element)>
                         <mat-icon>build</mat-icon>
-                    </button>
+                    </button> 
                 </td>
-            </tr>
-            </tbody>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+
+        <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
     </div>
-</div>
-<div *ngIf="questionnaires.length==0 && available">
-    No questionnaire matched.
-</div>
-<div *ngIf="!available">
-    No future questionnaire available.
-</div>
-<button  mat-raised-button color="accent">New Questionnaire</button>
+    <div *ngIf="!available">
+        No Future Questionnaire available.
+    </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-flat-button color="primary" (click)="onAdd()">New Questionnaire</button>
+    </mat-card-actions>
+</mat-card>
+
 

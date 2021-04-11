@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 import { ProductService } from 'src/services/product.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-
+import { MatDialog } from '@angular/material/dialog';
+import { AddProductComponent } from '../add-product/add-product.component';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class ProductsComponent implements OnInit {
   constructor(private sanitizer:DomSanitizer,
     private productService:ProductService,
     private jwtService:JwtService,
-    private router: Router) { }
+    private router: Router,
+    private dialog:MatDialog) { }
   
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
@@ -67,7 +69,23 @@ export class ProductsComponent implements OnInit {
     )
   }
 
+  onAdd(){
+    this.dialog.open(AddProductComponent,
+      {
+        width:'60%',
+        panelClass:"confirm-dialog-container"
+       }
+      ).afterClosed()
+      .subscribe(
+        res=>{
+          if(res)
+            this.getProducts();
+        }
+      )
+  }
+}
+
   
   
 
-}
+

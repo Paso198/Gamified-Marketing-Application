@@ -32,11 +32,22 @@ export class SignupComponent implements OnInit {
   onSubmit():void{
     let request:SignupRequest= new SignupRequest(this.model.username, this.model.email, this.model.password);
     this.authService.addUser(request).subscribe(
-      (response:void)=>{
-        this.serverError=false;
-        this.serverSuccess=true;
-        this.serverMessage="Signup was successful";
-        this.router.navigate(['/login']);
+      (res)=>{
+        this.serverMessage="";
+        if(res){
+          this.serverError=true;
+          this.serverSuccess=false;
+          for(var key in res)
+          {
+             this.serverMessage= this.serverMessage + res[key]+ '\n';
+          }
+        }
+        else{
+          this.serverError=false;
+          this.serverSuccess=true;
+          this.serverMessage="Signup was successful";
+          this.router.navigate(['/login']);
+        }
       },
       (error:HttpErrorResponse)=>{
         this.serverSuccess=false;
@@ -45,5 +56,6 @@ export class SignupComponent implements OnInit {
       }
     )
   }
+
 
 }

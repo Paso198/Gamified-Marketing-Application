@@ -5,49 +5,43 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { JwtService } from 'src/services/jwt.service';
-import { QuestionnaireService } from 'src/services/questionnaire.service';
-import { ConfirmDeleteComponent } from '../confirm-delete/confirm-delete.component';
-import { AdminQuestionnaire } from '../models/admin-questionnaire';
+import { QuestionService } from '../../services/question.service';
+import { AddQuestionComponent } from '../add-question/add-question.component';
 
 @Component({
-  selector: 'app-past-q',
-  templateUrl: './past-q.component.html',
-  styleUrls: ['./past-q.component.css']
+  selector: 'app-questions',
+  templateUrl: './questions.component.html',
+  styleUrls: ['./questions.component.css']
 })
-export class PastQComponent implements OnInit {
+export class QuestionsComponent implements OnInit {
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator:MatPaginator;
 
-  displayedColumns: string[] = ['id', 'title', 'date', 'product', 'inspect', 'delete'];
+  displayedColumns: string[] = ['id', 'text'];
   dataSource = new MatTableDataSource([]);
   available:boolean;
 
-  constructor(private questionnaireService:QuestionnaireService,
+  constructor(private questionService:QuestionService,
     private jwtService:JwtService,
     private router: Router,
     private dialog:MatDialog) { }
 
+    
+  public applyFilter(text:String){
+    this.dataSource.filter=text.trim().toLowerCase();
+  }
+
   ngOnInit(): void {
-    this.getPastQuestionnaires();
+    this.getQuestions();
     this.dataSource.sort= this.sort;
     this.dataSource.paginator= this.paginator;
     this.available=false;
   }
 
-  public applyFilter(text:String){
-    this.dataSource.filter=text.trim().toLowerCase();
-  }
-
-  getPastQuestionnaires():void {
-    this.questionnaireService.getPastQuestionnaires().subscribe(
+  getQuestions():void {
+    this.questionService.getAllQuestions().subscribe(
       res=>{this.dataSource=new MatTableDataSource(res);
-        this.dataSource.filterPredicate = function(data, filter: string): boolean {
-          return data.title.toLowerCase().includes(filter) 
-          || data.id.toString().toLowerCase().includes(filter) 
-          || data.product.name.toLowerCase().includes(filter) 
-          || data.date.toString().toLowerCase().includes(filter) 
-        };
         this.dataSource.sort= this.sort;
         this.dataSource.paginator= this.paginator;
         if(res.length>0)
@@ -61,25 +55,19 @@ export class PastQComponent implements OnInit {
       }
       }
     )
+
   }
 
-  onInspect(questionnaire:AdminQuestionnaire){
-    console.log(questionnaire);
-  }
-
-  onDelete(questionnaire:AdminQuestionnaire){
-    this.dialog.open(ConfirmDeleteComponent,
+  onAdd(){
+    this.dialog.open(AddQuestionComponent,
       {
         width:'40%',
         panelClass:"confirm-dialog-container",
-        data:{
-          id:questionnaire.id
-        }
       }).afterClosed()
       .subscribe(
         res=>{
           if(res)
-            this.getPastQuestionnaires();
+            this.getQuestions();
         }
       )
   }
