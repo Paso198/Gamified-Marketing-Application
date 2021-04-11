@@ -14,7 +14,9 @@ import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.ResponseMapper;
 import it.polimi.db2.questionnaire.mappers.UserMapper;
+import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.Response;
+import it.polimi.db2.questionnaire.model.User;
 import it.polimi.db2.questionnaire.repositories.ResponseRepository;
 import lombok.AllArgsConstructor;
 
@@ -25,6 +27,7 @@ public class ResponseService {
 	private final BadWordService badWordService;
 	private final QuestionnaireService questionnaireService;
 	private final UserService userService;
+	private final LogService logService;
 	private final ResponseMapper responseMapper;
 	private final UserMapper userMapper;
 
@@ -34,14 +37,17 @@ public class ResponseService {
 		if (request.getAnswers().stream()
 				.map(AnswerRequest::getText)
 				.allMatch((s)->!badWordService
-						.containtsBadWord(List.of(s.split("\\W+")))))
+						.containtsBadWord(List.of(s.split("\\W+"))))) {
 			
-				responseRepository.save(responseMapper.toResponse(request, 
-						questionnaireService.getQuestionnaire(request.getQuestionnaireId())
-						.orElseThrow(()->new QuestionnaireNotFoundException("invalid id", "questionnaire not found")), 
-						userService.getLoggedUser()
-						.orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
-		else
+			Questionnaire questionnaire = questionnaireService.getQuestionnaire(request.getQuestionnaireId())
+					.orElseThrow(()->new QuestionnaireNotFoundException("invalid id", "questionnaire not found"));
+			User user = userService.getLoggedUser()
+					.orElseThrow(() -> new UnloggedUserException("Not user currently logged in"));
+			
+				responseRepository.save(responseMapper.toResponse(request, questionnaire, user));
+				logService.logSubmission(user, questionnaire);
+				
+		}else
 			userService.blockLogged();
 	}
 	

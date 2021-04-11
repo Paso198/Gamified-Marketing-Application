@@ -48,6 +48,12 @@ public class QuestionnaireController {
 		return questionnaireService.getQuestionnaireOfTheDay();
 	}
 	
+	@PostMapping("/user/questionnaires/cancel")
+	public ResponseEntity<Void> cancelQuestionnaireSubmission() {
+		questionnaireService.cancelQuestionnaireSubmission();
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
 	@PutMapping("/admin/questionnaires/{id}")
 	public ResponseEntity<Void> updateQuestionnaire(@RequestBody @Valid QuestionnaireRequest request, @PathVariable Long id) {
 		questionnaireService.updateQuestionnaire(request, id);

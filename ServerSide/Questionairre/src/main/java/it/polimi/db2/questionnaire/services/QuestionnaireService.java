@@ -32,6 +32,7 @@ public class QuestionnaireService {
 	private final UserService userService;
 	private final ProductService productService;
 	private final QuestionService questionService;
+	private final LogService logService;
 	private final QuestionnaireRepository questionnaireRepository;
 	private final QuestionnaireMapper questionnaireMapper;
 	private final QuestionMapper questionMapper;
@@ -106,5 +107,11 @@ public class QuestionnaireService {
 		}
 	}
 
-
+	@Transactional
+	public void cancelQuestionnaireSubmission() {
+		Questionnaire questionnaire = questionnaireRepository.findQuestionnaireOfTheDay().orElseThrow(
+				()->new QuestionnaireNotAvailableException("Questionnaire not available yet", "No Questionnaire found for current date"));
+		
+		logService.logCancellation(userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in")), questionnaire);
+	}
 }
