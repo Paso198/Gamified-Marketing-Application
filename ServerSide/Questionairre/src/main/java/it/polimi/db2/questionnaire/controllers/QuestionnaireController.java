@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
+import it.polimi.db2.questionnaire.dto.responses.QuestionResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.services.QuestionnaireService;
@@ -59,4 +60,8 @@ public class QuestionnaireController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+	@GetMapping("/admin/questionnaires/{id}/questions")
+	public List<QuestionResponse> getQuestionsOfQuestionnaire(@PathVariable Long id){
+		return questionnaireService.getQuestionsOfQuestionnaire(id);
+	}
 }

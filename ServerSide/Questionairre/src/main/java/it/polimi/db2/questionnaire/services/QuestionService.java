@@ -40,4 +40,5 @@ public class QuestionService {
 	private void verifyDuplicate(String text) {
 		questionRepository.findByText(text).ifPresent(u->{throw new DuplicateUniqueValueException("Text", "It already exists a question with text "+text);});
 	}
+
 }

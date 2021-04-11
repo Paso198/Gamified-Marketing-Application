@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.QuestionnaireRequest;
+import it.polimi.db2.questionnaire.dto.responses.QuestionResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireOfTheDayResponse;
 import it.polimi.db2.questionnaire.dto.responses.QuestionnaireResponse;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
@@ -18,6 +19,7 @@ import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedOperationException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
+import it.polimi.db2.questionnaire.mappers.QuestionMapper;
 import it.polimi.db2.questionnaire.mappers.QuestionnaireMapper;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.repositories.QuestionnaireRepository;
@@ -32,6 +34,7 @@ public class QuestionnaireService {
 	private final QuestionService questionService;
 	private final QuestionnaireRepository questionnaireRepository;
 	private final QuestionnaireMapper questionnaireMapper;
+	private final QuestionMapper questionMapper;
 	
 	@Transactional
 	public void addQuestionnaire(QuestionnaireRequest questionnaireRequest) {
@@ -83,6 +86,11 @@ public class QuestionnaireService {
 	@Transactional(readOnly = true)
 	public Optional<Questionnaire> getQuestionnaire(Long id) {
 		return questionnaireRepository.findById(id);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<QuestionResponse> getQuestionsOfQuestionnaire(Long id) {
+		return questionMapper.toQuestionsResponse(getQuestionnaire(id).orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found")).getQuestions());
 	}
 	
 	@Transactional(readOnly = true)
