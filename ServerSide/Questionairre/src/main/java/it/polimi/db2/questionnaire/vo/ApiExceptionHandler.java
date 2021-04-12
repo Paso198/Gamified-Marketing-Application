@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import it.polimi.db2.questionnaire.exceptions.BadImageException;
+import it.polimi.db2.questionnaire.exceptions.BlockedUserException;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionNotFoundException;
@@ -23,7 +24,6 @@ import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedOperationException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
-import it.polimi.db2.questionnaire.exceptions.UserBlockedException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -103,10 +103,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return errors;
 	}
 	
-	@ExceptionHandler(UserBlockedException.class)
+	@ExceptionHandler(BlockedUserException.class)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	@ResponseBody
-	public Map<String, String> UserBlockedException(UserBlockedException ex) {
+	public Map<String, String> BlockedUserException(BlockedUserException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		errors.put("user", ex.getMessage());
 		return errors;

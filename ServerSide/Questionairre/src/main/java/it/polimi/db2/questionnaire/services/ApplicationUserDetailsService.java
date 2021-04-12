@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import it.polimi.db2.questionnaire.config.ApplicationUser;
-import it.polimi.db2.questionnaire.exceptions.UserBlockedException;
+import it.polimi.db2.questionnaire.exceptions.BlockedUserException;
 import it.polimi.db2.questionnaire.model.User;
 import it.polimi.db2.questionnaire.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-		if(user.getBlocked()) throw new UserBlockedException("User " + user.getUsername() + " is blocked");
+		if(user.getBlocked()) throw new BlockedUserException("User " + user.getUsername() + " is blocked");
 		logService.logLogin(user);
 		return new ApplicationUser(user);
 	}
