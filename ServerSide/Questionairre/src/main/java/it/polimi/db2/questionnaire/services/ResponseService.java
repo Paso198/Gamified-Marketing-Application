@@ -12,6 +12,7 @@ import it.polimi.db2.questionnaire.dto.responses.ResponseResponse;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
+import it.polimi.db2.questionnaire.exceptions.badWordException;
 import it.polimi.db2.questionnaire.mappers.ResponseMapper;
 import it.polimi.db2.questionnaire.mappers.UserMapper;
 import it.polimi.db2.questionnaire.model.Questionnaire;
@@ -47,8 +48,10 @@ public class ResponseService {
 				responseRepository.save(responseMapper.toResponse(request, questionnaire, user));
 				logService.logSubmission(user, questionnaire);
 				
-		}else
+		}else{
 			userService.blockLogged();
+			throw new badWordException("Response not accepted", "Bad words are not allowed");
+		}
 	}
 	
 	@Transactional(readOnly = true)

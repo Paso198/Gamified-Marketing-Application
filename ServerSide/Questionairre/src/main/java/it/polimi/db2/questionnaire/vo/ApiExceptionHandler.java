@@ -24,6 +24,7 @@ import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnauthorizedOperationException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
+import it.polimi.db2.questionnaire.exceptions.badWordException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -80,6 +81,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	@ResponseBody
 	public Map<String, String> handleQuestionNotFound(QuestionNotFoundException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put(ex.getName(), ex.getMessage());
+		return errors;
+	}
+	
+	@ExceptionHandler(badWordException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public Map<String, String> handlebadWord(badWordException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		errors.put(ex.getName(), ex.getMessage());
 		return errors;
