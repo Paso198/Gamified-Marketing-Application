@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
        (error:HttpErrorResponse)=>{
         this.serverSuccess=false;
         this.serverError=true;
-        this.serverMessage="Username or password are incorrect";
+        this.serverMessage=error.error["exception"];
        }
      ) 
   }
