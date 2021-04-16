@@ -35,7 +35,6 @@ export class AddQuestionComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log("chiamato");
     this.questionService.addQuestion(this.model).subscribe(
       (res)=>{
         this.serverMessage="";

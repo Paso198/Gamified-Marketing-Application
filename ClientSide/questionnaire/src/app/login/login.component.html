@@ -5,7 +5,7 @@
                 <h3 class="mb-0">Login</h3>
             </div>
             <div class="card-body">
-                <form #loginForm ="ngForm" class="form" (ngSubmit)="onSubmit()">
+                <form #loginForm ="ngForm" class="form">
                     <div class="form-group">
                         <label for="">Username</label>
                         <input type="text" name = "username" 
@@ -23,7 +23,7 @@
                         required>
                         <small [class.text-danger]="serverError" [class.text-success]="serverSuccess"*ngIf="serverError==true||serverSuccess==true">{{serverMessage}}</small>
                     </div>
-                    <button type = "submit" class="float-right"  mat-raised-button color ="primary" [disabled]="loginForm.form.invalid">Submit</button>
+                    <button type = "submit" class="float-right"  mat-raised-button color ="primary" [disabled]="loginForm.form.invalid"  (click)="onSubmit()">Submit</button>
                 </form>
                 <a routerLink="/signup"> <button type = "button" class="float-left" mat-raised-button color ="accent">Signup</button></a>
             </div>

@@ -1,4 +1,37 @@
-<div *ngIf="available"></div>
+<div *ngIf="available">
+    <mat-card>
+        <mat-card-title>
+            <h1 class="mb-0">Today's product is: {{product.name}}</h1>
+        </mat-card-title>
+        <mat-card-content>
+            <img [src]= getSrc(product.photo)>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    Reviews
+                </mat-expansion-panel-header>
+                <div *ngIf="product.reviews.length<=0">
+                    No review available, do you want to be the first?
+                </div>
+                <div *ngIf="product.reviews.length>0">
+                    <mat-card *ngFor="let card of obs | async " >
+                        <mat-card-title>
+                            <h2><i>{{card.username}}</i></h2>
+                        </mat-card-title>
+                    <mat-card-content>
+                            {{card.review}}
+                    </mat-card-content>
+                    </mat-card>
+                    <mat-paginator [pageSizeOptions]="[1,5,10]" showFirstLastButtons></mat-paginator>
+                </div>
+               
+            </mat-expansion-panel>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary"  (click)="onReview()" type="submit" style="margin-right:65%">Send a Review</button>   
+            <button mat-raised-button color="accent"  (click)="onQuestionnaire()" style="margin-right:5px" >See the questionnaire</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
 
    
 <div *ngIf="!available">

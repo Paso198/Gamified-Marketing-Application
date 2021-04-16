@@ -1,6 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,6 +12,7 @@ import { JwtService } from 'src/services/jwt.service';
 import { ProductService } from 'src/services/product.service';
 import { QuestionService } from 'src/services/question.service';
 import { QuestionnaireService } from 'src/services/questionnaire.service';
+import { AddQuestionComponent } from '../add-question/add-question.component';
 import { Product } from '../models/product';
 import { Question } from '../models/question';
 import { QuestionnaireRequest } from '../models/questionnaire-request';
@@ -55,10 +57,10 @@ export class ModifyQuestionnaireComponent implements OnInit {
     private productService:ProductService,
     private jwtService:JwtService,
     private router: Router,
-    public data:DataService) { }
+    public data:DataService,
+    private dialog:MatDialog) { }
 
   ngOnInit(): void {
-    console.log(this.data.getQuestionnaireData());
     this.serverSuccess=false;
     this.serverError=false;
     this.serverMessage="";
@@ -67,7 +69,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
     this.products=[];
     this.selected=new Product(null,"",null);
     this.getProducts();
-    this.getQuestions();
+    this.getIncluded();
   }
 
   getProducts():void{
@@ -90,9 +92,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
   getIncluded():void{
     this.questionnaireService.getQuestionnaireQuestions(this.data.getQuestionnaireData().id).subscribe(
       res=>{this.included=new MatTableDataSource(res);
-        this.included.sort= this.sort;
-        this.included.paginator= this.paginator;
-        this.formatTables();
+        this.getQuestions();
       },
       error=>{
         if ([401, 403].indexOf(error.status) !== -1) {
@@ -109,7 +109,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
       res=>{this.excluded=new MatTableDataSource(res);
         this.excluded.sort= this.sort;
         this.excluded.paginator= this.paginator;
-        this.getIncluded();
+        this.formatTables();
       },
       error=>{
         if ([401, 403].indexOf(error.status) !== -1) {
@@ -128,7 +128,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
     eProvv.forEach((q)=>
     {
       if(iProvv.some((j)=> j.id==q.id))
-        eProvv = eProvv.filter((i)=>i.id=q.id);
+        eProvv = eProvv.filter((i)=>i.id!=q.id);
     })
 
     this.included.data=iProvv;
@@ -171,8 +171,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
       this.qForm.value.product,
       moment(this.qForm.value.date).format("yyyy-MM-DD"),      
       this.included.data.map(i=>i.id));
-    console.log(request);
-    this.questionnaireService.addQuestionnaire(request).subscribe(
+    this.questionnaireService.updateQuestionnaire(this.data.getQuestionnaireData().id,request).subscribe(
       (res)=>{
         this.serverMessage="";
         if(res){
@@ -186,7 +185,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
         else{
           this.serverError=false;
           this.serverSuccess=true;
-          this.serverMessage="Questionnaire created successfully";
+          this.serverMessage="Questionnaire updated successfully";
         }
       },
       error=>{
@@ -209,6 +208,20 @@ export class ModifyQuestionnaireComponent implements OnInit {
 
   onBack():void{
     this.router.navigate(['/home']);
+  }
+
+  onAdd(){
+    this.dialog.open(AddQuestionComponent,
+      {
+        width:'40%',
+        panelClass:"confirm-dialog-container",
+      }).afterClosed()
+      .subscribe(
+        res=>{
+          if(res)
+            this.getQuestions();
+        }
+      )
   }
 
 }

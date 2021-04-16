@@ -18,7 +18,7 @@ public class ReviewController {
 	
 	private final ReviewService reviewService;
 	
-	@PostMapping(value = "/public/products/reviews")
+	@PostMapping(value = "/user/products/reviews")
 	public ResponseEntity<Void> addReview(@Valid @RequestBody ReviewRequest reviewRequest) {
 		reviewService.addReview(reviewRequest);
 		return new ResponseEntity<Void>(HttpStatus.OK);

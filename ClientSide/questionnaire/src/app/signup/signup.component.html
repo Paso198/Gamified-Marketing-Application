@@ -5,7 +5,7 @@
                 <h3 class="mb-0">Signup</h3>
             </div>
             <div class="card-body">
-                <form #signupForm ="ngForm" class="form" (ngSubmit)="onSubmit()">
+                <form #signupForm ="ngForm" class="form">
                     <div class="form-group">
                         <label for="">Username</label>
                         <input type="text" name = "username" 
@@ -75,7 +75,7 @@
                         <small [class.text-danger]="serverError" [class.text-success]="serverSuccess"*ngIf="serverError==true||serverSuccess==true">{{serverMessage}}</small>
                     </div>
                    
-                    <button type = "submit" class="float-right"  mat-raised-button color ="primary" [disabled]="signupForm.form.invalid || model.repeatPassword!==model.password">Submit</button>
+                    <button  (click)="onSubmit()" type = "submit" class="float-right"  mat-raised-button color ="primary" [disabled]="signupForm.form.invalid || model.repeatPassword!==model.password">Submit</button>
                 </form>
                 <a routerLink="/login"><button type = "button" class="float-left" mat-raised-button color ="accent">Login</button></a>
             </div>

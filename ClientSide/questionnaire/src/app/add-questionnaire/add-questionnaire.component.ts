@@ -13,6 +13,8 @@ import { Question } from '../models/question';
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { QuestionnaireRequest } from '../models/questionnaire-request';
 import * as moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { AddQuestionComponent } from '../add-question/add-question.component';
 
 @Component({
   selector: 'app-add-questionnaire',
@@ -52,7 +54,8 @@ export class AddQuestionnaireComponent implements OnInit {
     private questionService:QuestionService,
     private productService:ProductService,
     private jwtService:JwtService,
-    private router: Router) { }
+    private router: Router,
+    private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.serverSuccess=false;
@@ -131,7 +134,6 @@ export class AddQuestionnaireComponent implements OnInit {
       this.qForm.value.product,
       moment(this.qForm.value.date).format("yyyy-MM-DD"),
       this.included.data.map(i=>i.id));
-    console.log(request);
     this.questionnaireService.addQuestionnaire(request).subscribe(
       (res)=>{
         this.serverMessage="";
@@ -169,6 +171,20 @@ export class AddQuestionnaireComponent implements OnInit {
 
   onBack():void{
     this.router.navigate(['/home']);
+  }
+
+  onAdd(){
+    this.dialog.open(AddQuestionComponent,
+      {
+        width:'40%',
+        panelClass:"confirm-dialog-container",
+      }).afterClosed()
+      .subscribe(
+        res=>{
+          if(res)
+            this.getQuestions();
+        }
+      )
   }
 
 

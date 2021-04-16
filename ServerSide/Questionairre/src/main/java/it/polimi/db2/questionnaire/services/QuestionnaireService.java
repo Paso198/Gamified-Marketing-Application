@@ -52,9 +52,13 @@ public class QuestionnaireService {
 	public void updateQuestionnaire(QuestionnaireRequest questionnaireRequest, Long id) {
 		Questionnaire toUpdate = questionnaireRepository.findById(id).orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"));
 		if(toUpdate.getDate().equals(LocalDate.now())) throw new UnauthorizedOperationException("Questionnaire of the day cannot be modified");
-		verifyDuplicate(questionnaireRequest.getDate());
+		
+		if(!questionnaireRequest.getDate().equals(toUpdate.getDate())) {
+			verifyDuplicate(questionnaireRequest.getDate());
+			toUpdate.setDate(questionnaireRequest.getDate());
+		}
+		
 		toUpdate.setProduct(productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")));
-		toUpdate.setDate(questionnaireRequest.getDate());
 		toUpdate.setTitle(questionnaireRequest.getTitle());
 		toUpdate.setQuestions(questionnaireRequest.getQuestionsIds().stream().map((questionId) -> questionService.getQuestion(questionId).orElseThrow(
 						()->new QuestionNotFoundException("Invalid id", "Question not found")))

@@ -9,10 +9,10 @@ import it.polimi.db2.questionnaire.dto.requests.AnswerRequest;
 import it.polimi.db2.questionnaire.dto.requests.ResponseRequest;
 import it.polimi.db2.questionnaire.dto.responses.LeaderboardUserResponse;
 import it.polimi.db2.questionnaire.dto.responses.ResponseResponse;
+import it.polimi.db2.questionnaire.exceptions.BadWordException;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
-import it.polimi.db2.questionnaire.exceptions.badWordException;
 import it.polimi.db2.questionnaire.mappers.ResponseMapper;
 import it.polimi.db2.questionnaire.mappers.UserMapper;
 import it.polimi.db2.questionnaire.model.Questionnaire;
@@ -50,7 +50,7 @@ public class ResponseService {
 				
 		}else{
 			userService.blockLogged();
-			throw new badWordException("Response not accepted", "Bad words are not allowed");
+			throw new BadWordException("Response not accepted", "Bad words are not allowed");
 		}
 	}
 	

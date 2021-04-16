@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import it.polimi.db2.questionnaire.config.jwt.JwtUtils;
 import it.polimi.db2.questionnaire.enumerations.Role;
@@ -22,8 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final UserDetailsService userDetailsService;
 	private final JwtUtils jwtUtils;
-	private final PasswordEncoder passwordEncoder;
-	
+	private final PasswordEncoder passwordEncoder;	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)		//jwt is stateless
         .and()
-        .addFilter(new JwtAuthenticationFilter(jwtUtils, authenticationManager()))
+        .addFilter(authFilter())
         .addFilterAfter(new JwtVerifier(jwtUtils), JwtAuthenticationFilter.class)
         .authorizeRequests()
 		 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
@@ -47,9 +47,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          .antMatchers("/admin/*").hasRole(Role.ADMIN.name())
          .anyRequest()
          .authenticated();
+ 
 	}
 	
+
 	
+	private JwtAuthenticationFilter authFilter() throws Exception {
+		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtils, authenticationManager());
+		filter.setAuthenticationFailureHandler(failureHandler());
+		return filter;
+	}
+	
+	private AuthenticationFailureHandler failureHandler() {
+		return new CustomAuthenticationFailureHandler();
+		
+	}
 	
 
 }

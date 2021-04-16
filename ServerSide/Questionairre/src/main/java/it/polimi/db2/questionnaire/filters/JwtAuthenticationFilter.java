@@ -44,5 +44,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.addHeader(jwtUtils.getHeader(), jwtUtils.buildHeaderBody(authResult.getName(), authResult.getAuthorities()));
 	}
 
+
 	
 }

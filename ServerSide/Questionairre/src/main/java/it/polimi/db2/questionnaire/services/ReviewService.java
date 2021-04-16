@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.polimi.db2.questionnaire.dto.requests.ReviewRequest;
+import it.polimi.db2.questionnaire.exceptions.BadWordException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
-import it.polimi.db2.questionnaire.exceptions.badWordException;
 import it.polimi.db2.questionnaire.mappers.ReviewMapper;
 import it.polimi.db2.questionnaire.repositories.ReviewRepository;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class ReviewService {
 						userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"))));
 		else {
 			userService.blockLogged();
-			throw new badWordException("Review not accepted", "Bad words are not allowed");
+			throw new BadWordException("Review not accepted", "Bad words are not allowed");
 		}
 	}
 }

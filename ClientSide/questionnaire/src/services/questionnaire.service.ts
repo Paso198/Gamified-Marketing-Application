@@ -30,6 +30,9 @@ export class QuestionnaireService {
   public addQuestionnaire(request:QuestionnaireRequest):Observable<any>{
     return this.http.post<any>(`${this.apiServerUrl}/admin/questionnaires/`,request);
   }
+  public updateQuestionnaire(id: number, request:QuestionnaireRequest):Observable<any>{
+    return this.http.put<any>(`${this.apiServerUrl}/admin/questionnaires/`+id,request);
+  }
 
   public getQuestionnaireQuestions(id:number):Observable<Question[]>{
     return this.http.get<Question[]>(`${this.apiServerUrl}/admin/questionnaires/`+id+'/questions');

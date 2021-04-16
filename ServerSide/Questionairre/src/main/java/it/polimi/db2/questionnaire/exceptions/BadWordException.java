@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class badWordException extends RuntimeException{
+public class BadWordException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 	

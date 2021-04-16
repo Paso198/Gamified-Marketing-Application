@@ -3,7 +3,7 @@
         <h3 class="mb-0">New Questionnaire</h3>
     </mat-card-title>
     <mat-card-content>
-        <form [formGroup]="qForm" class="normal-form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="qForm" class="normal-form">
             <div class="controles-container">
                 <input type="hidden" formControlName="$key">
                 <mat-form-field>
@@ -93,12 +93,15 @@
                         </table>
                         <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
                     </mat-card-content> 
+                    <mat-card-actions>
+                        <button mat-flat-button color="primary" (click)= "onAdd()">New Question</button>
+                    </mat-card-actions>
                 </mat-card>
             </div>
             <p [class.text-danger]="serverError" [class.text-success]="serverSuccess"*ngIf="serverError==true||serverSuccess==true">{{serverMessage}}</p>
             <br>
             
-            <button mat-raised-button color="primary" type="submit" [disabled]="qForm.invalid || included.data.length<=0" style="margin-right:85%">Submit</button>   
+            <button mat-raised-button color="primary"  (click)="onSubmit()" type="submit" [disabled]="qForm.invalid || included.data.length<=0" style="margin-right:85%">Submit</button>   
             <button mat-raised-button color="accent"  (click)="onBack()" style="margin-right:5px" >Back</button>
         </form>    
     </mat-card-content>
