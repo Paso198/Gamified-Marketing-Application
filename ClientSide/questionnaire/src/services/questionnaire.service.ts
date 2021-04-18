@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminQuestionnaire } from 'src/app/models/admin-questionnaire';
 import { Question } from 'src/app/models/question';
+import { Questionnaire } from 'src/app/models/questionnaire';
 import { QuestionnaireRequest } from 'src/app/models/questionnaire-request';
+import { Response } from 'src/app/models/response';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -36,5 +38,17 @@ export class QuestionnaireService {
 
   public getQuestionnaireQuestions(id:number):Observable<Question[]>{
     return this.http.get<Question[]>(`${this.apiServerUrl}/admin/questionnaires/`+id+'/questions');
+  }
+
+  public getQuestionnaireOfTheDay():Observable<Questionnaire>{
+        return this.http.get<Questionnaire>(`${this.apiServerUrl}/user/questionnaires`);
+  }
+
+  public cancelQuestionnaire():Observable<any>{
+    return this.http.post<any>(`${this.apiServerUrl}/user/questionnaires/cancel`,null);
+  }
+
+  public sendQuestionnaire(response:Response):Observable<any>{
+    return this.http.post<any>(`${this.apiServerUrl}/user/responses`,response);
   }
 }

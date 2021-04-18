@@ -3,7 +3,7 @@
         Future Questionnaires
     </mat-card-title>
     <mat-card-content> 
-        <div [hidden]="!available">
+    <div [hidden]="!available">
         <mat-form-field>
             <input (keyup)= "applyFilter($event.target.value)" matInput placeholder="Filter"/>
         </mat-form-field>

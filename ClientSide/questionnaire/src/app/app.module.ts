@@ -27,6 +27,7 @@ import { DataService } from 'src/services/data.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { ModifyQuestionnaireComponent } from './modify-questionnaire/modify-questionnaire.component';
 import { AddReviewComponent } from './add-review/add-review.component';
+import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
 
 
 
@@ -48,7 +49,8 @@ import { AddReviewComponent } from './add-review/add-review.component';
     AddQuestionComponent,
     AddQuestionnaireComponent,
     ModifyQuestionnaireComponent,
-    AddReviewComponent
+    AddReviewComponent,
+    QuestionnaireComponent
   ],
   imports: [
     BrowserModule,

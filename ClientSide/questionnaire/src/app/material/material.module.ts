@@ -13,10 +13,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-
-
-
-
+import {MatRadioModule} from '@angular/material/radio';
+import {MatStepperModule} from '@angular/material/stepper';
 
 
 const MaterialComponwnts = [
@@ -33,7 +31,9 @@ MatDialogModule,
 MatSelectModule,
 MatDatepickerModule,
 MatNativeDateModule,
-DragDropModule
+DragDropModule,
+MatRadioModule,
+MatStepperModule
 ];
 
 

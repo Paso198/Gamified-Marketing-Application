@@ -12,7 +12,7 @@
                 <div *ngIf="product.reviews.length<=0">
                     No review available, do you want to be the first?
                 </div>
-                <div *ngIf="product.reviews.length>0">
+                <div [hidden]="product.reviews.length<=0">
                     <mat-card *ngFor="let card of obs | async " >
                         <mat-card-title>
                             <h2><i>{{card.username}}</i></h2>
@@ -21,14 +21,15 @@
                             {{card.review}}
                     </mat-card-content>
                     </mat-card>
-                    <mat-paginator [pageSizeOptions]="[1,5,10]" showFirstLastButtons></mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
                 </div>
                
             </mat-expansion-panel>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button color="primary"  (click)="onReview()" type="submit" style="margin-right:65%">Send a Review</button>   
-            <button mat-raised-button color="accent"  (click)="onQuestionnaire()" style="margin-right:5px" >See the questionnaire</button>
+            <button mat-raised-button color="primary"  (click)="onReview()" type="submit" >Send a Review</button>   
+            <button mat-raised-button color="accent"  (click)="onQuestionnaire()"  >See the questionnaire</button>
+            <button mat-raised-button color="accent"  (click)="onLogout()" >Logout</button>
         </mat-card-actions>
     </mat-card>
 </div>
@@ -36,4 +37,6 @@
    
 <div *ngIf="!available">
     {{errorMessage}}
+    <br>
+    <button mat-raised-button color="accent"  (click)="onLogout()" >Logout</button>
 </div>

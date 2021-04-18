@@ -14,7 +14,7 @@ import it.polimi.db2.questionnaire.model.Question;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.User;
 
-@Mapper(componentModel = "spring", uses = ProductMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring", uses = {ProductMapper.class, AnswerMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface QuestionnaireMapper {
 	
 	@Mapping(target="id", ignore=true)
@@ -30,8 +30,7 @@ public interface QuestionnaireMapper {
 	@Mapping(target="id", source="id")
 	@Mapping(target="title", source="title")
 	@Mapping(target="product", source="product")
-	//@Mapping(target="questions", expression="java(...)") TODO
-	@Mapping(target="questions", ignore=true)
+	@Mapping(target="questions",source="questions")
 	public QuestionnaireOfTheDayResponse toQuestionnaireOfTheDayResponse(Questionnaire questionnaire);
 	
 	@Mapping(target="id", source="id")

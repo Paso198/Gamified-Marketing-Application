@@ -34,20 +34,27 @@ export class ProductDayComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.changeDetectorRef.detectChanges();
+    this.product=new DayProduct(0,"",null,[]);
+    this.available=false;
+    this.dataSource=new MatTableDataSource(this.product.reviews);
+    this.obs = this.dataSource.connect();
+    this.dataSource.paginator = this.paginator;
+    this.initializeProduct();
     
     this.errorMessage="";
+    this.changeDetectorRef.detectChanges();
     this.initializeProduct();
   }
 
   initializeProduct():void{
     this.productService.getProductOfTheDay().subscribe(
-      res=>{this.product=res;
-        this.dataSource=new MatTableDataSource(res.reviews);
-        
+      res=>{
+        this.available=true;
+        this.product=res;
+        this.dataSource=new MatTableDataSource(this.product.reviews);
         this.obs = this.dataSource.connect();
         this.dataSource.paginator = this.paginator;
-        this.available=true;},
+       },
       error=>{
         if ([401, 403].indexOf(error.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
@@ -55,6 +62,7 @@ export class ProductDayComponent implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
       }
       else if([404].indexOf(error.status) !== -1){
+        this.errorMessage="";
         this.available = false;
         for (let prop in error.error) {
           this.errorMessage = this.errorMessage+"\n"+ prop+": "+error.error[prop];
@@ -87,8 +95,14 @@ export class ProductDayComponent implements OnInit, OnDestroy {
   }
 
   public onQuestionnaire():void{
-    
+    this.router.navigate(['/day-questionnaire']);
   }
+
+  onLogout():void{
+    this.jwtService.logout();
+    this.router.navigate(['/login']);
+  }
+
   ngOnDestroy() {
     if (this.dataSource) { 
       this.dataSource.disconnect(); 

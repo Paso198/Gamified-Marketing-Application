@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { Role } from './models/role';
 import { ModifyQuestionnaireComponent } from './modify-questionnaire/modify-questionnaire.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
 import { SignupComponent } from './signup/signup.component';
 
 
@@ -40,6 +41,12 @@ const routes: Routes = [
     component: ModifyQuestionnaireComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }
+  },
+  {
+    path:'day-questionnaire', 
+    component: QuestionnaireComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.User] }
   },
   {
     path:'**', 

@@ -1,0 +1,66 @@
+<mat-card>
+    <mat-card-title>
+        <h3 class="mb-0">Questionnaire of the day: {{questionnaire.title}}</h3>
+    </mat-card-title>
+    <mat-card-content>
+        <mat-horizontal-stepper linear="false" #stepper>
+            <mat-step>
+                <ng-template matStepLabel>Marketing Section</ng-template>
+                <div *ngFor="let answer of answers, let i=index">
+                    <label>{{questionnaire.questions[i].text}}</label>
+                        <textarea  [(ngModel)]="answer.text"  
+                            class="form-control" 
+                                name="text"
+                                rows="4" required></textarea>
+                                <br>
+                </div>
+                <div>
+                    <button mat-raised-button color="accent" matStepperNext>Next</button>
+                </div>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Statistical Section (optional) </ng-template>
+                <form [formGroup]="optionalForm" class="normal-form">
+                    <div class="controles-container">
+                        <input type="hidden" formControlName="$key">
+                        <mat-form-field>
+                            <mat-label>Age</mat-label>
+                            <input id="number" type="number"  formControlName="age" matInput placeholder="18">
+                        <mat-error>You must be 18+</mat-error>
+                        </mat-form-field>
+                        <br>
+                        <br>
+                        <label>Gender:</label>
+                        <mat-radio-group formControlName="gender">
+                            <mat-radio-button value ="MALE">Male</mat-radio-button>
+                            <mat-radio-button value ="FEMALE">Female</mat-radio-button>
+                            <mat-radio-button value ="NOT">I will not specify my gender</mat-radio-button>
+                        </mat-radio-group>
+                        <br>
+                        <br>
+                        <label>Expertise Level:</label>
+                        <mat-radio-group formControlName="expertiseLevel">
+                            <mat-radio-button value ="LOW">Low</mat-radio-button>
+                            <mat-radio-button value ="MEDIUM">Medium</mat-radio-button>
+                            <mat-radio-button value ="HIGH">High</mat-radio-button>
+                            <mat-radio-button value ="NOT">I will not specify my expertise Level</mat-radio-button>
+                        </mat-radio-group>
+                        <br>
+                        <br>
+                    
+                    </div>                   
+                </form> 
+                <div>
+                    <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+                </div>
+                <p [class.text-danger]="serverError" [class.text-success]="serverSuccess"*ngIf="serverError==true||serverSuccess==true">{{serverMessage}}</p>
+            </mat-step>
+        </mat-horizontal-stepper>   
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="warn" (click)="onCancel()" >Cancel</button>
+    </mat-card-actions>
+</mat-card>
+
+

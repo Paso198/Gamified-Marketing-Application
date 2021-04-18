@@ -2,7 +2,6 @@ package it.polimi.db2.questionnaire.dto.requests;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseRequest {
-	@NotBlank
+	@NotNull
 	private Long questionnaireId;
 	
 	@NotNull
