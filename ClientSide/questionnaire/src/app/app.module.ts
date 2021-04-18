@@ -28,6 +28,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { ModifyQuestionnaireComponent } from './modify-questionnaire/modify-questionnaire.component';
 import { AddReviewComponent } from './add-review/add-review.component';
 import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
+import { GreetingsComponent } from './greetings/greetings.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { InspectComponent } from './inspect/inspect.component';
+import { SubmittersComponent } from './submitters/submitters.component';
+import { CancellersComponent } from './cancellers/cancellers.component';
 
 
 
@@ -50,7 +55,12 @@ import { QuestionnaireComponent } from './questionnaire/questionnaire.component'
     AddQuestionnaireComponent,
     ModifyQuestionnaireComponent,
     AddReviewComponent,
-    QuestionnaireComponent
+    QuestionnaireComponent,
+    GreetingsComponent,
+    LeaderboardComponent,
+    InspectComponent,
+    SubmittersComponent,
+    CancellersComponent
   ],
   imports: [
     BrowserModule,

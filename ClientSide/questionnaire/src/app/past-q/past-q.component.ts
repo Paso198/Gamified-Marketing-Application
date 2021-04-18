@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { DataService } from 'src/services/data.service';
 import { JwtService } from 'src/services/jwt.service';
 import { QuestionnaireService } from 'src/services/questionnaire.service';
 import { ConfirmDeleteComponent } from '../confirm-delete/confirm-delete.component';
@@ -23,7 +24,8 @@ export class PastQComponent implements OnInit {
   dataSource = new MatTableDataSource([]);
   available:boolean;
 
-  constructor(private questionnaireService:QuestionnaireService,
+  constructor(private data:DataService,
+    private questionnaireService:QuestionnaireService,
     private jwtService:JwtService,
     private router: Router,
     private dialog:MatDialog) { }
@@ -64,7 +66,8 @@ export class PastQComponent implements OnInit {
   }
 
   onInspect(questionnaire:AdminQuestionnaire){
-    console.log(questionnaire);
+    this.data.setQuestionnaireData(questionnaire);
+    this.router.navigate(['/inspect']);
   }
 
   onDelete(questionnaire:AdminQuestionnaire){

@@ -108,6 +108,7 @@ export class QuestionnaireComponent implements OnInit {
               {
                  this.serverMessage= this.serverMessage + res[key]+ '\n';
               }
+              this.router.navigate(['/greetings']);
             }
             else{
               this.serverError=false;

@@ -1,0 +1,17 @@
+<mat-card>
+    <mat-card-title>
+        <h3 class="mb-0">Inspect Questionnaire: {{data.getQuestionnaireData().id}}</h3>
+    </mat-card-title>
+    <mat-card-content>
+           Title: {{data.getQuestionnaireData().title}}<br>
+           Date: {{data.getQuestionnaireData().date}}<br>
+           Product: {{data.getQuestionnaireData().product.name}}<br>
+
+           <app-submitters [id]="data.getQuestionnaireData().id"></app-submitters>
+           <app-cancellers [id]="data.getQuestionnaireData().id"></app-cancellers>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="accent"  (click)="onLogout()" >Logout</button>
+        <button mat-raised-button color="primary"  (click)="onHome()" >Back</button>
+    </mat-card-actions>
+</mat-card>

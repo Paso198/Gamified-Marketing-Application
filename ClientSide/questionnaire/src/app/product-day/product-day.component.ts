@@ -103,6 +103,10 @@ export class ProductDayComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
+  onLeaderboard():void{
+    this.router.navigate(['/leaderboard']);
+  }
+
   ngOnDestroy() {
     if (this.dataSource) { 
       this.dataSource.disconnect(); 
