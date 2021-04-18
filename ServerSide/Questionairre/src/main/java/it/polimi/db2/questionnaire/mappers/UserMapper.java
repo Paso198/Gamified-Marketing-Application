@@ -35,8 +35,8 @@ public abstract class UserMapper {
 	}
 	
 	@Mapping(target="id", source="id")
-	@Mapping(target="username", source="username")
-	@Mapping(target="email", source="email")
+	@Mapping(target="username", expression="java(user.getUsername())")
+	@Mapping(target="email", expression="java(user.getEmail())")
 	public abstract UserResponse toUserResponse(User user);
 	
 	public abstract List<UserResponse> toUsersResponse(List<User> users);

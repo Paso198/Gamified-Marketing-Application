@@ -356,6 +356,7 @@ public class UserRepositoryTests extends BaseJPATest{
 		List<User> send2 = userRepository.findAll(UserSpecs.usersCancelledQuestionaire(q2.getId()));
 		Assertions.assertThat(send).contains(u2).doesNotContain(u1, u3, u4);
 		Assertions.assertThat(send2).isEmpty();
+		Assertions.assertThat(send.get(0).getUsername()).isEqualTo("tester1");
 	}
 	
 	public static byte[] hexStringToByteArray(String s) {

@@ -35,7 +35,7 @@ public class ResponseController {
 		return responseService.getUserResponse(userId, questId);
 	}
 	
-	@GetMapping("/admin/questionnaires/leaderboard")
+	@GetMapping("/user/questionnaires/leaderboard")
 	public List<LeaderboardUserResponse> getLeaderboard(){
 		return responseService.getLeaderboard();
 	}
