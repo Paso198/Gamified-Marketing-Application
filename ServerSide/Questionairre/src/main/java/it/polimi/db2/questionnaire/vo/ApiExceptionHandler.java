@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import it.polimi.db2.questionnaire.exceptions.BadImageException;
 import it.polimi.db2.questionnaire.exceptions.BadWordException;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
+import it.polimi.db2.questionnaire.exceptions.InvalidResponseException;
 import it.polimi.db2.questionnaire.exceptions.ProductNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotAvailableException;
@@ -103,10 +104,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return errors;
 	}
 	
+	@ExceptionHandler(InvalidResponseException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public Map<String, String> handleInvalidResponse(InvalidResponseException ex) {
+		Map<String, String> errors = new HashMap<String, String>();
+		errors.put("response", ex.getMessage());
+		return errors;
+	}
+	
 	@ExceptionHandler(UnloggedUserException.class)
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
 	@ResponseBody
-	public Map<String, String> handleUnloggedUserException(UnloggedUserException ex) {
+	public Map<String, String> handleUnloggedUser(UnloggedUserException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		errors.put("user", ex.getMessage());
 		return errors;
