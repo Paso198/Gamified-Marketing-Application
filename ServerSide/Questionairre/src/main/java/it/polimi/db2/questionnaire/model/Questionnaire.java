@@ -17,6 +17,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,6 +56,7 @@ public class Questionnaire implements Serializable{
 			name="contains",
 			joinColumns = @JoinColumn(name = "questionnaireId"),
 			inverseJoinColumns = @JoinColumn(name = "questionId"))
+	@OrderColumn(name = "position")
 	@Builder.Default
 	private List<Question> questions=new ArrayList<Question>();
 	
