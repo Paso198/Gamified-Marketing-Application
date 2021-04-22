@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.polimi.db2.questionnaire.mappers.BadWordMapper;
 import it.polimi.db2.questionnaire.model.BadWord;
 import it.polimi.db2.questionnaire.repositories.BadWordRepository;
 import lombok.AllArgsConstructor;
@@ -17,13 +16,9 @@ import lombok.AllArgsConstructor;
 public class BadWordService {
 	
 	private final BadWordRepository badWordRepository;
-	private final BadWordMapper badWordMapper;
+	
 	
 	@Transactional
-	public void addBadWord(String badWord) {
-		badWordRepository.save(badWordMapper.mapToBadWord(badWord));
-	}
-	
 	private Predicate<String> containsBadWordPredicate(){
 		List<BadWord> badWords = badWordRepository.findAll();
 		return  badWords.stream()
@@ -33,6 +28,7 @@ public class BadWordService {
 				::contains;
 	}
 	
+	@Transactional
 	public boolean containtsBadWord(List<String> words) {
 		return words.stream().anyMatch(containsBadWordPredicate());
 	}

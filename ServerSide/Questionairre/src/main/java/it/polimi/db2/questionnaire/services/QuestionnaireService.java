@@ -52,6 +52,8 @@ public class QuestionnaireService {
 	public void updateQuestionnaire(QuestionnaireRequest questionnaireRequest, Long id) {
 		Questionnaire toUpdate = questionnaireRepository.findById(id).orElseThrow(()->new QuestionnaireNotFoundException("Invalid id", "Questionnaire not found"));
 		if(toUpdate.getDate().equals(LocalDate.now())) throw new UnauthorizedOperationException("Questionnaire of the day cannot be modified");
+		if(toUpdate.getDate().isBefore((LocalDate.now()))) throw new UnauthorizedOperationException("Past cannot be modified");
+
 		
 		if(!questionnaireRequest.getDate().equals(toUpdate.getDate())) {
 			verifyDuplicate(questionnaireRequest.getDate());
@@ -68,7 +70,7 @@ public class QuestionnaireService {
 	@Transactional(readOnly = true)
 	public QuestionnaireOfTheDayResponse getQuestionnaireOfTheDay() {
 		Questionnaire questionnaire = questionnaireRepository.findQuestionnaireOfTheDay().orElseThrow(
-				()->new QuestionnaireNotAvailableException("Questionnaire not available yet", "No Questionnaire found for current date"));
+				()->new QuestionnaireNotAvailableException("Questionnaire not available", "No Questionnaire found for current date"));
 		return questionnaireMapper.toQuestionnaireOfTheDayResponse(questionnaire);
 	}
 	
