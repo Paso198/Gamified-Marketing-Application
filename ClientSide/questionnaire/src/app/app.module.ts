@@ -33,6 +33,7 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { InspectComponent } from './inspect/inspect.component';
 import { SubmittersComponent } from './submitters/submitters.component';
 import { CancellersComponent } from './cancellers/cancellers.component';
+import { UserInspectComponent } from './user-inspect/user-inspect.component';
 
 
 
@@ -60,7 +61,8 @@ import { CancellersComponent } from './cancellers/cancellers.component';
     LeaderboardComponent,
     InspectComponent,
     SubmittersComponent,
-    CancellersComponent
+    CancellersComponent,
+    UserInspectComponent
   ],
   imports: [
     BrowserModule,

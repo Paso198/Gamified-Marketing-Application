@@ -21,11 +21,13 @@ export class InspectComponent implements OnInit {
   }
 
   onLogout():void{
+    this.data.clean();
     this.jwtService.logout();
     this.router.navigate(['/login']);
   }
 
   onHome():void{
+    this.data.clean();
     this.router.navigate(['/home']);
   }
 

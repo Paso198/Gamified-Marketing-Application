@@ -3,8 +3,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { DataService } from 'src/services/data.service';
 import { JwtService } from 'src/services/jwt.service';
 import { QuestionnaireService } from 'src/services/questionnaire.service';
+import { UserResponse } from '../models/user-response';
+import { UserInspectComponent } from '../user-inspect/user-inspect.component';
 
 @Component({
   selector: 'app-submitters',
@@ -23,7 +26,8 @@ export class SubmittersComponent implements OnInit {
 
   constructor(private questionnaireService:QuestionnaireService,
     private jwtService:JwtService,
-    private router: Router) { }
+    private router: Router,
+    private data:DataService) { }
 
   ngOnInit(): void {
     this.getSubmitters();
@@ -54,7 +58,10 @@ export class SubmittersComponent implements OnInit {
       }
     )
   }
-  onAnswers(userid){
+  onAnswers(element){
+    let u:UserResponse = new UserResponse(element.id, element.username, element.email);
+    this.data.setUserData(u);
+    this.router.navigate(['/user-inspect']);
   }
 
 

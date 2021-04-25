@@ -1,0 +1,49 @@
+<mat-card>
+    <mat-card-title>
+        Response of {{data.getUserData().username}} for questionnaire {{data.getQuestionnaireData().id}}
+    </mat-card-title>
+    <mat-card-content> 
+        <div *ngIf="available">
+        <mat-card *ngFor="let answer of response.answers" >
+            <mat-card-title>
+                <h5><i>{{answer.question.text}}</i></h5>
+            </mat-card-title>
+        <mat-card-content>
+                {{answer.text}}
+        </mat-card-content>
+        </mat-card>
+        <mat-card >
+            <mat-card-title>
+                <h5><i>Statistical section</i></h5>
+            </mat-card-title>
+        <mat-card-content>
+               <div *ngIf="response.age">
+                   Age: {{response.age}}
+               </div>
+               <div *ngIf="!response.age">
+                    Age: not specified
+                </div>
+                <div *ngIf="response.gender">
+                    Gender: {{response.gender}}
+                </div>
+                <div *ngIf="!response.gender">
+                     Gender: not specified
+                 </div>
+                 <div *ngIf="response.expertiseLevel">
+                    Expertise Level: {{response.expertiseLevel}}
+                </div>
+                <div *ngIf="!response.expertiseLevel">
+                    Expertise Level: not specified
+                 </div>
+        </mat-card-content>
+        </mat-card>
+    </div>
+    <div *ngIf="!available">
+        There is not a valid response for the user {{data.getUserData().username}} and questionnaire {{data.getQuestionnaireData().id}}.
+    </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="accent"  (click)="onLogout()" >Logout</button>
+        <button mat-raised-button color="primary"  (click)="onBack()" >Back</button>
+    </mat-card-actions>
+</mat-card>

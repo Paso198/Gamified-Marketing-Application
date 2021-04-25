@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminQuestionnaire } from 'src/app/models/admin-questionnaire';
+import { AdminResponse } from 'src/app/models/admin-response';
 import { LeaderboardUser } from 'src/app/models/leaderboard-user';
 import { Question } from 'src/app/models/question';
 import { Questionnaire } from 'src/app/models/questionnaire';
@@ -64,5 +65,9 @@ export class QuestionnaireService {
 
   public getCancellers(id):Observable<UserResponse[]>{
     return this.http.get<UserResponse[]>(`${this.apiServerUrl}/admin/questionnaires/`+id+'/users/cancelled');
+  }
+
+  public getResponse(questionnaireId, userId):Observable<AdminResponse>{
+    return this.http.get<AdminResponse>(`${this.apiServerUrl}/admin/questionnaires/`+questionnaireId+'/users/'+userId);
   }
 }

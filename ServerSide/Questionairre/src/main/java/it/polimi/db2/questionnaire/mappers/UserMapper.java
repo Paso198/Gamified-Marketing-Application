@@ -21,7 +21,7 @@ public abstract class UserMapper {
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="username", expression="java(userRequest.getUsername())")
 	@Mapping(target="email", expression="java(userRequest.getEmail())")
-	@Mapping(target="password", expression="java(passwordEncoder.encode(userRequest.getPassword()))")
+	@Mapping(target="password", source="userRequest.username")
 	@Mapping(target="blocked", source="blocked")
 	@Mapping(target="logs", ignore=true)
 	@Mapping(target="questionnairesCreated", ignore=true)
@@ -42,7 +42,7 @@ public abstract class UserMapper {
 	public abstract List<UserResponse> toUsersResponse(List<User> users);
 
 	@Mapping(target="id", source="user.id")
-	@Mapping(target="username", source="user.username")
+	@Mapping(target="username", expression="java(response.getUser().getUsername())")
 	@Mapping(target="dailyPoints", source="points")
 	@Mapping(target="totalPoints", expression="java(response.getUser().getPoints())")
 	public abstract LeaderboardUserResponse toLeaderboardUserResponse(Response response);

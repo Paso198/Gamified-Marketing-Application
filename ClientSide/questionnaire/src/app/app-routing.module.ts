@@ -12,6 +12,7 @@ import { ModifyQuestionnaireComponent } from './modify-questionnaire/modify-ques
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
 import { SignupComponent } from './signup/signup.component';
+import { UserInspectComponent } from './user-inspect/user-inspect.component';
 
 
 const routes: Routes = [
@@ -49,6 +50,12 @@ const routes: Routes = [
   {
     path:'inspect', 
     component: InspectComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path:'user-inspect', 
+    component: UserInspectComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }
   },

@@ -84,6 +84,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
         if ([401, 403].indexOf(error.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           this.jwtService.logout();
+          this.data.clean();
           this.router.navigate(['/login']);
       }
       }
@@ -207,6 +208,7 @@ export class ModifyQuestionnaireComponent implements OnInit {
   }
 
   onBack():void{
+    this.data.clean();
     this.router.navigate(['/home']);
   }
 
