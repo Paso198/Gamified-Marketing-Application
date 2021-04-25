@@ -29,7 +29,8 @@ export class UserInspectComponent implements OnInit {
   }
 
   getResponse():void{
-    this.questionnaireService.getResponse(this.data.getQuestionnaireData(), this.data.getUserData()).subscribe(
+    console.log(this.data.getQuestionnaireData());
+    this.questionnaireService.getResponse(this.data.getQuestionnaireData().id, this.data.getUserData().id).subscribe(
       res=>{
         this.available=true;
         this.response=res;
@@ -59,7 +60,6 @@ export class UserInspectComponent implements OnInit {
   }
 
   onBack():void{
-    this.data.clean();
     this.router.navigate(['/inspect']);
   }
 

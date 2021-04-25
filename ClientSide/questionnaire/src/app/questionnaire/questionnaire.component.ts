@@ -108,13 +108,13 @@ export class QuestionnaireComponent implements OnInit {
               {
                  this.serverMessage= this.serverMessage + res[key]+ '\n';
               }
-              this.router.navigate(['/greetings']);
+        
             }
             else{
               this.serverError=false;
               this.serverSuccess=true;
               this.serverMessage="Questionnaire answered successfully";
-              this.router.navigate(['/home']);
+              this.router.navigate(['/greetings']);
             }
           },
           error=>{

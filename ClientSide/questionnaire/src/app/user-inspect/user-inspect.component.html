@@ -6,7 +6,7 @@
         <div *ngIf="available">
         <mat-card *ngFor="let answer of response.answers" >
             <mat-card-title>
-                <h5><i>{{answer.question.text}}</i></h5>
+                <h3><i>{{answer.question.text}}</i></h3>
             </mat-card-title>
         <mat-card-content>
                 {{answer.text}}
@@ -14,7 +14,7 @@
         </mat-card>
         <mat-card >
             <mat-card-title>
-                <h5><i>Statistical section</i></h5>
+                <h3><i>Statistical section</i></h3>
             </mat-card-title>
         <mat-card-content>
                <div *ngIf="response.age">
