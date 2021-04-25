@@ -55,10 +55,11 @@ public class ResponseService {
 			List<Question> answeredQuestions = new ArrayList<>();
 			List<Question> questionnaireQuestions = questionnaire.getQuestions();
 			request.getAnswers().stream().map(AnswerRequest::getQuestionId).forEach((id) -> answeredQuestions.add(questionService.getQuestion(id).orElseThrow(()->new QuestionNotFoundException("Invalid id", "Question not found"))));
-			if(!answeredQuestions.containsAll(questionnaireQuestions))
-				throw new InvalidResponseException("Not all mandatory questions have been answered");
-			
-			responseRepository.save(responseMapper.toResponse(request, questionnaire, user, questionnaireQuestions));
+			if(!answeredQuestions.containsAll(questionnaireQuestions) || questionnaireQuestions.size()!=answeredQuestions.size())
+				throw new InvalidResponseException("The response does not contains valid answers");
+			Response response =responseMapper.toResponse(request, questionnaire, user, questionnaireQuestions);
+			response.getAnswers().forEach(a->a.setResponse(response));
+			responseRepository.save(response);
 			logService.logSubmission(user, questionnaire);
 				
 		}else{

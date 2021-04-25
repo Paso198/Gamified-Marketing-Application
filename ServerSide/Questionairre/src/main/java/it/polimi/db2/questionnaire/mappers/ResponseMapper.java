@@ -12,16 +12,13 @@ import it.polimi.db2.questionnaire.model.Question;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.Response;
 import it.polimi.db2.questionnaire.model.User;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @Mapper(componentModel = "spring", uses = AnswerMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-@AllArgsConstructor
-@NoArgsConstructor
+
 public abstract class ResponseMapper {
 	
-	protected AnswerMapper answerMapper;
 
+	
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="age", source="responseRequest.age")
 	@Mapping(target="gender", source="responseRequest.gender")
@@ -31,7 +28,9 @@ public abstract class ResponseMapper {
 	@Mapping(target="user", source="user")
 	@Mapping(target="questionnaire", source="questionnaire")
 	public abstract Response toResponse(ResponseRequest responseRequest, Questionnaire questionnaire, User user, List<Question> questions);
+	
 
+	
 	
 	
 	@Mapping(target="id", source="id")

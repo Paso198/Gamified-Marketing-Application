@@ -67,7 +67,7 @@ public class Questionnaire implements Serializable{
 	@ManyToOne(optional=false, fetch=FetchType.LAZY) 
 	private User creator;
 	
-	@OneToMany(mappedBy="questionnaire")
+	@OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
 	@Builder.Default
 	private List<Log> logs=new ArrayList<Log>();
 	

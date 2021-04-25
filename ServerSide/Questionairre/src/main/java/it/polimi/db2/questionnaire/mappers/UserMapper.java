@@ -21,7 +21,7 @@ public abstract class UserMapper {
 	@Mapping(target="id", ignore=true)
 	@Mapping(target="username", expression="java(userRequest.getUsername())")
 	@Mapping(target="email", expression="java(userRequest.getEmail())")
-	@Mapping(target="password", source="userRequest.username")
+	@Mapping(target="password", source="userRequest.password")
 	@Mapping(target="blocked", source="blocked")
 	@Mapping(target="logs", ignore=true)
 	@Mapping(target="questionnairesCreated", ignore=true)
