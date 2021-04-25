@@ -57,10 +57,8 @@ public class ResponseService {
 			request.getAnswers().stream().map(AnswerRequest::getQuestionId).forEach((id) -> answeredQuestions.add(questionService.getQuestion(id).orElseThrow(()->new QuestionNotFoundException("Invalid id", "Question not found"))));
 			if(!answeredQuestions.containsAll(questionnaireQuestions))
 				throw new InvalidResponseException("Not all mandatory questions have been answered");
-			if(!questionnaireQuestions.containsAll(answeredQuestions))
-				throw new InvalidResponseException("Response contains answers to questions that are not present in this questionnaire");
 			
-			responseRepository.save(responseMapper.toResponse(request, questionnaire, user));
+			responseRepository.save(responseMapper.toResponse(request, questionnaire, user, questionnaireQuestions));
 			logService.logSubmission(user, questionnaire);
 				
 		}else{
