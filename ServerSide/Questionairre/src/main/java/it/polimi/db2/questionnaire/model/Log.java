@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -39,14 +38,13 @@ public class Log implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Action action;
 	
-	@ManyToOne(optional=true, fetch=FetchType.EAGER) 
+	@ManyToOne(optional=true) 
 	private Questionnaire questionnaire;
 	
-	@ManyToOne(optional=false, fetch=FetchType.EAGER) 
+	@ManyToOne(optional=false) 
 	private User user;
 	
 	@CreationTimestamp
 	@Column(name="timestamp", nullable = false, updatable = false, insertable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime timestamp;
-
 }
