@@ -23,7 +23,7 @@ public class ProductRequest {
 	
 	@NotBlank(message = "Name can't be blank")
 	@Size(min=MIN_NAME_LENGTH, max= MAX_NAME_LENGTH, message="Name length must be between "+MIN_NAME_LENGTH+" and "+MAX_NAME_LENGTH+" characters")
-	@Pattern(regexp="[a-zA-Z0-9]*", message="Name must contain only letters and numbers")
+	@Pattern(regexp="[a-zA-Z0-9][a-zA-Z0-9 ]*[a-zA-Z0-9]", message="Name must contain only letters and numbers separated by spaces")
 	private String name;
 	
 	@NotNull

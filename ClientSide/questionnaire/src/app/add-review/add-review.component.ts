@@ -53,10 +53,12 @@ export class AddReviewComponent implements OnInit {
       },
       error=>{
         this.serverMessage="";
-        if ([401, 403].indexOf(error.status) !== -1) {
+        console.log(error.status);
+        if ([400, 401, 403].indexOf(error.status) !== -1) {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           this.jwtService.logout();
           this.router.navigate(['/login']);
+          this.dialogRef.close(true);
         }
         this.serverError=true;
         this.serverSuccess=false;

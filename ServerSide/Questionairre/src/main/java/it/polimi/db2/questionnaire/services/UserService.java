@@ -13,6 +13,7 @@ import it.polimi.db2.questionnaire.dto.requests.UserRequest;
 import it.polimi.db2.questionnaire.dto.responses.UserResponse;
 import it.polimi.db2.questionnaire.enumerations.Role;
 import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
+import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.UserMapper;
 import it.polimi.db2.questionnaire.model.User;
 import it.polimi.db2.questionnaire.repositories.UserRepository;
@@ -27,10 +28,8 @@ public class UserService {
 	
 	@Transactional
 	public void blockLogged() {
-		Optional<User> userToBlock = getLoggedUser();
-		userToBlock.ifPresent((User user) -> {
-			user.setBlocked(true);
-		});
+		User userToBlock = getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in"));
+		userToBlock.setBlocked(Boolean.TRUE);
 	}
 
 	@Transactional
