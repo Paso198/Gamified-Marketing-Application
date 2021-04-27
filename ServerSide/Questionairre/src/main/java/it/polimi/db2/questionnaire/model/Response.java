@@ -57,7 +57,7 @@ public class Response implements Serializable{
 	
 	private Integer points;
 	
-	@ManyToOne(optional=false, fetch=FetchType.EAGER) 	
+	@ManyToOne(optional=false) 	
 	private Questionnaire questionnaire;
 	
 	@ManyToOne(optional=false, fetch=FetchType.LAZY) 

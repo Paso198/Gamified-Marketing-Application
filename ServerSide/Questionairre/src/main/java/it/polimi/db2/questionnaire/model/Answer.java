@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -34,9 +33,9 @@ public class Answer implements Serializable{
 	@Column(nullable = false)
 	private String text;
 
-	@ManyToOne(optional=false, fetch=FetchType.EAGER) 			
+	@ManyToOne(optional=false) 			
 	private Question question;
 	
-	@ManyToOne(optional=false) 			
+	@ManyToOne(optional=false)
 	private Response response;
 }
