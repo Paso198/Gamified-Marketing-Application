@@ -21,11 +21,17 @@ public interface QuestionnaireMapper {
 	@Mapping(target="date", source="questionnaireRequest.date")
 	@Mapping(target="title", source="questionnaireRequest.title")
 	@Mapping(target="product", source="product")
-	@Mapping(target="questions", source="questions")
+	@Mapping(target="questions", ignore = true)
 	@Mapping(target="responses", ignore=true)
 	@Mapping(target="logs", ignore=true)
 	@Mapping(target="creator", source="creator")
-	public Questionnaire toQuestionnaire(QuestionnaireRequest questionnaireRequest, Product product, User creator, List<Question> questions);
+	public Questionnaire toPartialQuestionnaire(QuestionnaireRequest questionnaireRequest, Product product, User creator);
+	
+	default Questionnaire toQuestionnaire(QuestionnaireRequest questionnaireRequest, Product product, User creator, List<Question> questions) {
+		Questionnaire questionnaire = toPartialQuestionnaire(questionnaireRequest, product, creator);
+		questions.forEach(q->questionnaire.addQuestion(q));
+		return questionnaire;
+	}
 
 	@Mapping(target="id", source="id")
 	@Mapping(target="title", source="title")

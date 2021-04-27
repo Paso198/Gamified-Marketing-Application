@@ -22,7 +22,7 @@ public class ReviewService {
 	private final ReviewMapper reviewMapper;
 	private final ReviewRepository reviewRepository;
 	
-	@Transactional
+	@Transactional(noRollbackFor=BadWordException.class)
 	public void addReview(ReviewRequest reviewRequest) {
 		if (!badWordService
 				.containtsBadWord(List.of(reviewRequest.getReview().split("\\W+"))))

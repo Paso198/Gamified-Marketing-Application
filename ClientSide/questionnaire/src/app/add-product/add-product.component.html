@@ -16,13 +16,13 @@
                     [class.is-invalid]="name.invalid && name.touched"
                     minlength="2"
                     maxlength="30"
-                    pattern="[a-zA-Z0-9]*"
+                    pattern="[a-zA-Z0-9][a-zA-Z0-9 ]*[a-zA-Z0-9]"
                     required>
                     <div *ngIf="name.errors && (name.invalid && name.touched)">
                         <small class ="text-danger" *ngIf="name.errors.required">This field must not be empty</small>
                         <small class ="text-danger" *ngIf="name.errors.minlength">The minimum lenght of this field is 2</small>
                         <small class ="text-danger" *ngIf="name.errors.maxlength">The maximum lenght of this field is 30</small>
-                        <small class ="text-danger" *ngIf="name.errors.pattern">This field must only contain letters and numbers</small>
+                        <small class ="text-danger" *ngIf="name.errors.pattern">This field must only contain letters and numbers separated by spaces</small>
                     </div>
                     
                 </div>

@@ -43,9 +43,12 @@ public class QuestionnaireService {
 		questionnaireRepository.save(questionnaireMapper.toQuestionnaire(questionnaireRequest,
 				productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")), 
 				userService.getLoggedUser().orElseThrow(() -> new UnloggedUserException("Not user currently logged in")), 
-				questionnaireRequest.getQuestionsIds().stream().map((questionId) -> questionService.getQuestion(questionId).orElseThrow(
-						()->new QuestionNotFoundException("Invalid id", "Question not found")))
-				.collect(Collectors.toList())));
+				questionnaireRequest.getQuestionsIds()
+					.stream()
+					.map((questionId) -> questionService.getQuestion(questionId)
+							.orElseThrow(
+									()->new QuestionNotFoundException("Invalid id", "Question not found")))
+					.collect(Collectors.toList())));
 	}
 	
 	@Transactional
@@ -62,9 +65,12 @@ public class QuestionnaireService {
 		
 		toUpdate.setProduct(productService.getProduct(questionnaireRequest.getProductId()).orElseThrow(()->new ProductNotFoundException("invalid id", "product not found")));
 		toUpdate.setTitle(questionnaireRequest.getTitle());
-		toUpdate.setQuestions(questionnaireRequest.getQuestionsIds().stream().map((questionId) -> questionService.getQuestion(questionId).orElseThrow(
-						()->new QuestionNotFoundException("Invalid id", "Question not found")))
-				.collect(Collectors.toList()));
+		toUpdate.setQuestions(questionnaireRequest.getQuestionsIds()
+					.stream()
+					.map((questionId) -> questionService.getQuestion(questionId)
+							.orElseThrow(
+							()->new QuestionNotFoundException("Invalid id", "Question not found")))
+					.collect(Collectors.toList()));
 	}
 	
 	@Transactional(readOnly = true)

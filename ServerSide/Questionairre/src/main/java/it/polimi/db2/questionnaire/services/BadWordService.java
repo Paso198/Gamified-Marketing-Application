@@ -18,7 +18,7 @@ public class BadWordService {
 	private final BadWordRepository badWordRepository;
 	
 	
-	@Transactional
+	@Transactional(readOnly=true)
 	private Predicate<String> containsBadWordPredicate(){
 		List<BadWord> badWords = badWordRepository.findAll();
 		return  badWords.stream()
@@ -28,7 +28,7 @@ public class BadWordService {
 				::contains;
 	}
 	
-	@Transactional
+	@Transactional(readOnly=true)
 	public boolean containtsBadWord(List<String> words) {
 		return words.stream().anyMatch(containsBadWordPredicate());
 	}

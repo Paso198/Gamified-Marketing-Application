@@ -37,15 +37,13 @@ public class ResponseService {
 	private final ResponseMapper responseMapper;
 	private final UserMapper userMapper;
 
-	@Transactional
+	@Transactional(noRollbackFor=BadWordException.class)
 	public void addReponse(ResponseRequest request) {
 		verifyDuplicate(request.getQuestionnaireId());
 		if (request.getAnswers().stream()
 				.map(AnswerRequest::getText)
 				.allMatch((s)->!badWordService
-						.containtsBadWord(List.of(s.split("\\W+"))))) //check for bad words
-			{
-			
+						.containtsBadWord(List.of(s.split("\\W+"))))) {
 			Questionnaire questionnaire = questionnaireService.getQuestionnaire(request.getQuestionnaireId())
 					.orElseThrow(()->new QuestionnaireNotFoundException("invalid id", "questionnaire not found"));
 			User user = userService.getLoggedUser()
@@ -54,7 +52,12 @@ public class ResponseService {
 			//check if all mandatory questions are answered and if questions answered actually exists and are of that questionnaire
 			List<Question> answeredQuestions = new ArrayList<>();
 			List<Question> questionnaireQuestions = questionnaire.getQuestions();
-			request.getAnswers().stream().map(AnswerRequest::getQuestionId).forEach((id) -> answeredQuestions.add(questionService.getQuestion(id).orElseThrow(()->new QuestionNotFoundException("Invalid id", "Question not found"))));
+			request.getAnswers()
+				.stream()
+				.map(AnswerRequest::getQuestionId)
+				.forEach((id) -> answeredQuestions.add(questionService.getQuestion(id)
+						.orElseThrow(()->new QuestionNotFoundException("Invalid id", "Question not found"))));
+			
 			if(!answeredQuestions.containsAll(questionnaireQuestions) || questionnaireQuestions.size()!=answeredQuestions.size())
 				throw new InvalidResponseException("The response does not contains valid answers");
 			responseRepository.save(responseMapper.toResponse(request, questionnaire, user, questionnaireQuestions));
