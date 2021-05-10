@@ -29,7 +29,7 @@ public class UserSpecs {
 			}
 		};
 	}
-	//"SELECT u FROM User u WHERE u IN (SELECT l.user FROM Log l WHERE l.questionnaire.id = ?1 AND l.action = 'CANCEL_QUESTIONNAIRE'"
+	//"SELECT u FROM User u WHERE u IN (SELECT l.user FROM Log l WHERE l.questionnaire.id = ?1 AND l.action = 'CANCEL_QUESTIONNAIRE')"
 		public static Specification<User> usersCancelledQuestionaire(Long questionnaireId){
 			return new Specification<User>() {
 
