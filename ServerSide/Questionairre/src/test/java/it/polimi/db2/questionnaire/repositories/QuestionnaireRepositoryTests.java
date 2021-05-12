@@ -72,7 +72,7 @@ public class QuestionnaireRepositoryTests extends BaseJPATest{
 				.build();
 		Questionnaire q2 = Questionnaire.builder()
 				.creator(admin)
-				.date(LocalDate.now().plusDays(2))
+				.date(LocalDate.now())
 				.title("test2")
 				.product(p2)
 				.build();
