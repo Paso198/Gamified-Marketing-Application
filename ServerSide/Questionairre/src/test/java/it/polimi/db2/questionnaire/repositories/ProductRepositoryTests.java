@@ -10,20 +10,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import it.polimi.db2.questionnaire.BaseJPATest;
 import it.polimi.db2.questionnaire.model.Product;
 import it.polimi.db2.questionnaire.model.Questionnaire;
 import it.polimi.db2.questionnaire.model.User;
+
 @DataJpaTest
+@Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProductRepositoryTests extends BaseJPATest{
+	
 	
 	@Autowired
 	ProductRepository productRepository;
 	
 	@Autowired
 	TestEntityManager em;
+	
+
 	
 	@Test
 	 @DisplayName("Testing dependency injection")

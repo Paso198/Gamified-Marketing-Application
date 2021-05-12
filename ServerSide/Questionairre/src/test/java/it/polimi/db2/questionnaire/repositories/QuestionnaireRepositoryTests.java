@@ -72,7 +72,7 @@ public class QuestionnaireRepositoryTests extends BaseJPATest{
 				.build();
 		Questionnaire q2 = Questionnaire.builder()
 				.creator(admin)
-				.date(LocalDate.now())
+				.date(LocalDate.now().plusDays(2))
 				.title("test2")
 				.product(p2)
 				.build();
@@ -84,7 +84,7 @@ public class QuestionnaireRepositoryTests extends BaseJPATest{
 				.build();
 		Questionnaire q4 = Questionnaire.builder()
 				.creator(admin)
-				.date(LocalDate.now().plusDays(1))
+				.date(LocalDate.now().plusDays(10))
 				.title("test4")
 				.product(p4)
 				.build();
@@ -137,7 +137,7 @@ public class QuestionnaireRepositoryTests extends BaseJPATest{
 				.build();
 		Questionnaire q2 = Questionnaire.builder()
 				.creator(admin)
-				.date(LocalDate.now())
+				.date(LocalDate.now().plusDays(2))
 				.title("test2")
 				.product(p2)
 				.build();
@@ -149,7 +149,7 @@ public class QuestionnaireRepositoryTests extends BaseJPATest{
 				.build();
 		Questionnaire q4 = Questionnaire.builder()
 				.creator(admin)
-				.date(LocalDate.now().plusDays(1))
+				.date(LocalDate.now().plusDays(6))
 				.title("test4")
 				.product(p4)
 				.build();
