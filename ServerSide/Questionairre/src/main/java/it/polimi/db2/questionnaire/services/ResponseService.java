@@ -1,5 +1,6 @@
 package it.polimi.db2.questionnaire.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import it.polimi.db2.questionnaire.exceptions.DuplicateUniqueValueException;
 import it.polimi.db2.questionnaire.exceptions.InvalidResponseException;
 import it.polimi.db2.questionnaire.exceptions.QuestionNotFoundException;
 import it.polimi.db2.questionnaire.exceptions.QuestionnaireNotFoundException;
+import it.polimi.db2.questionnaire.exceptions.UnauthorizedOperationException;
 import it.polimi.db2.questionnaire.exceptions.UnloggedUserException;
 import it.polimi.db2.questionnaire.mappers.ResponseMapper;
 import it.polimi.db2.questionnaire.mappers.UserMapper;
@@ -39,15 +41,20 @@ public class ResponseService {
 
 	@Transactional(noRollbackFor=BadWordException.class)
 	public void addReponse(ResponseRequest request) {
-		verifyDuplicate(request.getQuestionnaireId());
+		
+		Questionnaire questionnaire = questionnaireService.getQuestionnaire(request.getQuestionnaireId())
+				.orElseThrow(()->new QuestionnaireNotFoundException("invalid id", "questionnaire not found"));
+		if(!questionnaire.getDate().isEqual(LocalDate.now()))
+			throw new UnauthorizedOperationException("A response to this questionnaire is not authorized");
+		User user = userService.getLoggedUser()
+				.orElseThrow(() -> new UnloggedUserException("Not user currently logged in"));
+
 		if (request.getAnswers().stream()
 				.map(AnswerRequest::getText)
 				.allMatch((s)->!badWordService
 						.containtsBadWord(List.of(s.split("\\W+"))))) {
-			Questionnaire questionnaire = questionnaireService.getQuestionnaire(request.getQuestionnaireId())
-					.orElseThrow(()->new QuestionnaireNotFoundException("invalid id", "questionnaire not found"));
-			User user = userService.getLoggedUser()
-					.orElseThrow(() -> new UnloggedUserException("Not user currently logged in"));
+			
+			verifyDuplicate(request.getQuestionnaireId());
 			
 			//check if all mandatory questions are answered and if questions answered actually exists and are of that questionnaire
 			List<Question> answeredQuestions = new ArrayList<>();
